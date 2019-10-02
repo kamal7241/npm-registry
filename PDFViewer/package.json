@@ -1,0 +1,60 @@
+{
+  "name": "@t2/Viewerpdf",
+  "version": "0.0.1",
+  "private": false,
+  "author": {
+    "name": "Front-End Team"
+  },
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "npm run build:umd & npm run build:es & npm run build:unpkg",
+    "lint": "vue-cli-service lint",
+    "build:es": "rollup --config build/rollup.config.js --format es --file dist/pdf.esm.js",
+    "build:umd": "rollup --config build/rollup.config.js --format umd --file dist/pdf.umd.js",
+    "build:unpkg": "rollup --config build/rollup.config.js --format iife --file dist/pdf.min.js",
+    "dev": "node build/dev-server.js"
+  },
+  "main": "dist/pdf.umd.js",
+  "module": "dist/pdf.esm.js",
+  "browser": {
+    "./sfc": "src/components/pdf.vue"
+  },
+  "unpkg": "dist/pdf.min.js",
+  "files": [
+    "src/*",
+    "dist/*",
+    "*.json",
+    "*.js",
+    "*.scss"
+  ],
+  "dependencies": {
+    "core-js": "^2.6.5",
+    "rollup": "^1.22.0",
+    "rollup-plugin-buble": "^0.19.8",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-vue": "^5.0.1",
+    "vue": "^2.6.10",
+    "vue-class-component": "^7.0.2",
+    "vue-property-decorator": "^8.1.0",
+    "vuetify": "^2.0.0"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.11.0",
+    "@vue/cli-plugin-eslint": "^3.11.0",
+    "@vue/cli-plugin-typescript": "^3.11.0",
+    "@vue/cli-service": "^3.11.0",
+    "@vue/eslint-config-standard": "^4.0.0",
+    "@vue/eslint-config-typescript": "^4.0.0",
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.16.0",
+    "eslint-plugin-vue": "^5.0.0",
+    "node-sass": "^4.9.0",
+    "sass": "^1.17.4",
+    "sass-loader": "^7.1.0",
+    "typescript": "^3.4.3",
+    "vue-cli-plugin-vuetify": "^0.6.3",
+    "vue-template-compiler": "^2.6.10",
+    "vuetify-loader": "^1.2.2"
+  }
+}

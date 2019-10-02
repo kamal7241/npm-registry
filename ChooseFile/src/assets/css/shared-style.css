@@ -1,0 +1,246 @@
+
+
+
+  .card-h{
+    background-color:#007166;
+    padding:20px;
+  }
+  .issues-container{
+    border-top:2px solid #007166;
+  }
+
+
+  .table, td ,th{
+    border: 1px solid #8c8282 !important;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+  
+  }
+  .th-bg{
+    background-color:  #dfdfdf;
+    color:#fff;
+  }
+  .th-tr{
+    background-color: #d5d5d5;
+  }
+
+  
+  .text-border-active{
+    border-bottom: 2px solid #b7a524 !important;
+  }
+
+
+  .card{
+    /* border-radius: 2rem; */
+    border: none;
+    box-shadow: none;
+
+  }
+
+
+  .card-title{
+    color:white;
+    font-size: 20px;
+    margin-bottom: 0px !important;
+  }
+  
+
+.table-con{
+  padding:25px;
+}
+
+.green-notice{
+  color: #007166;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.cmnt-area{
+  width: 100%;
+  min-height: 91px;
+  border: 1px solid #8c8282;
+ 
+}
+.btn-green-s{
+  color: #fff;
+  background-color: #007166 !important;
+  border-radius: 16px !important;
+
+}
+
+.width-s{
+  width: 100px;
+}
+ 
+
+.btn-green-s:hover{
+  cursor: pointer;
+  color:gray !important;
+}
+.warning{
+  color:red;
+  font-weight: bold;
+}
+.red-icon{
+  font-size: 20px;
+}
+
+.card-container{
+  padding: 15px;
+  }
+
+  .select-class{
+    width: 100%;
+  }
+@media(max-width:768px){
+
+  .t-center{
+    text-align:center !important;
+  }
+}
+p {
+  text-align: right;
+}
+th,
+td {
+  text-align: center !important;
+}
+
+
+.text-align{
+  text-align: end;
+}
+
+.start-text-align{
+  text-align: start;
+}
+
+.rtl-class{
+  direction: rtl !important;
+}
+.ltr-class{
+  direction: ltr !important;
+}
+
+
+.choose-file{
+  width: 500px;
+  border: 1px solid #8c8282;
+  margin: auto;
+  position: relative;
+  height: 35px;
+  
+}
+.choose-file-input{
+  display: none ;
+}
+
+.x-class{
+  border:  1px solid;
+  border-radius: 60px;
+
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+.p-class{
+  padding: 6px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.p-class:hover{
+  color:gray !important;
+}
+
+.x-button{
+  color: red;
+  border: none;
+  width: 15px;
+  background: transparent;
+  height: 15px;
+  top: 0px;
+  left: 0px;
+  position: absolute;
+}
+
+.x-button:hover{
+  cursor: pointer;
+  color:gray !important;
+}
+
+
+.v-dialog {
+  border-radius: 2rem !important;
+
+ 
+}
+.v-dialog__container{
+  display: inline !important;
+}
+
+.ok-cancel-class{
+  width: 100px;
+  font-weight: bold;
+}
+.theme--light.v-card .v-card__text{
+  color: black !important;
+  padding: 30px !important;
+  font-size: 1rem;
+  
+}
+.v-card__actions{
+  padding: 30px !important;
+}
+
+.btn-class{
+  color:red;
+  margin-top: 6px;
+}
+
+.btn-class:hover{
+  cursor: pointer;
+  color:gray !important;
+}
+
+.theme--dark.v-sheet{
+  width: 80% !important;
+  margin: auto;
+  background-color: #007166 !important;
+}
+
+.v-alert__content {
+  text-align: start !important;
+}
+
+.dialog-class{
+  direction: ltr !important;
+}
+.v-card__actions{
+  padding: 0px !important;
+}
+.v-card__text{
+  text-align: center !important;
+}
+.theme--light.v-card .v-card__text {
+  font-size: 1.2rem !important;
+}
+
+.error-message {
+  color: #d33c40;
+  font-weight: bold;
+}
+
+.textarea-counter{
+  float: right !important;
+  margin-right: 4px;
+  
+}
+.custom-control-label{
+  color: #d33c40 !important ;
+}
+
+
+
+
