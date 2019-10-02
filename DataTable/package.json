@@ -1,0 +1,95 @@
+{
+  "name": "@t2/data-table",
+  "version": "0.1.2",
+  "private": false,
+  "author": {
+    "name": "Front-End Team"
+  },
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "npm run build:umd & npm run build:es & npm run build:unpkg",
+    "lint": "vue-cli-service lint",
+    "build-bundle": "vue-cli-service build --target lib --name DataTable ./src/components/DataTable.vue",
+    "build-bundle2": "vue-cli-service build --target wc --name DataTable ./src/components/*.vue",
+    "build:es": "rollup --config build/rollup.config.js --format es --file dist/DataTable.esm.js",
+    "build:umd": "rollup --config build/rollup.config.js --format umd --file dist/DataTable.umd.js",
+    "build:unpkg": "rollup --config build/rollup.config.js --format iife --file dist/DataTable.min.js"
+  },
+  "main": "dist/DataTable.umd.js",
+  "module": "dist/DataTable.esm.js",
+  "browser": {
+    "./sfc": "src/DataTable.vue"
+  },
+  "unpkg": "dist/DataTable.min.js",
+  "files": [
+    "src/*",
+    "dist/*",
+    "*.json",
+    "*.js",
+    "*.scss"
+  ],
+  "dependencies": {
+    "@t2/date-picker": "^0.1.16",
+    "bootstrap": "^4.3.1",
+    "core-js": "^2.6.5",
+    "jquery": "^3.4.1",
+    "moment-hijri": "^2.1.2",
+    "popper.js": "^1.15.0",
+    "postcss-import": "^12.0.1",
+    "postcss-url": "^8.0.0",
+    "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-vue": "^5.0.1",
+    "vue": "^2.6.10",
+    "vue-bootstrap4-table": "^1.1.9",
+    "vuetify": "^2.0.0"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.9.0",
+    "@vue/cli-plugin-eslint": "^3.9.0",
+    "@vue/cli-service": "^3.9.0",
+    "@vue/eslint-config-airbnb": "^4.0.0",
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.16.0",
+    "eslint-plugin-vue": "^5.0.0",
+    "postcss-load-config": "^2.1.0",
+    "rollup": "^1.17.0",
+    "rollup-plugin-buble": "^0.19.8",
+    "rollup-plugin-commonjs": "^10.0.1",
+    "rollup-plugin-vue": "^5.0.1",
+    "sass": "^1.17.4",
+    "sass-loader": "^7.1.0",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.2",
+    "vue-cli-plugin-vuetify": "^0.6.1",
+    "vue-template-compiler": "^2.6.10",
+    "vuetify-loader": "^1.2.2"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "@vue/airbnb"
+    ],
+    "rules": {},
+    "parserOptions": {
+      "parser": "babel-eslint"
+    }
+  },
+  "postcss": {
+    "postcss": {
+      "parser": "sugarss",
+      "map": false,
+      "plugins": {
+        "postcss-plugin": {}
+      }
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ]
+}
