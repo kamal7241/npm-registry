@@ -11,7 +11,12 @@
       :value="value"
       :disabled="isDisabled"
       :label="label"
-    ></multiselect>
+      :NoResult="NoResult"
+      :NoOptions="NoOptions"
+    >
+      <span slot="noResult">{{NoResult}}</span>
+      <span slot="noOptions">{{NoOptions}}</span>
+    </multiselect>
   </div>
 </template>
 
@@ -21,20 +26,28 @@ import Multiselect from "vue-multiselect";
 export default {
   name: "SelectTo",
   components: { Multiselect },
-  props: [
-    "Data",
-    "isMulti",
-    "isSearchable",
-    "tittle",
-    "showPreserve",
-    "selectedoption",
-    "isDisabled",
-    "label"
-  ],
+  props: {
+    Data: [],
+    isMulti: Boolean,
+    isSearchable: Boolean,
+    tittle: String,
+    showPreserve: Boolean,
+    selectedoption: String,
+    isDisabled: Boolean,
+    label: String,
+    NoResult: {
+      type: String,
+      default: "لا توجد نتائج"
+    },
+    NoOptions:{
+      type: String,
+      default: "لا توجد خيارات"
+    }
+  },
   data() {
     return {
       VmultiSelect: null,
-      value: null
+      value: null,
     };
   },
   mounted() {
@@ -50,11 +63,11 @@ export default {
   },
   watch: {
     selectedoption() {
-      handler:function(){
-     this.value = this.selectedoption;
+
+      this.value = this.selectedoption;
       this.VmultiSelect = this.selectedoption;
-      },
- 
+
+
     }
   }
 };

@@ -4,7 +4,7 @@
       v-model="selctTomodel"
       :Data="newdata"
       :isMulti="false"
-      :isSearchable="false"
+      :isSearchable="true"
       :tittle="this.tittle"
       :showPreserve="true"
       :selectedoption="this.value"
@@ -28,7 +28,7 @@ export default {
       selctTomodel: "options",
       tittle: "Pick a value",
       value: "",
-      newdata: ["Phoenix"]
+      newdata: ["Saleh"],
     };
   },
   methods: {

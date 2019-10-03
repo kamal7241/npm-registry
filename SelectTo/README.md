@@ -11,7 +11,8 @@ npm i @t2/selectto --registry https://najizportalnpm.azurewebsites.net
       @SlectedItems=> call back return array of select items
       :isDisabled="false"=> disable selectTo
       :label="language" => Label from option Object, that will be visible in the dropdown.
-
+      :NoResult="NoResult" => Text Message NoResult.
+      :NoOptions="NoOptions" => Text Message NoOptions.
  ## Used
 ```
 <template>
@@ -26,6 +27,8 @@ npm i @t2/selectto --registry https://najizportalnpm.azurewebsites.net
       :selectedoption="this.value"
       @SlectedItems="selected"
       :isDisabled="false"
+      :NoResult="noresult"
+      :NoOptions="nooptions"
     ></SelectTo>
   </div>
 </template>
@@ -53,7 +56,9 @@ export default {
         "allowEmpty",
         "showLabels",
         "onChange",
-        "touched"
+        "touched",
+        noresult: "لا توجد نتائج",
+        nooptions: "لا توجد خيارات"
       ]
     };
   },
