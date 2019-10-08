@@ -259,7 +259,7 @@
                         >
                           <template
                             v-if="currentPageRowsLength != 0"
-                          >{{this.dir ? this.dir.From_1_to : ""}} {{currentPageRowsLength}} {{this.dir ? this.dir.of : ""}} {{filteredRowsLength}} {{this.dir ? this.dir.entries : ""}}</template>
+                          >{{this.from_1_to ? this.from_1_to : ""}} {{currentPageRows}} {{this.dir ? this.dir.of : ""}} {{filteredRowsLength}} {{this.dir ? this.dir.entries : ""}}</template>
                           <template v-else>{{this.dir ? this.dir.No_results_found : ""}}</template>
                           <template>({{originalRowsLength}} {{this.dir ? this.dir.total_records : ""}})</template>
                         </slot>
@@ -320,7 +320,7 @@
                 >
                   <template
                     v-if="currentPageRowsLength != 0"
-                  >{{this.dir ? this.dir.From_1_to : ""}} {{currentPageRowsLength}} {{this.dir ? this.dir.of : ""}} {{filteredRowsLength}} {{this.dir ? this.dir.entries : ""}}</template>
+                  >{{this.from_1_to ? this.from_1_to : ""}} {{currentPageRows}} {{this.dir ? this.dir.of : ""}} {{filteredRowsLength}} {{this.dir ? this.dir.entries : ""}}</template>
                   <template v-else>{{this.dir ? this.dir.No_results_found : ""}}</template>
                   <template>({{originalRowsLength}} {{this.dir ? this.dir.total_records : ""}})</template>
                 </slot>
@@ -419,6 +419,7 @@ export default {
   },
   data() {
     return {
+      from_1_to : "",
       vbt_rows: [],
       vbt_columns: [],
       query: {
@@ -496,6 +497,8 @@ export default {
       entries: "entries",
       Go_to_page: "Go to page"
     };
+
+    this.from_1_to = has(this.config, "dir") && this.config.dir == "rtl" ? this.ar.From_1_to : this.en.From_1_to;
 
     this.vbt_rows = cloneDeep(this.rows);
     this.vbt_columns = cloneDeep(this.columns);
@@ -1477,6 +1480,17 @@ export default {
       return this.vbt_rows.length;
     },
 
+    currentPageRows() {
+      var count = this.vbt_rows.length;
+      if(this.page > 1)
+        if(count < this.per_page){
+          count = (this.per_page * (this.page - 1)) + count;
+        } else {
+          count = this.per_page * this.page
+        }
+      return count;
+    },
+
     filteredRowsLength() {
       return this.rowCount;
     },
@@ -1751,6 +1765,11 @@ export default {
       } else {
         this.emitQueryParams(newVal);
       }
+      if(this.page == 1)
+        this.from_1_to = this.dir.From_1_to;
+       else
+        this.from_1_to = this.dir.From_1_to.replace('1',(((this.page - 1) * this.per_page)+1)+'');
+
       this.$emit("on-change-page",this.page);
     },
     "config.multi_column_sort": {
