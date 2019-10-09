@@ -6,9 +6,7 @@
       @selection-changed="input"
       :isDisable="false"
       :enableSelectedValueOnLoad="false"
-      :ref="ref"
     ></HGDatePicker>
-    <button @click="Clear">Clear</button>
   </div>
 </template>
 
@@ -33,9 +31,6 @@ export default {
       this.min = data;
       console.log(data);
     },
-    Clear: function(){
-      this.$refs.HGDatePicker.clear()
-    }
   }
 };
 </script>

@@ -1,18 +1,19 @@
 <template>
   <div>
     <div class="row">
-      <div class="col-md-6 col-12">
-        <div class="picker-style">
+      <div class="col-md-5 col-12">
+        <div class="picker-style" @click="fillDefault">
           <vue-datepicker-local
             :disabled-date="disabledDate"
             v-on:input="doWorkMiladi"
             v-model="miladiDate"
             :local="dpLocalProp.dplMiladi"
             :disabled="this.isDisable"
+            showButtons= true
           ></vue-datepicker-local>
         </div>
       </div>
-      <div class="col-md-6 col-12">
+      <div class="col-md-5 col-12">
         <div class="picker-style" @click="fillDefault">
           <vue-datepicker-local
             :disabled-date="disabledDateHijri"
@@ -22,6 +23,9 @@
             :disabled="this.isDisable"
           ></vue-datepicker-local>
         </div>
+      </div>
+      <div class="col-md-2 col-12">
+          <button class="btn btn-secondary"  @click="clear"><i class="fas fa-calendar-times"></i></button>
       </div>
     </div>
   </div>
@@ -121,6 +125,7 @@ export default {
     fillDefault() {
       if(!this.hijriDate) {
         this.hijriDate = moment().format('iYYYY-iMM-iDD');
+        this.miladiDate = moment().format("YYYY-MM-DD");
       }
     },
     disabledDate(time) {

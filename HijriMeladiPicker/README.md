@@ -19,9 +19,6 @@ export default {
   methods: {
     input(date) {
       console.log(date);
-    },
-    Clear: function(){
-      this.$refs.HGDatePicker.clear()
     }
   }
 };
