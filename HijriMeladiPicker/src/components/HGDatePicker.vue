@@ -13,7 +13,7 @@
         </div>
       </div>
       <div class="col-md-6 col-12">
-        <div class="picker-style">
+        <div class="picker-style" @click="fillDefault">
           <vue-datepicker-local
             :disabled-date="disabledDateHijri"
             v-on:input="doWorkHijri"
@@ -96,16 +96,10 @@ export default {
   },
   data() {
     return {
-      hijriDate: [
-        moment(this.minDate).format("iYYYY-iMM-iDD"),
-        moment(this.maxDate).format("iYYYY-iMM-iDD")
-      ],
+      hijriDate: '',
       min: moment(this.minDate)._d,
       max: moment(this.maxDate)._d,
-      miladiDate: [
-        moment(this.minDate).format("YYYY-MM-DD"),
-        moment(this.maxDate).format("YYYY-MM-DD")
-      ],
+      miladiDate: '',
       dpLocalProp: {
         dplMiladi: {
           monthsHead: datePickerPrpp.miladi,
@@ -124,6 +118,11 @@ export default {
     this.updateDate();
   },
   methods: {
+    fillDefault() {
+      if(!this.hijriDate) {
+        this.hijriDate = moment().format('iYYYY-iMM-iDD');
+      }
+    },
     disabledDate(time) {
       if (this.min == "" && this.max == "") return;
       return time < this.min || time > this.max;
@@ -162,19 +161,30 @@ export default {
     updateDate() {
       moment.locale("en");
       if (this.currentDate) {
-        if (this.currentDate != undefined) {
+        if (this.currentDate != undefined && this.currentDate != null && this.currentDate != '') {
           this.miladiDate = moment(this.currentDate).format("YYYY-MM-DD");
           this.hijriDate = moment(this.currentDate).format("iYYYY-iMM-iDD");
         }
-      } else {
-        this.miladiDate = moment().format("YYYY-MM-DD");
-        this.hijriDate = moment(this.miladiDate).format("iYYYY-iMM-iDD");
       }
+      // } else {
+      //   this.miladiDate = moment().format("YYYY-MM-DD");
+      //   this.hijriDate = moment(this.miladiDate).format("iYYYY-iMM-iDD");
+      //   document.getElementsByClassName('Miladi')[0].value<HTMLInputElement> = ''
+      //   document.getElementsByClassName('Hhijri')[0].value = ''
+      // }
       let emitDate = this.miladiDate;
-      if (this.dataFormat) emitDate = moment().format(this.dataFormat);
-
+      if(!emitDate) {
+        if (this.dataFormat) {
+          emitDate = moment().format(this.dataFormat);
+        }
+      }
+      
       if (this.enableSelectedValueOnLoad)
         this.$emit("selection-changed", emitDate);
+    },
+    clear: function(){
+        this.miladiDate = '';
+        this.hijriDate = '';
     }
   },
   watch: {

@@ -4,12 +4,11 @@
     <HGDatePicker
       v-model="timeRange"
       @selection-changed="input"
-      :minDate="this.min"
-      :maxDate="this.max"
-      :currentDate="this.currentDate"
       :isDisable="false"
       :enableSelectedValueOnLoad="false"
+      :ref="ref"
     ></HGDatePicker>
+    <button @click="Clear">Clear</button>
   </div>
 </template>
 
@@ -22,7 +21,8 @@ export default {
       currentDate: "2019-8-28",
       timeRange: null,
       min: "2019-8-28",
-      max: "3019-8-30"
+      max: "3019-8-30",
+      ref: "HGDatePicker"
     };
   },
   components: {
@@ -32,6 +32,9 @@ export default {
     input(data) {
       this.min = data;
       console.log(data);
+    },
+    Clear: function(){
+      this.$refs.HGDatePicker.clear()
     }
   }
 };
