@@ -9,7 +9,6 @@
             v-model="miladiDate"
             :local="dpLocalProp.dplMiladi"
             :disabled="this.isDisable"
-            showButtons= true
           ></vue-datepicker-local>
         </div>
       </div>
