@@ -225,29 +225,7 @@
             <tr v-if="showPaginationRow" class="footer-pagination-row">
               <td :colspan="headerColSpan">
                 <div class="row vbt-pagination-row no-gutters">
-                  <!-- pagination starts here -->
-                  <div class="col-12 text-center">
-                    <div v-if="pagination">
-                      <Pagination
-                        :page.sync="page"
-                        :per_page.sync="per_page"
-                        :per_page_options="per_page_options"
-                        :total="rowCount"
-                        :num_of_visibile_pagination_buttons="num_of_visibile_pagination_buttons"
-                        :dir="dir"
-                      >
-                        <template slot="vbt-paginataion-previous-button">
-                          <slot name="paginataion-previous-button">&laquo;</slot>
-                        </template>
-                        <template slot="vbt-paginataion-next-button">
-                          <slot name="paginataion-next-button">&raquo;</slot>
-                        </template>
-                      </Pagination>
-                    </div>
-                  </div>
-                  <!-- pagination ends here -->
-
-                  <!-- pagination info start here -->
+                                    <!-- pagination info start here -->
                   <div class="col-12 text-center">
                     <div class="text-center justify-content-center">
                       <template v-if="pagination_info">
@@ -276,6 +254,29 @@
                     </div>
                   </div>
                   <!-- pagination info ends here -->
+
+                  
+                  <!-- pagination starts here -->
+                  <div class="col-12 text-center">
+                    <div v-if="pagination">
+                      <Pagination
+                        :page.sync="page"
+                        :per_page.sync="per_page"
+                        :per_page_options="per_page_options"
+                        :total="rowCount"
+                        :num_of_visibile_pagination_buttons="num_of_visibile_pagination_buttons"
+                        :dir="dir"
+                      >
+                        <template slot="vbt-paginataion-previous-button">
+                          <slot name="paginataion-previous-button">&laquo;</slot>
+                        </template>
+                        <template slot="vbt-paginataion-next-button">
+                          <slot name="paginataion-next-button">&raquo;</slot>
+                        </template>
+                      </Pagination>
+                    </div>
+                  </div>
+                  <!-- pagination ends here -->
                 </div>
               </td>
             </tr>

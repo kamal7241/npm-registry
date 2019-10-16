@@ -1,10 +1,8 @@
 {
   "ExpandedNodes": [
     "",
-    "\\HijriMeladiPicker",
-    "\\HijriMeladiPicker\\src",
-    "\\HijriMeladiPicker\\src\\components"
+    "\\DataTable"
   ],
-  "SelectedNode": "\\HijriMeladiPicker\\src\\components\\HGDatePicker.vue",
+  "SelectedNode": "\\DataTable",
   "PreviewInSolutionExplorer": false
 }
