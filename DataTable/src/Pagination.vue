@@ -1,6 +1,6 @@
 <template>
   <div>
-    <nav aria-label="Page navigation example">
+    <nav aria-label="Page navigation example mb-2">
       <ul class="pagination">
         <li
           :class="{'disabled' : disablePreviousButton}"
@@ -9,7 +9,7 @@
         >
           <a class="page-link" href aria-label="Previous">
             <span aria-hidden="true">
-              <slot name="vbt-paginataion-previous-button"></slot>
+              السابق
             </span>
           </a>
         </li>
@@ -53,7 +53,7 @@
         >
           <a class="page-link" href aria-label="Next">
             <span aria-hidden="true">
-              <slot name="vbt-paginataion-next-button"></slot>
+              التالي
             </span>
           </a>
         </li>
@@ -82,9 +82,9 @@
         </div>
         <!-- Number of rows per page ends here -->
 
-        <div class="input-group col-sm-2">
-          <!-- <input type="number" class="form-control" min="1" step="1" :max="totalPages"  @keyup.enter="gotoPage" v-model.number="go_to_page"> -->
-        </div>
+        <!-- <div class="input-group col-sm-2">
+          <input type="number" class="form-control" min="1" step="1" :max="totalPages"  @keyup.enter="gotoPage" v-model.number="go_to_page">
+        </div> -->
       </ul>
     </nav>
   </div>
@@ -227,6 +227,7 @@ export default {
 <style scoped>
 ul.pagination {
   margin-bottom: 0;
+  justify-content: center;
 }
 .vbt-per-page-dropdown {
   margin-left: 8px;

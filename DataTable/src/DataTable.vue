@@ -226,7 +226,7 @@
               <td :colspan="headerColSpan">
                 <div class="row vbt-pagination-row no-gutters">
                   <!-- pagination starts here -->
-                  <div class="col-md-8">
+                  <div class="col-12 text-center">
                     <div v-if="pagination">
                       <Pagination
                         :page.sync="page"
@@ -248,8 +248,8 @@
                   <!-- pagination ends here -->
 
                   <!-- pagination info start here -->
-                  <div class="col-md-4">
-                    <div class="text-right justify-content-center">
+                  <div class="col-12 text-center">
+                    <div class="text-center justify-content-center">
                       <template v-if="pagination_info">
                         <slot
                           name="pagination-info"

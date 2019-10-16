@@ -1,9 +1,10 @@
 {
   "ExpandedNodes": [
     "",
-    "\\VueRecaptcha\\src",
-    "\\VueRecaptcha\\src\\components"
+    "\\HijriMeladiPicker",
+    "\\HijriMeladiPicker\\src",
+    "\\HijriMeladiPicker\\src\\components"
   ],
-  "SelectedNode": "\\HijriMeladiPicker",
+  "SelectedNode": "\\HijriMeladiPicker\\src\\components\\HGDatePicker.vue",
   "PreviewInSolutionExplorer": false
 }

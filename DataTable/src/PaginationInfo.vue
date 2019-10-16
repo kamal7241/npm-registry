@@ -1,5 +1,5 @@
 <template>
-  <div class="text-right justify-content-center">
+  <div class="text-center justify-content-center">
     <template
       v-if="currentPageRowsLength != 0"
     >From 1 to {{currentPageRowsLength}} of {{filteredRowsLength}} entries</template>
