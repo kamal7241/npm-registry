@@ -135,10 +135,20 @@
                         </p>
                       </button>
 
+                      <button
+                        class="choose-file"
+                        v-else-if="data.reasonFileId !=null && data.reasonFileId != '' "
+                        @click="downlaodUrl(data.reasonFileId)"
+                      >
+                        <p class="p-class">
+                          <i class="fa fa-download" style="font-size:16px"></i>
+                        </p>
+                      </button>
+
                       <p style="text-align: center;" v-else>{{NoData}}</p>
                     </div>
 
-                    <div class="choose-file" v-if="status!='View' && status!='Preview'">
+                    <div v-if="status!='View' && status!='Preview'">
                       <button
                         v-if="data.reasonFiles !=null && data.reasonFiles.name !=null"
                         @click="showDeleteFileWithIndex(index,dir.confirmDeleteAttachmentLbl,'JustAttach')"
@@ -147,6 +157,17 @@
                         <i class="fa fa-window-close x-class" aria-hidden="true"></i>
                       </button>
 
+                      <button
+                        class="choose-file"
+                        v-else-if="data.reasonFileId !=null && data.reasonFileId != '' "
+                        @click="downlaodUrl(data.reasonFileId)"
+                      >
+                        <p class="p-class">
+                          <i class="fa fa-download" style="font-size:16px"></i>
+                        </p>
+                      </button>
+
+                      <div class="choose-file"> 
                       <input
                         :accept="fileAllowedExtensions"
                         :id="'fileInput' +  index"
@@ -163,10 +184,13 @@
                         (newDataSource.length == 0 || newDataSource[index].reasonFiles != '' || newDataSource[index].reasonFiles.name ==null) ? dir.chooseFileLbl :""
                         }}
                       </p>
+                      </div>
                     </div>
                   </td>
                   <td v-if="status!='View' && status!='Preview'">
-                    <button @click="showDeleteFileWithIndex(index,DeleteAttachmentLbl,'AllReson')">
+                    <button
+                      @click="showDeleteFileWithIndex(index,dir.confirmDeleteReasonLbl,'AllReson')"
+                    >
                       <i style="color:red" class="fa fa-trash"></i>
                     </button>
                   </td>
@@ -239,6 +263,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { ChooseFile } from "@t2/choose-file";
 import HGDatePicker from "@t2/hijri-meladi-picker";
 import SelectTo from "@t2/selectto";
+import { saveAs } from 'file-saver';
 
 var moment = require("moment-hijri");
 
@@ -256,7 +281,7 @@ export default {
     },
     fileAllowedExtensions: {
       type: String,
-      default: ".jpg,.pdf,.png,.jpeg,.JPEG,.PNG"
+      default: "jpg,pdf,png,jpeg,JPEG,PNG"
     },
     dataType: {
       type: String,
@@ -343,7 +368,20 @@ export default {
       validateExtension: false,
       error: false,
       IsmaxSize: false,
-      initSize: 0
+      initSize: 0,
+      notAllowedEx: [
+        "zip",
+        "exe",
+        "ZIP",
+        "EXE",
+        "ZAP",
+        "Z01",
+        "Z02",
+        "Z03",
+        "iso",
+        "rar",
+        "zz"
+      ]
     };
   },
   mounted() {
@@ -441,6 +479,11 @@ export default {
       document.body.removeChild(downloadLink);
       URL.revokeObjectURL(downloadUrl);
     },
+    downlaodUrl(fileId) {
+      axios.get('/file/' + fileId, { responseType: "blob" }).then(response => {
+        saveAs(response.data, response.headers.filename);
+      });
+    },
     cancelDelete() {
       this.delStatus = "";
       this.dialog = false;
@@ -463,6 +506,7 @@ export default {
           dataSourceObject.reasonTexts = this.Data[i].reasonTexts;
           dataSourceObject.reasonDates = this.Data[i].reasonDates;
           dataSourceObject.reasonFiles = this.Data[i].reasonFiles;
+          dataSourceObject.reasonFileId = this.Data[i].reasonFileId;
           dataSourceObject.error = "";
           this.newDataSource.push(dataSourceObject);
         }
@@ -472,7 +516,7 @@ export default {
       var pattern = /^([\u0600-\u06ff]|[\u0750-\u077f]|[\ufb50-\ufbc1]|[\ufbd3-\ufd3f]|[\ufd50-\ufd8f]|[\ufd92-\ufdc7]|[\ufe70-\ufefc]|[\ufdf0-\ufdfd]|[ ])*$/g;
       var result = pattern.test(text);
       if (!result) {
-        this.reason = text;
+        this.reason = this.reason.substring(0, this.reason.length - 1);
       }
       return result;
     },
@@ -490,10 +534,15 @@ export default {
       }
       this.newDataSource[index].error = "";
       this.newDataSource[index].reasonFiles = fileData;
+      this.newDataSource[index].reasonFileId = '';
+      this.$emit("UpdateReson", this.newDataSource);
     },
     checkValidatFile(file, index) {
       var fileEx = file.split(".").pop();
-      if (this.fileAllowedExtensions.includes(fileEx)) {
+      if (
+        this.fileAllowedExtensions.includes(fileEx) &&
+        !this.notAllowedEx.includes(fileEx)
+      ) {
         this.allowedEx = true;
         return true;
       } else {
@@ -516,7 +565,7 @@ export default {
       this.error = false;
       if (
         this.newDataSource.length < this.countOfFiles &&
-        this.reason.length > 0 &&
+        this.reason.replace(/\s/g, "").length > 0 &&
         this.isArabic(this.reason)
       ) {
         var dataSourceObject = {};
@@ -524,12 +573,13 @@ export default {
         dataSourceObject.reasonDates = this.selectDate;
         dataSourceObject.id = this.newDataSource.length + 1;
         dataSourceObject.reasonFiles = "";
+        dataSourceObject.reasonFileId = '';
         dataSourceObject.error = "";
         if (document.getElementById("outerfile") != null) {
           dataSourceObject.reasonFiles = document.getElementById(
             "outerfile"
           ).files[0];
-          document.getElementById("outerfile").remove();
+          // document.getElementById("outerfile").remove();
         }
         this.newDataSource.push(dataSourceObject);
         this.$emit("UpdateReson", this.newDataSource);

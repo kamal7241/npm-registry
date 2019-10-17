@@ -1,28 +1,58 @@
 {
-  "name": "@t2/reason-file-uploader",
-  "version": "0.5.1",
-  "private": false,
+  "_from": "@t2/reason-file-uploader@^0.5.7",
+  "_id": "@t2/reason-file-uploader@0.5.7",
+  "_inBundle": false,
+  "_integrity": "sha512-2RogCFWGx4ycCblU7HUFp6TRdj193P/LODASJd11h4ml4gZBdg1GpxZlPizYH6NPcKjo22ELk33FpugKXbrn7A==",
+  "_location": "/@t2/reason-file-uploader",
+  "_phantomChildren": {
+    "bootstrap": "4.3.1",
+    "core-js": "2.6.9",
+    "jquery": "3.4.1",
+    "moment": "2.24.0",
+    "moment-hijri": "2.1.2",
+    "popper.js": "1.15.0",
+    "rollup": "1.20.3",
+    "rollup-plugin-buble": "0.19.8",
+    "rollup-plugin-commonjs": "10.1.0",
+    "rollup-plugin-node-resolve": "5.2.0",
+    "rollup-plugin-vue": "5.0.1",
+    "vue": "2.6.10",
+    "vue-datepicker-local": "1.0.19",
+    "vue-multiselect": "2.1.6"
+  },
+  "_requested": {
+    "type": "range",
+    "registry": true,
+    "raw": "@t2/reason-file-uploader@^0.5.7",
+    "name": "@t2/reason-file-uploader",
+    "escapedName": "@t2%2freason-file-uploader",
+    "scope": "@t2",
+    "rawSpec": "^0.5.7",
+    "saveSpec": null,
+    "fetchSpec": "^0.5.7"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://najizportalnpm.azurewebsites.net/@t2%2freason-file-uploader/-/reason-file-uploader-0.5.7.tgz",
+  "_shasum": "39ee29a14490b8848d23b1e773d4b6174f573562",
+  "_spec": "@t2/reason-file-uploader@^0.5.7",
+  "_where": "D:\\Projects\\Najiz\\NajizPortal\\Portal\\MicroApplications\\LawsuitsRequests\\Najiz.MicroApplications.Courts.LawsuitsRequests",
   "author": {
     "name": "Front-End Team"
   },
-  "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
-  },
-  "main": "./src/index.js",
-  "files": [
-    "src/*",
-    "*.json",
-    "*.js",
-    "*.css"
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
   ],
+  "bundleDependencies": false,
   "dependencies": {
     "@t2/choose-file": "^0.1.5",
     "@t2/hijri-meladi-picker": "^0.1.7",
     "@t2/selectto": "^0.1.6",
     "bootstrap": "^4.3.1",
     "core-js": "^2.6.5",
+    "file-saver": "^2.0.2",
     "jquery": "^3.4.1",
     "popper.js": "^1.15.0",
     "rollup-plugin-buble": "^0.19.8",
@@ -31,10 +61,14 @@
     "vue": "^2.6.10",
     "vuetify": "^2.0.2"
   },
+  "deprecated": false,
+  "description": "```\r npm install @t2/reason-file-uploader --registry https://najizportalnpm.azurewebsites.net \r ```",
   "devDependencies": {
+    "@types/file-saver": "^2.0.1",
     "@vue/cli-plugin-babel": "^3.9.0",
     "@vue/cli-plugin-eslint": "^3.9.0",
     "@vue/cli-service": "^3.9.0",
+    "axios": "^0.19.0",
     "babel-eslint": "^10.0.1",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
@@ -58,13 +92,24 @@
       "parser": "babel-eslint"
     }
   },
+  "files": [
+    "src/*",
+    "*.json",
+    "*.js",
+    "*.css"
+  ],
+  "main": "./src/index.js",
+  "name": "@t2/reason-file-uploader",
   "postcss": {
     "plugins": {
       "autoprefixer": {}
     }
   },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions"
-  ]
+  "private": false,
+  "scripts": {
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "serve": "vue-cli-service serve"
+  },
+  "version": "0.5.7"
 }
