@@ -22,9 +22,9 @@ export default {
   data() {
     return {
       fileex: ".PNG",
-      type: "text",
+      type: "list",
       ReasonData: [],
-      DataSource: ["السبب ١", "السبب غير موجود"],
+      DataSource: ["السبب ١", "أخرى"],
       maxSize: 10,
       fileAllowedExtensions: ".jpg,.pdf,.png,.jpeg,.zip"
     };

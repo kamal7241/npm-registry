@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="choose-file">
-      <button @click="deleteFileDialog = true" :disabled="myfile.length == 0" class="x-button">
+      <button @click="deleteFileDialog = true" :disabled="myfile.length == 0" class="x-button" v-if="ThereFile"> 
         <i class="fa fa-window-close x-class" aria-hidden="true"></i>
       </button>
       <v-dialog class="dialog-class" v-model="deleteFileDialog" width="500">
@@ -94,6 +94,7 @@ export default {
       isValidExtension: false,
       deleteFileDialog: false,
       validateFileDialog: false,
+      ThereFile: false,
       dir: {
         cancelLbl: "الغاء",
         okLbl: "نعم",
@@ -146,6 +147,7 @@ export default {
       this.myfile = fileData;
       this.pickedfileName = fileData.name;
       this.$emit("selectFile", fileData);
+      this.ThereFile = true;
     },
     checkValidatFile(file) {
       var fileEx = file.split(".").pop();
@@ -172,6 +174,7 @@ export default {
       this.deleteFileDialog = false;
       this.myfile = "";
       this.pickedfileName = "";
+      this.ThereFile = false;
     }
   }
 };

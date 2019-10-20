@@ -85,7 +85,7 @@
         </div>
       </div>
       <div class="row" v-if="status=='Add' || status=='Edit'">
-        <div class="col-12 text-left my-2">
+        <div class="col-12 text-center Add-Btn my-2">
           <button class="btn btn-success" @click="addFile">{{dir ? dir.addButtonLbl : ""}}</button>
         </div>
       </div>
@@ -101,7 +101,13 @@
           <label v-if="this.fileCount>0">سبب {{ this.fileCount }} من {{ this.countOfFiles }}</label>
         </div>
         <!-- Start Tabel View -->
-        <div class="col-md-12 mb-2">
+        <div class="col-md-12 mb-2" v-if="!ThereReasons">
+              <div class="NoThereReasons">
+                <span> لا يوجد اسباب </span>
+              </div>
+        </div>
+
+        <div class="col-md-12 mb-2" v-if="ThereReasons">
           <div class="table-responsive">
             <table class="table">
               <thead>
@@ -360,6 +366,7 @@ export default {
       en: {},
       alert: false,
       dialog: false,
+      ThereReasons: false,
       activeIndex: -1,
       file: "",
       reason: "",
@@ -499,6 +506,7 @@ export default {
     },
     setData() {
       if (this.Data != null && this.status != "Add") {
+        this.ThereReasons = true;
         this.newDataSource = [];
         this.fileCount = this.Data.length;
         for (var i = 0; i < this.Data.length; i++) {
@@ -553,7 +561,7 @@ export default {
     },
     selctedOption(selectOption) {
       this.$emit("selectItems", selectOption);
-      if (selectOption == "السبب غير موجود") {
+      if (selectOption == "أخرى") {
         this.showSecondText = true;
         this.reason = "";
       } else {
@@ -563,11 +571,8 @@ export default {
     },
     addFile() {
       this.error = false;
-      if (
-        this.newDataSource.length < this.countOfFiles &&
-        this.reason.replace(/\s/g, "").length > 0 &&
-        this.isArabic(this.reason)
-      ) {
+      if (this.newDataSource.length < this.countOfFiles && this.reason.replace(/\s/g, "").length > 0 && ((this.dataType =='list' && !this.showSecondText) ? true : this.isArabic(this.reason))) 
+      {
         var dataSourceObject = {};
         dataSourceObject.reasonTexts = this.reason;
         dataSourceObject.reasonDates = this.selectDate;
@@ -575,6 +580,7 @@ export default {
         dataSourceObject.reasonFiles = "";
         dataSourceObject.reasonFileId = '';
         dataSourceObject.error = "";
+        this.ThereReasons = true;
         if (document.getElementById("outerfile") != null) {
           dataSourceObject.reasonFiles = document.getElementById(
             "outerfile"
@@ -607,6 +613,9 @@ export default {
           }
           this.newDataSource.splice(this.activeIndex, 1);
           this.fileCount = this.fileCount - 1;
+          if(this.fileCount == 0){
+            this.ThereReasons = false;
+          }
           this.$emit("UpdateReson", this.newDataSource);
           this.dialog = false;
         }
