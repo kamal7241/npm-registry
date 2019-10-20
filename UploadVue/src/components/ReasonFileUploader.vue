@@ -169,6 +169,7 @@
                         @click="downlaodUrl(data.reasonFileId)"
                       >
                         <p class="p-class">
+                          {{data.reasonFileName}}
                           <i class="fa fa-download" style="font-size:16px"></i>
                         </p>
                       </button>
@@ -515,6 +516,8 @@ export default {
           dataSourceObject.reasonDates = this.Data[i].reasonDates;
           dataSourceObject.reasonFiles = this.Data[i].reasonFiles;
           dataSourceObject.reasonFileId = this.Data[i].reasonFileId;
+          dataSourceObject.reasonFileName = this.Data[i].reasonFileName;
+          dataSourceObject.reasonId = this.Data[i].reasonId;
           dataSourceObject.error = "";
           this.newDataSource.push(dataSourceObject);
         }
@@ -579,6 +582,7 @@ export default {
         dataSourceObject.id = this.newDataSource.length + 1;
         dataSourceObject.reasonFiles = "";
         dataSourceObject.reasonFileId = '';
+        dataSourceObject.reasonId = null;
         dataSourceObject.error = "";
         this.ThereReasons = true;
         if (document.getElementById("outerfile") != null) {
