@@ -400,5 +400,7 @@ export default class HijriCalender extends Vue {
   right: 0;
   
 }
-
+.popper {
+  z-index: 1
+}
 </style>

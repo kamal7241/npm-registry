@@ -6,6 +6,8 @@
       @selection-changed="input"
       :isDisable="false"
       :enableSelectedValueOnLoad="false"
+      :minDate="min"
+      :maxDate="max"
     ></HGDatePicker>
   </div>
 </template>
@@ -18,8 +20,8 @@ export default {
     return {
       currentDate: "2019-8-28",
       timeRange: null,
-      min: "2019-8-28",
-      max: "3019-8-30",
+      min: "2019-09-01",
+      max: "2019-10-15",
       ref: "HGDatePicker"
     };
   },
@@ -28,7 +30,6 @@ export default {
   },
   methods: {
     input(data) {
-      this.min = data;
       console.log(data);
     },
   }

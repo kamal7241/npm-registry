@@ -4,7 +4,9 @@ npm i @t2/vue-hijri-calander --registry https://najizportalnpm.azurewebsites.net
 
  ## parameter
 :minDate  => set min date to allow
+
 :maxDate  => set max date to allow
+
 v-model='date' => string containing date with this format 'YYYY-MM-YY'
 ## Used
 ```
