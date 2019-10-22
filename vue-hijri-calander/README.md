@@ -1,6 +1,6 @@
 # vue-hijri-calander
 
-npm i @t2/attach-file --registry https://najizportalnpm.azurewebsites.net
+npm i @t2/vue-hijri-calander --registry https://najizportalnpm.azurewebsites.net
 
  ## parameter
 :minDate  => set min date to allow
