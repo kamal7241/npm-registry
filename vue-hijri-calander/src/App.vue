@@ -1,7 +1,8 @@
 <template>
   <div id="app">
     {{date}}
-    <HijriCalender v-model='date' :minDate='minDate' :maxDate='maxDate' :isdisabled='disabled'/>
+    <HijriCalender v-model='date' :minDate='minDate' :maxDate='maxDate' :isHijri='true'/>
+    <HijriCalender v-model='date' :minDate='minDate' :maxDate='maxDate' :isHijri='false'/>
     <button @click='clearDate()'>Clear Date</button>
     <button @click='setDate()'>Set Date</button>
     <button @click='setMinDate()'>Set Min. Date</button>
@@ -21,8 +22,6 @@ export default class App extends Vue {
   public date: string = '';
   public minDate: string = '';
   public maxDate: string = '';
-  public disabled: boolean = true;
-
   public clearDate() {
     this.date = '';
   }

@@ -9,35 +9,34 @@
       <div class="popper">
         <div>
           <div class="hijriCalender">
-            <div class="hijriCalenderControls">
-              <button class="previousButton" @click="subtractMonth" type="button">&lt;&lt;</button>
-              <strong v-bind="currentDate">{{getCurrentDateFormated()}}</strong>
-              <button class="nextButton" @click="addMonth" type="button">&gt;&gt;</button>
-              <div class="yearAndMonthList" v-if="showMonthYearSelect">
-                <div>
-                  <span class="yearListContainer">
-                    <select
-                      class="yearSelect"
-                      :value="getCurrentYear()"
-                      @change="onYearChange($event)"
-                    >
-                      <option v-for="year in yearsList" v-bind:key="year" :value="year">{{year}}</option>
-                    </select>
-                  </span>
-                  <span class="monthListContainer">
-                    <select
-                      class="monthSelect"
-                      :value="getCurrentMonth()"
-                      @change="onMonthChange($event)"
-                    >
-                      <option
-                        v-for="month in months"
-                        v-bind:key="month.number"
-                        :value="month.number"
-                      >{{month.name}}</option>)
-                    </select>
-                  </span>
-                </div>
+              <div class="hijriCalenderControls"> 
+                    <button class="previousButton" @click="subtractMonth" type="button">&lt;&lt;</button>
+                    <strong v-bind="calenderProvider.currentDate">{{getCurrentDateFormated()}}</strong>
+                    <button class="nextButton" @click="addMonth" type="button">&gt;&gt;</button>
+                    <div class="yearAndMonthList" v-if="showMonthYearSelect">
+                      <div>
+                        <span class="yearListContainer">
+                          <select class="yearSelect" :value="getCurrentYear()" @change="onYearChange($event)">
+                            <option  v-for="year in calenderProvider.yearsList" v-bind:key="year" :value="year">{{year}}</option> 
+                          </select>
+                        </span>
+                        <span class="monthListContainer">
+                          <select class="monthSelect" :value="getCurrentMonth()" @change="onMonthChange($event)">
+                            <option v-for="month in calenderProvider.months" v-bind:key="month.number" :value="month.number" >{{month.name}}</option>)
+                          </select>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="dayNamesList">
+                      <div class="dayName" v-for="dayName in calenderProvider.dayNames" v-bind:key="dayName">
+                          {{dayName}}
+                      </div>
+                    </div>
+                    <div class="monthDays">
+                      <div v-for="i in calenderProvider.selectedMonthDays" v-bind:key="i.date" class="monthDay" :class="{selected: isSelectedDate(i.date)}">
+                        <Button class="monthDayButton" :class="{selected: isSelectedDate(i.date),otherMonth: !(i.isSameMonth || ! i.isSelectableDate),disabled: isDateDisabled(i.date)}" :value="i.date" type="button" @click="onDateSelected(i)">{{i.number}}</Button>
+                      </div>
+                    </div>
               </div>
               <div class="dayNamesList">
                 <div
@@ -65,7 +64,6 @@
             </div>
           </div>
         </div>
-      </div>
       <div slot="reference" :class="{Divdisabled : isdisabled}">
         <div class="datepicker">
           <input
@@ -82,201 +80,107 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from "vue-property-decorator";
-
-import Popper, { PopperType } from "vue-popperjs";
-import moment from "moment-hijri";
-import MonthVM from "./Model/MonthVM";
-import DayVM from "./Model/DayVM";
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
+import Popper, { PopperType } from 'vue-popperjs';
+import moment from 'moment-hijri';
+import MonthVM from './Model/MonthVM';
+import DayVM from './Model/DayVM';
+import ICalenderProvider from './Providers/ICalenderProvider';
+import HijriCalenderProvider from './Providers/HijriCalenderProvider';
+import GregorianCalenderProvider from './Providers/GregorianCalenderProvider';
 
 @Component({
   components: {
-    Popper
-  }
+    Popper,
+  },
 })
 export default class HijriCalender extends Vue {
-  @Prop({ default: "", required: true })
-  public value: string | any;
-  @Prop({ default: "" })
-  public minDate: string | any;
-  @Prop({ default: "" })
-  public maxDate: string | any;
-  @Prop({ default: false })
-  public isdisabled: boolean | any;
-  public currentDate: any = moment();
-  public arabicDayNames = ["ح", "ن", "ث", "ر", "خ", "ج", "س"];
-  public showMonthYearSelect: boolean = true;
-  public minYear: number = 1356;
-  public maxYear: number = 1500;
-  public yearsList: number[] = [];
-  public months: MonthVM[] = [
-    { number: 0, name: "محرم" },
-    { number: 1, name: "صفر" },
-    { number: 2, name: "ربيع الأول" },
-    { number: 3, name: "ربيع الثاني" },
-    { number: 4, name: "جمادي الأولى" },
-    { number: 5, name: "جمادي الآخرة" },
-    { number: 6, name: "رجب" },
-    { number: 7, name: "شعبان" },
-    { number: 8, name: "رمضان" },
-    { number: 9, name: "شوال" },
-    { number: 10, name: "ذو القعدة" },
-    { number: 11, name: "ذو الحجة" }
-  ];
-  public selectedMonthDays: DayVM[] = [];
-
+  @Prop({default: '', required: true})
+  public value: string|any;
+  @Prop({default: ''})
+  public minDate: string|any;
+  @Prop({default: ''})
+  public maxDate: string|any;
+  @Prop({default: true})
+  public showMonthYearSelect: boolean|any;
+  @Prop({default: true})
+  public isHijri: boolean|any;
+  private calenderProvider: ICalenderProvider|any;
   public created() {
-    for (let i = this.minYear; i <= this.maxYear; i = i + 1) {
-      this.yearsList.push(i);
+    if (this.isHijri) {
+      this.calenderProvider = new HijriCalenderProvider(this.maxDate, this.minDate);
+    } else {
+      this.calenderProvider = new GregorianCalenderProvider(this.maxDate, this.minDate);
     }
   }
-  @Watch("value")
+  @Watch('value')
   public onValueChanged(value: string, oldValue: string) {
     if (this.value) {
-      this.currentDate = new moment(this.value, "YYYY-MM-DD");
+      this.calenderProvider.currentDate = new moment(this.value, 'YYYY-MM-DD');
     } else {
-      this.currentDate = moment();
+      this.calenderProvider.currentDate = moment();
     }
-    this.reFillMonthDays();
+    this.calenderProvider.reFillMonthDays();
+  }
+  @Watch('minDate')
+  public onMinDateChanged(value: string, oldValue: string) {
+    this.calenderProvider.minDate = value;
+  }
+  @Watch('maxDate')
+  public onMaxDateChanged(value: string, oldValue: string) {
+    this.calenderProvider.maxDate = value;
   }
   public addMonth() {
-    this.currentDate = this.currentDate.add(1, "iMonth");
-    this.reFillMonthDays();
+    this.calenderProvider.addMonth();
     this.$forceUpdate();
   }
   public subtractMonth() {
-    this.currentDate = this.currentDate.subtract(1, "iMonth");
-    this.reFillMonthDays();
+    this.calenderProvider.subtractMonth();
     this.$forceUpdate();
   }
   public getCurrentDateFormated() {
-    return (
-      this.currentDate.locale("ar-SA").format("iMMMM") +
-      " (" +
-      this.currentDate.format("iMM") +
-      ") " +
-      this.currentDate.format("iYYYY")
-    );
+    return this.calenderProvider.getCurrentDateFormated();
   }
   public getCurrentYear() {
-    return this.currentDate.iYear();
+    return this.calenderProvider.getCurrentYear();
   }
   public getCurrentMonth() {
-    return this.currentDate.iMonth();
+    return this.calenderProvider.getCurrentMonth();
   }
-  public onDateSelected(date: string) {
-    if (!this.isDateDisabled(date)) {
-      this.$emit("input", date);
-      this.currentDate = new moment(date, "YYYY-MM-DD");
+  public onDateSelected(date: DayVM) {
+    if (!this.isDateDisabled(date.date) && date.isSelectableDate) {
+      this.$emit('input', date.date);
+      this.calenderProvider.currentDate = new moment(date.date, 'YYYY-MM-DD');
       (this.$refs.popperRef as PopperType).doClose();
-      this.reFillMonthDays();
+      this.calenderProvider.reFillMonthDays();
       this.$forceUpdate();
     }
   }
   public selectedDateinHijri() {
-    if (this.value) {
-      return moment(this.value, "YYYY-MM-DD")
-        .locale("en")
-        .format("iYYYY-iMM-iDD");
-    } else {
-      return "";
-    }
+    return this.calenderProvider.selectedDate(this.value);
   }
   public isSelectedDate(date: string) {
     return date === this.value;
   }
   public isDateDisabled(date: string) {
-    let result: boolean = false;
-    if (this.maxDate) {
-      result =
-        moment(date, "YYYY-MM-DD").isAfter(
-          moment(this.maxDate, "YYYY-MM-DD")
-        ) || result;
-    }
-    if (this.minDate) {
-      result =
-        moment(date, "YYYY-MM-DD").isBefore(
-          moment(this.minDate, "YYYY-MM-DD")
-        ) || result;
-    }
-    return result;
+    return this.calenderProvider.isDateDisabled(date);
   }
   public onMonthChange(event: any) {
-    const year = this.currentDate.locale("en").format("iYYYY");
-    const month = parseInt(event.target.value, 10) + 1;
-    const day = this.currentDate.locale("en").format("iDD");
-    const result = year + "-" + month + "-" + day;
-    this.currentDate = new moment(result, "iYYYY-iM-iDD");
-    this.reFillMonthDays();
+    this.calenderProvider.onMonthChange(event.target.value);
     this.$forceUpdate();
   }
   public onYearChange(event: any) {
-    const year = event.target.value;
-    const month = this.currentDate.locale("en").format("iMM");
-    const day = this.currentDate.locale("en").format("iDD");
-    const result = year + "-" + month + "-" + day;
-    this.currentDate = new moment(result, "iYYYY-iM-iDD");
-    this.reFillMonthDays();
+    this.calenderProvider.onYearChange(event.target.value);
     this.$forceUpdate();
   }
   public openCalender() {
     if (this.value) {
-      this.currentDate = new moment(this.value, "YYYY-MM-DD");
+      this.calenderProvider.currentDate = new moment(this.value, 'YYYY-MM-DD');
     } else {
-      this.currentDate = moment();
+      this.calenderProvider.currentDate = moment();
     }
-    this.reFillMonthDays();
+    this.calenderProvider.reFillMonthDays();
     this.$forceUpdate();
-  }
-  private reFillMonthDays() {
-    this.selectedMonthDays = [];
-    const monthStartDay = this.getCurrentMonthStartDayNumber();
-    const temp = new moment(this.currentDate).startOf("iMonth");
-    for (let i = monthStartDay; i > 0; i--) {
-      const x = new moment(temp).subtract(i, "Day");
-      x.locale("en");
-      this.selectedMonthDays.push({
-        number: x.format("iD"),
-        date: x.format("YYYY-MM-DD"),
-        isSameMonth: false
-      });
-    }
-    const temp2 = new moment(this.currentDate).startOf("iMonth");
-    const monthDays = this.monthDays();
-    for (let i = 0; i < monthDays; i++) {
-      const x = new moment(temp2).add(i, "Day");
-      x.locale("en");
-      this.selectedMonthDays.push({
-        number: x.format("iD"),
-        date: x.format("YYYY-MM-DD"),
-        isSameMonth: true
-      });
-    }
-    const monthEndDay = Number(this.getCurrentMonthEndDayNumber());
-    const temp3 = new moment(this.currentDate).endOf("iMonth");
-    for (let index = 1; index < 7 - monthEndDay; index++) {
-      const x = new moment(temp3).add(index, "Day");
-      x.locale("en");
-      this.selectedMonthDays.push({
-        number: x.format("iD"),
-        date: x.format("YYYY-MM-DD"),
-        isSameMonth: false
-      });
-    }
-  }
-  private getCurrentMonthStartDayNumber() {
-    const time = new moment(this.currentDate);
-    time.startOf("iMonth");
-    return time.locale("en").format("d");
-  }
-  private getCurrentMonthEndDayNumber() {
-    const time = new moment(this.currentDate);
-    time.endOf("iMonth");
-    return time.locale("en").format("d");
-  }
-  private monthDays() {
-    const time = new moment(this.currentDate);
-    return time.locale("en").iDaysInMonth();
   }
 }
 </script>
@@ -397,14 +301,15 @@ export default class HijriCalender extends Vue {
   border: "";
 }
 .monthDayButton {
-  cursor: pointer;
-  border: 0px;
-  width: 30px;
-  padding: 5px;
-  font-size: 14px;
-  border-radius: 0px;
-  background-color: white;
-  color: "";
+    cursor: pointer;
+    border: 0px;
+    width: 30px;
+    height: 30px;
+    padding: 5px;
+    font-size: 14px;
+    border-radius: 0px;
+    background-color: white;
+    color: "";
 }
 .monthDayButton:focus {
   outline: unset;
