@@ -102,7 +102,7 @@ export default class GregorianCalenderProvider implements  ICalenderProvider {
         for (let i = monthStartDay ; i > 0; i--) {
           const x = new moment(temp).subtract(i, 'Day');
           x.locale('en');
-          if (x.isAfter(this.minSupportedDate)) {
+          if (x.isSameOrAfter(this.minSupportedDate) && x.isSameOrBefore(this.maxSupportedDate)) {
             this.selectedMonthDays.push({
                 number: x.format('D'),
                 date: x.format('YYYY-MM-DD'),

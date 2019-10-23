@@ -1,12 +1,13 @@
 <template>
   <div id="app">
     {{date}}
-    <HijriCalender v-model='date' :minDate='minDate' :maxDate='maxDate' :isHijri='true'/>
-    <HijriCalender v-model='date' :minDate='minDate' :maxDate='maxDate' :isHijri='false'/>
+    <HijriCalender v-model='date' :minDate='minDate' :maxDate='maxDate' :isHijri='true' :isDisabled='isDisabled'/>
+    <HijriCalender v-model='date' :minDate='minDate' :maxDate='maxDate' :isHijri='false' :isDisabled='isDisabled'/>
     <button @click='clearDate()'>Clear Date</button>
     <button @click='setDate()'>Set Date</button>
     <button @click='setMinDate()'>Set Min. Date</button>
     <button @click='setMaxDate()'>Set Max. Date</button>
+    <button @click='flipDisabled()'>Flip Disabled</button>
   </div>
 </template>
 
@@ -22,6 +23,7 @@ export default class App extends Vue {
   public date: string = '';
   public minDate: string = '';
   public maxDate: string = '';
+  public isDisabled: boolean = false;
   public clearDate() {
     this.date = '';
   }
@@ -33,6 +35,9 @@ export default class App extends Vue {
   }
   public setMaxDate() {
     this.maxDate = '2019-10-15';
+  }
+  public flipDisabled() {
+    this.isDisabled = ! this.isDisabled;
   }
 }
 </script>

@@ -38,40 +38,17 @@
                       </div>
                     </div>
               </div>
-              <div class="dayNamesList">
-                <div
-                  class="dayName"
-                  v-for="dayName in arabicDayNames"
-                  v-bind:key="dayName"
-                >{{dayName}}</div>
-              </div>
-              <div class="monthDays">
-                <div
-                  v-for="i in selectedMonthDays"
-                  v-bind:key="i.date"
-                  class="monthDay"
-                  :class="{selected: isSelectedDate(i.date)}"
-                >
-                  <Button
-                    class="monthDayButton"
-                    :class="{selected: isSelectedDate(i.date),otherMonth: !i.isSameMonth,disabled: isDateDisabled(i.date)}"
-                    :value="i.date"
-                    type="button"
-                    @click="onDateSelected(i.date)"
-                  >{{i.number}}</Button>
-                </div>
-              </div>
             </div>
           </div>
         </div>
-      <div slot="reference" :class="{Divdisabled : isdisabled}">
+      <div slot="reference" :class="{Divdisabled : isDisabled}">
         <div class="datepicker">
           <input
             type="text"
             autocomplete="off"
             readonly
             :value="selectedDateinHijri()"
-            :disabled="isdisabled"            
+            :disabled="isDisabled"            
           />
         </div>
       </div>
@@ -105,6 +82,8 @@ export default class HijriCalender extends Vue {
   public showMonthYearSelect: boolean|any;
   @Prop({default: true})
   public isHijri: boolean|any;
+  @Prop({default: false})
+  public isDisabled: boolean|any;
   private calenderProvider: ICalenderProvider|any;
   public created() {
     if (this.isHijri) {
