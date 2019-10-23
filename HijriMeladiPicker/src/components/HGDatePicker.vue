@@ -3,18 +3,12 @@
     <div class="row">
       <div class="col-md-5 col-12">
         <div class="picker-style">
-          <vue-datepicker-local
-            :disabled-date="disabledDate"
-            v-on:input="doWorkMiladi"
-            v-model="miladiDate"
-            :local="dpLocalProp.dplMiladi"
-            :disabled="isDisable"
-          ></vue-datepicker-local>
+          <HijriCalender v-model='miladiDate' :minDate="minDate" :maxDate="maxDate" :isDisabled='isDisable' :isHijri='false'/>
         </div>
       </div>
       <div class="col-md-5 col-12">
         <div class="picker-style">
-          <HijriCalender v-model='miladiDate' :minDate="minDate" :maxDate="maxDate" :isdisabled='isDisable'/>
+          <HijriCalender v-model='miladiDate' :minDate="minDate" :maxDate="maxDate" :isDisabled='isDisable' :isHijri='true'/>
         </div>
       </div>
       <div class="col-md-2 col-12" v-if="!isDisable">
@@ -26,31 +20,11 @@
 
 <script>
 var moment = require("moment-hijri");
-import VueDatepickerLocal from "vue-datepicker-local";
 import HijriCalender from '@t2/vue-hijri-calander';
-
-var datePickerPrpp = {
-  miladi: [
-    "يناير",
-    "فبراير",
-    "مارس",
-    "ابريل",
-    "مايو",
-    "يونيو",
-    "يوليو",
-    "اغسطس",
-    "سبتمبر",
-    "اكتوبر",
-    "نوفمبر",
-    "ديسمبر"
-  ],
-  emptyDays: ["", "", "", "", "", "", ""]
-};
 
 export default {
   name: "HGDatePicker",
   components: {
-    VueDatepickerLocal,
     HijriCalender,
   },
   props: {
@@ -84,46 +58,11 @@ export default {
       min: moment(this.minDate)._d,
       max: moment(this.maxDate)._d,
       miladiDate: '',
-      dpLocalProp: {
-        dplMiladi: {
-          monthsHead: datePickerPrpp.miladi,
-          months: datePickerPrpp.miladi,
-          weeks: datePickerPrpp.weeks
-        }
-      }
     };
   },
   created() {
-    this.updateDate();
   },
   methods: {
-    disabledDate(time) {
-      if (this.min == "" && this.max == "") return;
-      return time < this.min || time > this.max;
-    },
-    doWorkMiladi: function(value) {
-      this.miladiDate = moment(value).format("YYYY-MM-DD");
-      let emitDate = this.miladiDate;
-      if (this.dataFormat) emitDate = moment().format(this.dataFormat);
-      this.$emit("selection-changed", emitDate);
-    },
-    updateDate() {
-      moment.locale("en");
-      if (this.currentDate) {
-        if (this.currentDate != undefined && this.currentDate != null && this.currentDate != '') {
-          this.miladiDate = moment(this.currentDate).format("YYYY-MM-DD");
-        }
-      }
-      let emitDate = this.miladiDate;
-      if(!emitDate) {
-        if (this.dataFormat) {
-          emitDate = moment().format(this.dataFormat);
-        }
-      }
-      
-      if (this.enableSelectedValueOnLoad)
-        this.$emit("selection-changed", emitDate);
-    },
     clear: function(){
         this.miladiDate = '';
     }
