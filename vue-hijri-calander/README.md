@@ -3,21 +3,27 @@
 npm i @t2/vue-hijri-calander --registry https://najizportalnpm.azurewebsites.net
 
  ## parameter
+v-model='date' => string containing date with this format 'YYYY-MM-YY'
+
 :minDate  => set min date to allow
 
 :maxDate  => set max date to allow
 
-v-model='date' => string containing date with this format 'YYYY-MM-YY'
+:isHijri => true to display Hijri Calender false to use Gregorian Calender
+
+:isDisabled => Disable or Enables the Calender
 ## Used
 ```
 <template>
   <div id="app">
     {{date}}
-    <HijriCalender v-model='date' :minDate='minDate' :maxDate='maxDate'/>
+    <HijriCalender v-model='date' :minDate='minDate' :maxDate='maxDate' :isHijri='true' :isDisabled='isDisabled'/>
+    <HijriCalender v-model='date' :minDate='minDate' :maxDate='maxDate' :isHijri='false' :isDisabled='isDisabled'/>
     <button @click='clearDate()'>Clear Date</button>
     <button @click='setDate()'>Set Date</button>
     <button @click='setMinDate()'>Set Min. Date</button>
     <button @click='setMaxDate()'>Set Max. Date</button>
+    <button @click='flipDisabled()'>Flip Disabled</button>
   </div>
 </template>
 
@@ -33,7 +39,7 @@ export default class App extends Vue {
   public date: string = '';
   public minDate: string = '';
   public maxDate: string = '';
-
+  public isDisabled: boolean = false;
   public clearDate() {
     this.date = '';
   }
@@ -45,6 +51,9 @@ export default class App extends Vue {
   }
   public setMaxDate() {
     this.maxDate = '2019-10-15';
+  }
+  public flipDisabled() {
+    this.isDisabled = ! this.isDisabled;
   }
 }
 </script>
@@ -59,6 +68,7 @@ export default class App extends Vue {
   margin-top: 60px;
 }
 </style>
+
 
 ```
 
