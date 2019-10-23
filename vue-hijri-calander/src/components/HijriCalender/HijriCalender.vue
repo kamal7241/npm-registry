@@ -401,6 +401,6 @@ export default class HijriCalender extends Vue {
   
 }
 .popper {
-  z-index: 1
+  z-index: 1;
 }
 </style>
