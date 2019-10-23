@@ -4,7 +4,7 @@
     <HGDatePicker
       v-model="timeRange"
       @selection-changed="input"
-      :isDisable="false"
+      :isDisable="Disable"
       :enableSelectedValueOnLoad="false"
       :minDate="min"
       :maxDate="max"
@@ -22,7 +22,8 @@ export default {
       timeRange: null,
       min: "2019-09-01",
       max: "2019-10-15",
-      ref: "HGDatePicker"
+      ref: "HGDatePicker",
+      Disable: false
     };
   },
   components: {

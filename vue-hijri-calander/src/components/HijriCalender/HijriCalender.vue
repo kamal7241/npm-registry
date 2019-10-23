@@ -66,13 +66,14 @@
           </div>
         </div>
       </div>
-      <div slot="reference">
+      <div slot="reference" :class="{Divdisabled : isdisabled}">
         <div class="datepicker">
           <input
             type="text"
             autocomplete="off"
             readonly
-            :value="selectedDateinHijri()"            
+            :value="selectedDateinHijri()"
+            :disabled="isdisabled"            
           />
         </div>
       </div>
@@ -100,6 +101,8 @@ export default class HijriCalender extends Vue {
   public minDate: string | any;
   @Prop({ default: "" })
   public maxDate: string | any;
+  @Prop({ default: false })
+  public isdisabled: boolean | any;
   public currentDate: any = moment();
   public arabicDayNames = ["ح", "ن", "ث", "ر", "خ", "ج", "س"];
   public showMonthYearSelect: boolean = true;
@@ -451,5 +454,9 @@ export default class HijriCalender extends Vue {
 }
 .popper {
   z-index: 1;
+}
+
+.Divdisabled{
+  pointer-events: none;
 }
 </style>

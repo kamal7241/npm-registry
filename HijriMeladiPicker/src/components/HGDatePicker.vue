@@ -8,16 +8,16 @@
             v-on:input="doWorkMiladi"
             v-model="miladiDate"
             :local="dpLocalProp.dplMiladi"
-            :disabled="this.isDisable"
+            :disabled="isDisable"
           ></vue-datepicker-local>
         </div>
       </div>
       <div class="col-md-5 col-12">
         <div class="picker-style">
-          <HijriCalender v-model='miladiDate' :minDate="minDate" :maxDate="maxDate"/>
+          <HijriCalender v-model='miladiDate' :minDate="minDate" :maxDate="maxDate" :isdisabled='isDisable'/>
         </div>
       </div>
-      <div class="col-md-2 col-12">
+      <div class="col-md-2 col-12" v-if="!isDisable">
           <button class="btn btn-secondary"  @click="clear"><i class="fas fa-calendar-times"></i></button>
       </div>
     </div>
