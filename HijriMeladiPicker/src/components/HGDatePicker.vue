@@ -74,9 +74,6 @@ export default {
     maxDate() {
       this.max = moment(this.maxDate)._d;
     },
-    currentDate() {
-      this.updateDate();
-    },
     miladiDate() {
       this.$emit("selection-changed", this.miladiDate);
     }

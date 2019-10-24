@@ -1,6 +1,6 @@
 {
   "name": "@t2/hijri-meladi-picker",
-  "version": "0.2.10",
+  "version": "0.2.12",
   "private": false,
   "author": {
     "name": "Front-End Team"
@@ -13,6 +13,7 @@
     "build:umd": "rollup --config build/rollup.config.js --format umd --file dist/HGDatePicker.umd.js",
     "build:unpkg": "rollup --config build/rollup.config.js --format iife --file dist/HGDatePicker.min.js",
     "dev": "node build/dev-server.js"
+    
   },
   "main": "dist/HGDatePicker.umd.js",
   "module": "dist/HGDatePicker.esm.js",
