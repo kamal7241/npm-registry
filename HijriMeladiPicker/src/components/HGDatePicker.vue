@@ -62,6 +62,9 @@ export default {
   },
   created() {
   },
+  mounted() {
+    this.miladiDate = this.currentDate;
+  },
   methods: {
     clear: function(){
         this.miladiDate = '';
@@ -76,6 +79,9 @@ export default {
     },
     miladiDate() {
       this.$emit("selection-changed", this.miladiDate);
+    },
+    currentDate() {
+      this.miladiDate = this.currentDate;
     }
   }
 };

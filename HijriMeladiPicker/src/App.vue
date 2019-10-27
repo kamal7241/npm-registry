@@ -2,13 +2,14 @@
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png" />
     <HGDatePicker
-      v-model="timeRange"
+      :currentDate="currentDate"
       @selection-changed="input"
       :isDisable="Disable"
       :enableSelectedValueOnLoad="false"
       :minDate="min"
       :maxDate="max"
     ></HGDatePicker>
+    <button @click="changeDate()"> Change Date</button>
   </div>
 </template>
 
@@ -18,8 +19,7 @@ export default {
   name: "app",
   data() {
     return {
-      currentDate: "2019-8-28",
-      timeRange: null,
+      currentDate: "2019-09-13",
       min: "2019-09-01",
       max: "2019-10-15",
       ref: "HGDatePicker",
@@ -33,6 +33,9 @@ export default {
     input(data) {
       console.log(data);
     },
+    changeDate() {
+      this.currentDate = '2019-09-29';
+    }
   }
 };
 </script>
