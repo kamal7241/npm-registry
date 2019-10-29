@@ -48,7 +48,6 @@
 </template>
 <script>
     import { saveAs } from "file-saver";
-    import axios from "axios";
 
     export default {
         name: "AttachFile",

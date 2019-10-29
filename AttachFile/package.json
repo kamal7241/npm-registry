@@ -1,8 +1,8 @@
 {
   "name": "@t2/attach-file",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "private": false,
-  "main": "dist/AttachFile.umd.js",
+  "main": "./src/index.js",
   "module": "dist/AttachFile.esm.js",
   "unpkg": "dist/AttachFile.min.js",
   "browser": {
@@ -13,7 +13,6 @@
   },
   "files": [
     "src/*",
-    "dist/*",
     "*.json",
     "*.js",
     "*.scss"
@@ -28,11 +27,15 @@
     "build:unpkg": "rollup --config build/rollup.config.js --format iife --file dist/AttachFile.min.js"
   },
   "dependencies": {
+    "@types/file-saver": "^2.0.1",
+    "axios": "^0.19.0",
     "core-js": "^2.6.5",
+    "file-saver": "^2.0.2",
     "rollup": "^1.20.2",
     "rollup-plugin-buble": "^0.19.8",
-    "rollup-plugin-commonjs": "^10.0.2",
-    "rollup-plugin-vue": "^5.0.1",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-vue": "^5.1.2",
     "vue": "^2.6.10"
   },
   "devDependencies": {
