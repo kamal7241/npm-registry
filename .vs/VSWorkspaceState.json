@@ -1,6 +1,8 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\DataTable"
   ],
+  "SelectedNode": "\\DataTable\\package.json",
   "PreviewInSolutionExplorer": false
 }
