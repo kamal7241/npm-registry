@@ -8,9 +8,7 @@
           @click.prevent="pageHandler(page-1)"
         >
           <a class="page-link" href aria-label="Previous">
-            <span aria-hidden="true">
-              السابق
-            </span>
+            <span aria-hidden="true">السابق</span>
           </a>
         </li>
         <template v-if="!isEmpty">
@@ -52,23 +50,20 @@
           @click.prevent="pageHandler(page+1)"
         >
           <a class="page-link" href aria-label="Next">
-            <span aria-hidden="true">
-              التالي
-            </span>
+            <span aria-hidden="true">التالي</span>
           </a>
         </li>
         <!-- Number of rows per page starts here -->
-        <div class="dropdown show vbt-per-page-dropdown">
-          <a
+        <vue-dropdown :config="config" @setSelectedOption="setNewSelectedOption($event);"></vue-dropdown>
+        <!-- <div class="dropdown">
+          <button
             class="btn btn-primary dropdown-toggle"
-            href="#"
-            role="button"
+            type="button"
             id="dropdownMenuLink"
             data-toggle="dropdown"
             aria-haspopup="true"
             aria-expanded="false"
-          >{{per_page}}</a>
-
+          >{{per_page}}</button>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
             <a
               v-for="(option, key, index) in per_page_options"
@@ -79,61 +74,84 @@
               v-bind:class="{ active:  (option == per_page)}"
             >{{option}}</a>
           </div>
-        </div>
+        </div> -->
         <!-- Number of rows per page ends here -->
 
         <!-- <div class="input-group col-sm-2">
           <input type="number" class="form-control" min="1" step="1" :max="totalPages"  @keyup.enter="gotoPage" v-model.number="go_to_page">
-        </div> -->
+        </div>-->
       </ul>
     </nav>
   </div>
 </template>
 
 <script>
-import range from 'lodash/range';
-import includes from 'lodash/includes';
+import range from "lodash/range";
+import includes from "lodash/includes";
+import VueDropdown from "vue-dynamic-dropdown";
 
 export default {
-  name: 'Pagination',
+  name: "Pagination",
   props: {
     page: {
       type: [String, Number],
-      required: true,
+      required: true
     },
     per_page: {
       type: [String, Number],
-      required: true,
+      required: true
     },
     total: {
       type: [String, Number],
-      required: true,
+      required: true
     },
     num_of_visibile_pagination_buttons: {
       type: [String, Number],
-      default: 7,
+      default: 7
     },
     per_page_options: {
       type: Array,
       default() {
         return [5, 10, 15];
-      },
+      }
     },
-    dir: {},
+    dir: {}
   },
   data() {
     return {
       start: this.page + 0,
       end: 0,
-      go_to_page: '',
+      go_to_page: "",
+      config: {
+        options: [],
+        placeholder: this.per_page,
+        backgroundColor: "#cde4f5",
+        textColor: "black",
+        borderRadius: "1.5em",
+        border: "1px solid gray",
+        width: 180
+      }
     };
+  },
+  created(){
+    this.fillDropdown();
   },
   mounted() {
     this.calculatePageRange(true);
   },
   methods: {
+    fillDropdown() {
+      let ArrOption = []
+      for (let i = 0; i < this.per_page_options.length; i++) {
+        const option = {
+          value: this.per_page_options[i]
+        };
+        ArrOption.push(option);
+      }
+      this.config.options = ArrOption;
+    },
     gotoPage() {
-      if (this.go_to_page === '' || !this.isPositiveInteger(this.go_to_page)) {
+      if (this.go_to_page === "" || !this.isPositiveInteger(this.go_to_page)) {
         return;
       }
 
@@ -142,11 +160,15 @@ export default {
     },
     pageHandler(index) {
       if (index >= 1 && index <= this.totalPages) {
-        this.$emit('update:page', index);
+        this.$emit("update:page", index);
       }
     },
     perPageHandler(option) {
-      this.$emit('update:per_page', option);
+      this.$emit("update:per_page", option);
+    },
+    setNewSelectedOption(selectedOption) {
+      this.config.placeholder = selectedOption.value;
+      this.perPageHandler(selectedOption.value);
     },
     calculatePageRange(force = false) {
       // Skip calculating if all pages can be shown
@@ -158,9 +180,9 @@ export default {
 
       // Skip recalculating if the previous and next pages are already visible
       if (
-        !force
-        && (includes(this.range, this.page - 1) || this.page == 1)
-        && (includes(this.range, this.page + 1) || this.page == this.totalPages)
+        !force &&
+        (includes(this.range, this.page - 1) || this.page == 1) &&
+        (includes(this.range, this.page + 1) || this.page == this.totalPages)
       ) {
         return;
       }
@@ -190,9 +212,11 @@ export default {
     },
     isPositiveInteger(str) {
       return /^\+?(0|[1-9]\d*)$/.test(str);
-    },
+    }
   },
-  components: {},
+  components: {
+    VueDropdown
+  },
   computed: {
     totalPages() {
       return Math.ceil(this.total / this.per_page);
@@ -208,7 +232,7 @@ export default {
     },
     isEmpty() {
       return this.total == 0;
-    },
+    }
   },
   watch: {
     page(newVal, oldVal) {
@@ -219,8 +243,8 @@ export default {
     },
     totalPages(newVal, oldVal) {
       this.calculatePageRange();
-    },
-  },
+    }
+  }
 };
 </script>
 

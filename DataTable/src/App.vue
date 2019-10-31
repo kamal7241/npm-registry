@@ -233,7 +233,7 @@ export default {
         rows_selectable: true,
         card_title: "Vue Bootsrap 4 advanced table",
         dir: "rtl",
-         per_page_options:  [50,  70,  80,  90],
+         per_page_options:  [3,  4,  10,  14],
       }
     };
   },methods:{

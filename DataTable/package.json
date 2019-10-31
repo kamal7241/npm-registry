@@ -1,6 +1,6 @@
 {
   "name": "@t2/data-table",
-  "version": "0.1.8",
+  "version": "0.2.0",
   "private": false,
   "author": {
     "name": "Front-End Team"
@@ -42,6 +42,7 @@
     "rollup-plugin-vue": "^5.0.1",
     "vue": "^2.6.10",
     "vue-bootstrap4-table": "^1.1.9",
+    "vue-dynamic-dropdown": "^1.0.12",
     "vuetify": "^2.0.0"
   },
   "devDependencies": {
