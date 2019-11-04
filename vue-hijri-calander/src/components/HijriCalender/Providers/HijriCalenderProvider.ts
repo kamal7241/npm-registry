@@ -4,6 +4,8 @@ import MonthVM from '../Model/MonthVM';
 import DayVM from '../Model/DayVM';
 
 export default class HijriCalenderProvider implements  ICalenderProvider {
+    public size: Number | any = 21;
+    public pageNumber: Number | any  = 0;
     public currentDate: any;
     public maxDate: string;
     public minDate: string;
@@ -21,7 +23,7 @@ export default class HijriCalenderProvider implements  ICalenderProvider {
         {number: 10, name: 'ذو القعدة'},
         {number: 11, name: 'ذو الحجة'},
     ];
-    public dayNames: string[] = ['ح', 'ن', 'ث', 'ر', 'خ', 'ج', 'س'];
+    public dayNames: string[] = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
     public selectedMonthDays: DayVM[] = [];
     public yearsList: number[];
     public minSupportedDate: any = new moment('1937-03-14', 'YYYY-MM-DD');
@@ -51,10 +53,49 @@ export default class HijriCalenderProvider implements  ICalenderProvider {
             this.reFillMonthDays();
         }
     }
-    public getCurrentDateFormated(): string {
-        return this.currentDate.locale('ar-SA').format('iMMMM') +
-            ' (' + this.currentDate.format('iMM') +
-            ') ' + this.currentDate.format('iYYYY');
+    public addYear() {
+        const temp = new moment(this.currentDate);
+        if (!temp.add(1, 'iYear').isAfter(this.maxSupportedDate)) {
+            this.currentDate = this.currentDate.add(1, 'iYear');
+            this.reFillMonthDays();
+        }
+    }
+    public subtractYear() {
+        const temp = new moment(this.currentDate);
+        if (!temp.subtract(1, 'iYear').isBefore(this.minSupportedDate)) {
+            this.currentDate = this.currentDate.subtract(1, 'iYear');
+            this.reFillMonthDays();
+        }
+    }
+    public getYearFormated(): string {
+        return this.currentDate.format('iYYYY');
+        // return this.currentDate.locale('ar-SA').format('iMMMM') +
+        // ' (' + this.currentDate.format('iMM') +
+        // ') ' + this.currentDate.format('iYYYY');
+    }
+    public getYearFormatedEn(): string {
+        return this.currentDate.locale('en').format('iYYYY');
+        // return this.currentDate.locale('ar-SA').format('iMMMM') +
+        // ' (' + this.currentDate.format('iMM') +
+        // ') ' + this.currentDate.format('iYYYY');
+    }
+    public getYearFormatedGregorian(): string {
+        return this.currentDate.format('YYYY');
+        // return this.currentDate.locale('ar-SA').format('iMMMM') +
+        // ' (' + this.currentDate.format('iMM') +
+        // ') ' + this.currentDate.format('iYYYY');
+    }
+    public getMonthFormatedGregorian(): string {
+        return this.currentDate.format('MMMM');
+        // return this.currentDate.locale('ar-SA').format('iMMMM') +
+        // ' (' + this.currentDate.format('iMM') +
+        // ') ' + this.currentDate.format('iYYYY');
+    }
+    public getMonthFormated(): string {
+        return this.currentDate.format('iMMMM');
+        // return this.currentDate.locale('ar-SA').format('iMMMM') +
+        // ' (' + this.currentDate.format('iMM') +
+        // ') ' + this.currentDate.format('iYYYY');
     }
     public getCurrentYear(): number {
         return this.currentDate.iYear();
@@ -69,6 +110,24 @@ export default class HijriCalenderProvider implements  ICalenderProvider {
             return '';
         }
     }
+    public GetYears(){
+        const start = this.pageNumber * this.size,
+        end = start + this.size;
+        return this.yearsList.slice(start, end);
+    }
+    public nextPage(){
+        const start = this.pageNumber * this.size,
+        end = start + this.size;
+        if(end < this.yearsList.length ){
+            this.pageNumber++;
+        }
+     }
+     public prevPage(){
+        const start = this.pageNumber * this.size;
+        if(start > 0 ){
+            this.pageNumber--;
+        }
+     }
     public isDateDisabled(date: string): boolean {
         let result: boolean = false;
         if (this.maxDate) {

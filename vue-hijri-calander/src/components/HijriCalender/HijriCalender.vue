@@ -9,38 +9,108 @@
       <div class="popper">
         <div>
           <div class="hijriCalender">
-              <div class="hijriCalenderControls"> 
-                    <button class="previousButton" @click="subtractMonth" type="button">&lt;&lt;</button>
-                    <strong v-bind="calenderProvider.currentDate">{{getCurrentDateFormated()}}</strong>
-                    <button class="nextButton" @click="addMonth" type="button">&gt;&gt;</button>
-                    <div class="yearAndMonthList" v-if="showMonthYearSelect">
-                      <div>
-                        <span class="yearListContainer">
-                          <select class="yearSelect" :value="getCurrentYear()" @change="onYearChange($event)">
-                            <option  v-for="year in calenderProvider.yearsList" v-bind:key="year" :value="year">{{year}}</option> 
-                          </select>
-                        </span>
-                        <span class="monthListContainer">
-                          <select class="monthSelect" :value="getCurrentMonth()" @change="onMonthChange($event)">
-                            <option v-for="month in calenderProvider.months" v-bind:key="month.number" :value="month.number" >{{month.name}}</option>)
-                          </select>
-                        </span>
-                      </div>
-                    </div>
-                    <div class="dayNamesList">
-                      <div class="dayName" v-for="dayName in calenderProvider.dayNames" v-bind:key="dayName">
-                          {{dayName}}
-                      </div>
-                    </div>
-                    <div class="monthDays">
-                      <div v-for="i in calenderProvider.selectedMonthDays" v-bind:key="i.date" class="monthDay" :class="{selected: isSelectedDate(i.date)}">
-                        <Button class="monthDayButton" :class="{selected: isSelectedDate(i.date),otherMonth: !(i.isSameMonth || ! i.isSelectableDate),disabled: isDateDisabled(i.date)}" :value="i.date" type="button" @click="onDateSelected(i)">{{i.number}}</Button>
-                      </div>
-                    </div>
+            <div class="hijriCalenderControls">
+              <div class="HeaderCal">
+                <div class="H-sup">
+                  <button class="previousButton" @click="subtractYear" type="button">&lt;</button>
+                  <strong class="Btn-Year" @click="isYearList = true">{{getYearFormated()}}</strong>
+                  <button class="nextButton" @click="addYear" type="button">&gt;</button>
+                </div>
+                <div class="H-sup">
+                  <button class="previousButton" @click="subtractMonth" type="button">&lt;</button>
+                  <strong v-bind="calenderProvider.currentDate">{{getMonthFormated()}}</strong>
+                  <button class="nextButton" @click="addMonth" type="button">&gt;</button>
+                </div>
+                <div class="pt-2">
+                  <strong
+                    v-bind="calenderProvider.currentDate"
+                  >{{getMonthFormatedGregorian()}} {{getYearFormatedGregorian()}}</strong>
+                </div>
               </div>
+
+              <!-- <div class="yearAndMonthList" v-if="showMonthYearSelect">
+                <div>
+                  <span class="yearListContainer">
+                    <select
+                      class="yearSelect"
+                      :value="getCurrentYear()"
+                      @change="onYearChange($event)"
+                    >
+                      <option
+                        v-for="year in calenderProvider.yearsList"
+                        v-bind:key="year"
+                        :value="year"
+                      >{{year}}</option>
+                    </select>
+                  </span>
+                  <span class="monthListContainer">
+                    <select
+                      class="monthSelect"
+                      :value="getCurrentMonth()"
+                      @change="onMonthChange($event)"
+                    >
+                      <option
+                        v-for="month in calenderProvider.months"
+                        v-bind:key="month.number"
+                        :value="month.number"
+                      >{{month.name}}</option>)
+                    </select>
+                  </span>
+                </div>
+              </div>-->
+              <div class="dayNamesList" v-if="!isYearList">
+                <div
+                  class="dayName"
+                  v-for="dayName in calenderProvider.dayNames"
+                  v-bind:key="dayName"
+                >{{dayName}}</div>
+              </div>
+              <div class="monthDays" v-if="!isYearList">
+                <div
+                  v-for="i in calenderProvider.selectedMonthDays"
+                  v-bind:key="i.date"
+                  class="monthDay"
+                  :class="{selected: isSelectedDate(i.date)}"
+                >
+                  <Button
+                    class="monthDayButton"
+                    :class="{selected: isSelectedDate(i.date),otherMonth: !(i.isSameMonth || ! i.isSelectableDate),disabled: isDateDisabled(i.date)}"
+                    :value="i.date"
+                    type="button"
+                    @click="onDateSelected(i)"
+                  >
+                    <div class="hijrday">{{i.number}}</div>
+                    <div class="Gregorianday">{{GetDayGregorian(i.date)}}</div>
+                  </Button>
+                </div>
+              </div>
+              <div class="TabYears" v-if="isYearList">
+                <button class="previousButton" @click="prevPage()" type="button">&lt;</button>
+                <div class="monthDays YearsDiv">
+                  <div
+                    v-for="i in GetYears()"
+                    v-bind:key="i"
+                    class="monthDay YearDiv"
+                    :class="{selected: isSelectedDateYear(i)}"
+                  >
+                    <Button
+                      class="monthDayButton YearDivButton"
+                      :class="{selected: isSelectedDateYear(i)}"
+                      :value="i"
+                      type="button"
+                      @click="onDateSelectedYear(i)"
+                    >
+                      <div class="YearItem">{{i}}</div>
+                    </Button>
+                  </div>
+                </div>
+                <button class="nextButton" @click="nextPage()" type="button">&gt;</button>
+              </div>
+              <div class="footerCal"></div>
             </div>
           </div>
         </div>
+      </div>
       <div slot="reference" :class="{Divdisabled : isDisabled}">
         <div class="datepicker" :class="{disabled : isDisabled}">
           <input
@@ -48,7 +118,7 @@
             autocomplete="off"
             readonly
             :value="selectedDateinHijri()"
-            :disabled="isDisabled"            
+            :disabled="isDisabled"
           />
         </div>
       </div>
@@ -57,55 +127,55 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
-import Popper, { PopperType } from 'vue-popperjs';
-import moment from 'moment-hijri';
-import MonthVM from './Model/MonthVM';
-import DayVM from './Model/DayVM';
-import ICalenderProvider from './Providers/ICalenderProvider';
-import HijriCalenderProvider from './Providers/HijriCalenderProvider';
-import GregorianCalenderProvider from './Providers/GregorianCalenderProvider';
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+import Popper, { PopperType } from "vue-popperjs";
+import moment from "moment-hijri";
+import MonthVM from "./Model/MonthVM";
+import DayVM from "./Model/DayVM";
+import ICalenderProvider from "./Providers/ICalenderProvider";
+import HijriCalenderProvider from "./Providers/HijriCalenderProvider";
+import GregorianCalenderProvider from "./Providers/GregorianCalenderProvider";
 
 @Component({
   components: {
-    Popper,
-  },
+    Popper
+  }
 })
 export default class HijriCalender extends Vue {
-  @Prop({default: '', required: true})
-  public value: string|any;
-  @Prop({default: ''})
-  public minDate: string|any;
-  @Prop({default: ''})
-  public maxDate: string|any;
-  @Prop({default: true})
-  public showMonthYearSelect: boolean|any;
-  @Prop({default: true})
-  public isHijri: boolean|any;
-  @Prop({default: false})
-  public isDisabled: boolean|any;
-  private calenderProvider: ICalenderProvider|any;
+  @Prop({ default: "", required: true })
+  public value: string | any;
+  @Prop({ default: "" })
+  public minDate: string | any;
+  @Prop({ default: "" })
+  public maxDate: string | any;
+  @Prop({ default: true })
+  public showMonthYearSelect: boolean | any;
+  @Prop({ default: true })
+  public isHijri: boolean | any;
+  @Prop({ default: false })
+  public isDisabled: boolean | any;
+  public isYearList: boolean | any = false;
+  private calenderProvider: ICalenderProvider | any;
   public created() {
-    if (this.isHijri) {
-      this.calenderProvider = new HijriCalenderProvider(this.maxDate, this.minDate);
-    } else {
-      this.calenderProvider = new GregorianCalenderProvider(this.maxDate, this.minDate);
-    }
+    this.calenderProvider = new HijriCalenderProvider(
+      this.maxDate,
+      this.minDate
+    );
   }
-  @Watch('value')
+  @Watch("value")
   public onValueChanged(value: string, oldValue: string) {
     if (this.value) {
-      this.calenderProvider.currentDate = new moment(this.value, 'YYYY-MM-DD');
+      this.calenderProvider.currentDate = new moment(this.value, "YYYY-MM-DD");
     } else {
       this.calenderProvider.currentDate = moment();
     }
     this.calenderProvider.reFillMonthDays();
   }
-  @Watch('minDate')
+  @Watch("minDate")
   public onMinDateChanged(value: string, oldValue: string) {
     this.calenderProvider.minDate = value;
   }
-  @Watch('maxDate')
+  @Watch("maxDate")
   public onMaxDateChanged(value: string, oldValue: string) {
     this.calenderProvider.maxDate = value;
   }
@@ -117,8 +187,36 @@ export default class HijriCalender extends Vue {
     this.calenderProvider.subtractMonth();
     this.$forceUpdate();
   }
-  public getCurrentDateFormated() {
-    return this.calenderProvider.getCurrentDateFormated();
+  public addYear() {
+    this.calenderProvider.addYear();
+    this.$forceUpdate();
+  }
+  public subtractYear() {
+    this.calenderProvider.subtractYear();
+    this.$forceUpdate();
+  }
+  public getMonthFormated() {
+    return this.calenderProvider.getMonthFormated();
+  }
+  public GetYears() {
+    return this.calenderProvider.GetYears();
+  }
+  public nextPage() {
+    this.calenderProvider.nextPage();
+    this.$forceUpdate();
+  }
+  public prevPage() {
+    this.calenderProvider.prevPage();
+    this.$forceUpdate();
+  }
+  public getYearFormated() {
+    return this.calenderProvider.getYearFormated();
+  }
+  public getMonthFormatedGregorian() {
+    return this.calenderProvider.getMonthFormatedGregorian();
+  }
+  public getYearFormatedGregorian() {
+    return this.calenderProvider.getYearFormatedGregorian();
   }
   public getCurrentYear() {
     return this.calenderProvider.getCurrentYear();
@@ -128,18 +226,26 @@ export default class HijriCalender extends Vue {
   }
   public onDateSelected(date: DayVM) {
     if (!this.isDateDisabled(date.date) && date.isSelectableDate) {
-      this.$emit('input', date.date);
-      this.calenderProvider.currentDate = new moment(date.date, 'YYYY-MM-DD');
+      this.$emit("input", date.date);
+      this.calenderProvider.currentDate = new moment(date.date, "YYYY-MM-DD");
       (this.$refs.popperRef as PopperType).doClose();
       this.calenderProvider.reFillMonthDays();
       this.$forceUpdate();
     }
+  }
+  public onDateSelectedYear(Year: number) {
+    this.calenderProvider.currentDate.iYear(Year);
+    this.isYearList = false;
+    this.calenderProvider.reFillMonthDays();
   }
   public selectedDateinHijri() {
     return this.calenderProvider.selectedDate(this.value);
   }
   public isSelectedDate(date: string) {
     return date === this.value;
+  }
+  public isSelectedDateYear(date: number) {
+    return date === this.calenderProvider.currentDate.iYear();
   }
   public isDateDisabled(date: string) {
     return this.calenderProvider.isDateDisabled(date);
@@ -152,12 +258,17 @@ export default class HijriCalender extends Vue {
     this.calenderProvider.onYearChange(event.target.value);
     this.$forceUpdate();
   }
+  public GetDayGregorian(day: any) {
+    return new moment(day).locale("en").format("DD");
+  }
   public openCalender() {
     if (this.value) {
-      this.calenderProvider.currentDate = new moment(this.value, 'YYYY-MM-DD');
+      this.calenderProvider.currentDate = new moment(this.value, "YYYY-MM-DD");
     } else {
       this.calenderProvider.currentDate = moment();
     }
+    const indexcurrentYear = this.calenderProvider.yearsList.indexOf(this.calenderProvider.currentDate.iYear());
+    this.calenderProvider.pageNumber = (indexcurrentYear / 21) | 0;
     this.calenderProvider.reFillMonthDays();
     this.$forceUpdate();
   }
@@ -165,11 +276,54 @@ export default class HijriCalender extends Vue {
 </script>
 
 <style lang="scss">
+.hijrday {
+  text-align: left;
+}
+.Gregorianday {
+  text-align: right;
+  color: #ff9900;
+}
+.HeaderCal {
+  background-color: #477388;
+  color: #fff;
+  padding: 10px;
+}
+.footerCal {
+  background-color: #477388;
+  padding: 20px;
+  border: 1px solid #dddddd;
+}
+.H-sup {
+  position: relative;
+  line-height: 2;
+}
+.TabYears {
+  position: relative;
+}
+.TabYears .previousButton {
+  top: 45%;
+  right: 5px;
+}
+.TabYears .nextButton {
+  top: 45%;
+  left: 5px;
+}
+button.monthDayButton.YearDivButton {
+  height: 25px;
+  width: 77px;
+}
+.monthDay.YearDiv {
+  width: 77px;
+  height: 25px;
+}
+.monthDays.YearsDiv {
+  margin: 0 40px;
+}
 .hijriCalender {
-  width: 266px;
+  width: 336px;
   direction: rtl;
   background: #ffffff;
-  padding: 15px;
+  padding: 0;
   border: 1px solid #ddd;
   margin-top: 2px;
   font-family: serif;
@@ -184,15 +338,22 @@ export default class HijriCalender extends Vue {
   direction: rtl;
   text-align: center;
 }
-
+strong.Btn-Year {
+  cursor: pointer;
+}
 .previousButton {
   position: absolute;
   border: 0px;
   font-weight: bold;
   font-size: 15px;
   cursor: pointer;
-  background-color: #fff;
-  right: 15px;
+  background-color: #305161;
+  border-radius: 50%;
+  right: 0;
+  color: #fff;
+  width: 25px;
+  height: 25px;
+  top: 0px;
 }
 .previousButton:hover {
   color: #888888;
@@ -203,8 +364,13 @@ export default class HijriCalender extends Vue {
   font-weight: bold;
   font-size: 15px;
   cursor: pointer;
-  background-color: #fff;
-  left: 15px;
+  background-color: #305161;
+  border-radius: 50%;
+  color: #fff;
+  left: 0;
+  width: 25px;
+  height: 25px;
+  top: 0;
 }
 .nextButton:hover {
   color: #888888;
@@ -212,13 +378,14 @@ export default class HijriCalender extends Vue {
 
 .dayNamesList {
   text-align: right;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #000;
+  padding-top: 3px;
 }
 .dayName {
   display: inline-block;
   margin: 2px;
-  width: 30px;
-  height: 25px;
+  width: 40px;
+  height: 18px;
   padding: 1px;
   border: 1px solid #fff;
   text-align: center;
@@ -265,7 +432,7 @@ export default class HijriCalender extends Vue {
 
 .monthDay {
   margin: 2px;
-  width: 30px;
+  width: 40px;
   padding: 1px;
   border: 1px solid #fff;
   text-align: center;
@@ -273,33 +440,35 @@ export default class HijriCalender extends Vue {
   box-sizing: unset;
   border-radius: 4px;
 }
-.monthDay:hover {
-  border: 1px solid black;
-}
+
 .noHover:hover {
   border: "";
 }
 .monthDayButton {
-    cursor: pointer;
-    border: 0px;
-    width: 30px;
-    height: 30px;
-    padding: 5px;
-    font-size: 14px;
-    border-radius: 0px;
-    background-color: white;
-    color: "";
+  cursor: pointer;
+  border: 0px;
+  width: 40px;
+  height: 40px;
+  padding: 5px;
+  font-size: 14px;
+  border-radius: 0px;
+  background-color: white;
+  color: "";
+}
+.monthDayButton:hover {
+  background-color: #5f99b5;
 }
 .monthDayButton:focus {
   outline: unset;
 }
 .monthDayButton.selected {
   outline: unset;
-  background-color: #1284e7;
-  color: black;
+  background-color: #477388;
+  color: #fff;
 }
 .monthDayButton.otherMonth {
-  background-color: #d0d0d0;
+  background-color: #d8d8d8;
+  opacity: 0.6;
 }
 
 .monthDayButton.disabled {
@@ -343,7 +512,7 @@ export default class HijriCalender extends Vue {
   z-index: 1;
 }
 
-.Divdisabled{
+.Divdisabled {
   pointer-events: none;
 }
 </style>

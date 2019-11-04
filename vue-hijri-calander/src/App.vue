@@ -1,8 +1,7 @@
 <template>
   <div id="app">
     {{date}}
-    <HijriCalender v-model='date' :minDate='minDate' :maxDate='maxDate' :isHijri='true' :isDisabled='isDisabled'/>
-    <HijriCalender v-model='date' :minDate='minDate' :maxDate='maxDate' :isHijri='false' :isDisabled='isDisabled'/>
+    <HijriCalender v-model='date' :minDate='minDate' :maxDate='maxDate' :isDisabled='isDisabled'/>
     <button @click='clearDate()'>Clear Date</button>
     <button @click='setDate()'>Set Date</button>
     <button @click='setMinDate()'>Set Min. Date</button>

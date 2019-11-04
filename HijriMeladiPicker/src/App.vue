@@ -20,8 +20,8 @@ export default {
   data() {
     return {
       currentDate: "2019-09-13",
-      min: "2019-09-01",
-      max: "2019-10-15",
+      min: "",
+      max: "",
       ref: "HGDatePicker",
       Disable: false
     };

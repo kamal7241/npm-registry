@@ -51,10 +51,37 @@ export default class GregorianCalenderProvider implements  ICalenderProvider {
             this.reFillMonthDays();
         }
     }
+    public addYear() {
+        const temp = new moment(this.currentDate);
+        if (!temp.add(1, 'Year').isAfter(this.maxSupportedDate)) {
+            this.currentDate = this.currentDate.add(1, 'Year');
+            this.reFillMonthDays();
+        }
+    }
+    public subtractYear() {
+        const temp = new moment(this.currentDate);
+        if (!temp.subtract(1, 'Year').isBefore(this.minSupportedDate)) {
+            this.currentDate = this.currentDate.subtract(1, 'Year');
+            this.reFillMonthDays();
+        }
+    }
     public getCurrentDateFormated(): string {
         return this.currentDate.format('MMMM') +
             ' (' + this.currentDate.format('MM') +
             ') ' + this.currentDate.format('YYYY');
+    }
+    public getYearFormated(): string {
+        return this.currentDate.format('YYYY');
+        // return this.currentDate.format('MMMM') +
+        //     ' (' + this.currentDate.format('MM') +
+        //     ') ' + this.currentDate.format('YYYY');
+    }
+
+    public getMonthFormated(): string {
+        return this.currentDate.format('MMMM');
+        // return this.currentDate.format('MMMM') +
+        //     ' (' + this.currentDate.format('MM') +
+        //     ') ' + this.currentDate.format('YYYY');
     }
     public getCurrentYear(): number {
         return this.currentDate.year();

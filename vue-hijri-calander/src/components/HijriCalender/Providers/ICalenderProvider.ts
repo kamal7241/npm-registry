@@ -11,7 +11,10 @@ export default interface ICalenderProvider {
     yearsList: number[];
     addMonth(): any;
     subtractMonth(): any;
-    getCurrentDateFormated(): string;
+    addYear(): any;
+    subtractYear(): any;
+    getMonthFormated(): string;
+    getYearFormated(): string;
     getCurrentYear(): number;
     getCurrentMonth(): number;
     selectedDate(value: string |any): string;
