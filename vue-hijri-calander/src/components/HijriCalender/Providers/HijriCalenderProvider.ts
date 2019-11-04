@@ -4,8 +4,8 @@ import MonthVM from '../Model/MonthVM';
 import DayVM from '../Model/DayVM';
 
 export default class HijriCalenderProvider implements  ICalenderProvider {
-    public size: Number | any = 21;
-    public pageNumber: Number | any  = 0;
+    public size: number | any = 21;
+    public pageNumber: number | any  = 0;
     public currentDate: any;
     public maxDate: string;
     public minDate: string;
@@ -110,21 +110,21 @@ export default class HijriCalenderProvider implements  ICalenderProvider {
             return '';
         }
     }
-    public GetYears(){
-        const start = this.pageNumber * this.size,
-        end = start + this.size;
+    public GetYears() {
+        const start = this.pageNumber * this.size;
+        const end = start + this.size;
         return this.yearsList.slice(start, end);
     }
-    public nextPage(){
-        const start = this.pageNumber * this.size,
-        end = start + this.size;
-        if(end < this.yearsList.length ){
+    public nextPage() {
+        const start = this.pageNumber * this.size;
+        const end = start + this.size;
+        if (end < this.yearsList.length ) {
             this.pageNumber++;
         }
      }
-     public prevPage(){
+     public prevPage() {
         const start = this.pageNumber * this.size;
-        if(start > 0 ){
+        if (start > 0 ) {
             this.pageNumber--;
         }
      }

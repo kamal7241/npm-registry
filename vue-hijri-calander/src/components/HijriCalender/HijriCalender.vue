@@ -127,26 +127,26 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from "vue-property-decorator";
-import Popper, { PopperType } from "vue-popperjs";
-import moment from "moment-hijri";
-import MonthVM from "./Model/MonthVM";
-import DayVM from "./Model/DayVM";
-import ICalenderProvider from "./Providers/ICalenderProvider";
-import HijriCalenderProvider from "./Providers/HijriCalenderProvider";
-import GregorianCalenderProvider from "./Providers/GregorianCalenderProvider";
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
+import Popper, { PopperType } from 'vue-popperjs';
+import moment from 'moment-hijri';
+import MonthVM from './Model/MonthVM';
+import DayVM from './Model/DayVM';
+import ICalenderProvider from './Providers/ICalenderProvider';
+import HijriCalenderProvider from './Providers/HijriCalenderProvider';
+import GregorianCalenderProvider from './Providers/GregorianCalenderProvider';
 
 @Component({
   components: {
-    Popper
-  }
+    Popper,
+  },
 })
 export default class HijriCalender extends Vue {
-  @Prop({ default: "", required: true })
+  @Prop({ default: '', required: true })
   public value: string | any;
-  @Prop({ default: "" })
+  @Prop({ default: '' })
   public minDate: string | any;
-  @Prop({ default: "" })
+  @Prop({ default: '' })
   public maxDate: string | any;
   @Prop({ default: true })
   public showMonthYearSelect: boolean | any;
@@ -159,23 +159,22 @@ export default class HijriCalender extends Vue {
   public created() {
     this.calenderProvider = new HijriCalenderProvider(
       this.maxDate,
-      this.minDate
-    );
+      this.minDate);
   }
-  @Watch("value")
+  @Watch('value')
   public onValueChanged(value: string, oldValue: string) {
     if (this.value) {
-      this.calenderProvider.currentDate = new moment(this.value, "YYYY-MM-DD");
+      this.calenderProvider.currentDate = new moment(this.value, 'YYYY-MM-DD');
     } else {
       this.calenderProvider.currentDate = moment();
     }
     this.calenderProvider.reFillMonthDays();
   }
-  @Watch("minDate")
+  @Watch('minDate')
   public onMinDateChanged(value: string, oldValue: string) {
     this.calenderProvider.minDate = value;
   }
-  @Watch("maxDate")
+  @Watch('maxDate')
   public onMaxDateChanged(value: string, oldValue: string) {
     this.calenderProvider.maxDate = value;
   }
@@ -226,8 +225,8 @@ export default class HijriCalender extends Vue {
   }
   public onDateSelected(date: DayVM) {
     if (!this.isDateDisabled(date.date) && date.isSelectableDate) {
-      this.$emit("input", date.date);
-      this.calenderProvider.currentDate = new moment(date.date, "YYYY-MM-DD");
+      this.$emit('input', date.date);
+      this.calenderProvider.currentDate = new moment(date.date, 'YYYY-MM-DD');
       (this.$refs.popperRef as PopperType).doClose();
       this.calenderProvider.reFillMonthDays();
       this.$forceUpdate();
@@ -259,16 +258,16 @@ export default class HijriCalender extends Vue {
     this.$forceUpdate();
   }
   public GetDayGregorian(day: any) {
-    return new moment(day).locale("en").format("DD");
+    return new moment(day).locale('en').format('DD');
   }
   public openCalender() {
     if (this.value) {
-      this.calenderProvider.currentDate = new moment(this.value, "YYYY-MM-DD");
+      this.calenderProvider.currentDate = new moment(this.value, 'YYYY-MM-DD');
     } else {
       this.calenderProvider.currentDate = moment();
     }
     const indexcurrentYear = this.calenderProvider.yearsList.indexOf(this.calenderProvider.currentDate.iYear());
-    this.calenderProvider.pageNumber = (indexcurrentYear / 21) | 0;
+    this.calenderProvider.pageNumber = Math.floor((indexcurrentYear / 21));
     this.calenderProvider.reFillMonthDays();
     this.$forceUpdate();
   }
