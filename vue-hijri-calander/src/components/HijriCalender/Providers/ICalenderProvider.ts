@@ -2,6 +2,8 @@ import MonthVM from '../Model/MonthVM';
 import DayVM from '../Model/DayVM';
 
 export default interface ICalenderProvider {
+    size: number | any;
+    pageNumber: number | any;
     currentDate: any;
     maxDate: string;
     minDate: string;
@@ -22,4 +24,7 @@ export default interface ICalenderProvider {
     onMonthChange(value: string): void;
     onYearChange(value: string): void;
     reFillMonthDays(): void;
+    setDate(value: string): void;
+    isSelectedDateYear(year: number): boolean;
+    recalculateYearPage(): void;
 }

@@ -4,6 +4,8 @@ import MonthVM from '../Model/MonthVM';
 import DayVM from '../Model/DayVM';
 
 export default class GregorianCalenderProvider implements  ICalenderProvider {
+    public size: number | any = 21;
+    public pageNumber: number | any  = 0;
     public currentDate: any;
     public maxDate: string;
     public minDate: string;
@@ -189,6 +191,20 @@ export default class GregorianCalenderProvider implements  ICalenderProvider {
                 }
             }
         }
+    }
+    public setDate(value: string): void {
+        if (value) {
+            this.currentDate = new moment(value, 'YYYY-MM-DD');
+        } else {
+            this.currentDate = moment();
+        }
+    }
+    public isSelectedDateYear(year: number): boolean {
+        return year === this.currentDate.year();
+    }
+    public recalculateYearPage(): void {
+        const indexcurrentYear =  this.yearsList.indexOf(this.currentDate.iYear());
+        this.pageNumber = Math.floor((indexcurrentYear / 21));
     }
 
     private getCurrentMonthStartDayNumber() {

@@ -215,6 +215,20 @@ export default class HijriCalenderProvider implements  ICalenderProvider {
             }
         }
     }
+    public setDate(value: string): void {
+        if (value) {
+            this.currentDate = new moment(value, 'YYYY-MM-DD');
+        } else {
+            this.currentDate = moment();
+        }
+    }
+    public isSelectedDateYear(year: number): boolean {
+        return year === this.currentDate.iYear();
+    }
+    public recalculateYearPage(): void {
+        const indexcurrentYear =  this.yearsList.indexOf(this.currentDate.iYear());
+        this.pageNumber = Math.floor((indexcurrentYear / 21));
+    }
 
     private getCurrentMonthStartDayNumber() {
         const time = new moment(this.currentDate);
