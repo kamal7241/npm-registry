@@ -1,6 +1,6 @@
 <template>
   <div>
-    <popper trigger="click" :options="{placement: 'bottom', }" ref="popperRef" @show="openCalender()">
+    <popper trigger="clickToToggle" :options="{placement: 'bottom', }" ref="popperRef" @show="openCalender()" :force-show="forceShow">
       <div class="popper">
         <div>
           <div class="hijriCalender">
@@ -8,7 +8,7 @@
               <div class="HeaderCal">
                 <div class="H-sup">
                   <button class="previousButton" @click="subtractYear" type="button">&lt;</button>
-                  <strong class="Btn-Year" @click="isYearList = true">{{getYearFormated()}}</strong>
+                  <strong class="Btn-Year" @click="showYearSelect">{{getYearFormated()}}</strong>
                   <button class="nextButton" @click="addYear" type="button">&gt;</button>
                 </div>
                 <div class="H-sup">
@@ -20,15 +20,17 @@
                   <strong v-bind="calenderProvider.currentDate">{{getMonthFormatedGregorian()}} {{getYearFormatedGregorian()}}</strong>
                 </div>
               </div>
-              <div class="dayNamesList" v-if="!isYearList">
-                <div class="dayName" v-for="dayName in calenderProvider.dayNames" v-bind:key="dayName">{{dayName}}</div>
-              </div>
-              <div class="monthDays" v-if="!isYearList">
-                <div v-for="i in calenderProvider.selectedMonthDays" v-bind:key="i.date" class="monthDay" :class="{selected: isSelectedDate(i.date)}">
-                  <Button class="monthDayButton" :class="{selected: isSelectedDate(i.date),otherMonth: !(i.isSameMonth || ! i.isSelectableDate),disabled: isDateDisabled(i.date)}" :value="i.date" type="button" @click="onDateSelected(i)">
-                    <div class="hijrday">{{i.number}}</div>
-                    <div class="Gregorianday">{{GetDayGregorian(i.date)}}</div>
-                  </Button>
+              <div v-if="!isYearList">
+                <div class="dayNamesList" >
+                  <div class="dayName" v-for="dayName in calenderProvider.dayNames" v-bind:key="dayName">{{dayName}}</div>
+                </div>
+                <div class="monthDays">
+                  <div v-for="i in calenderProvider.selectedMonthDays" v-bind:key="i.date" class="monthDay" :class="{selected: isSelectedDate(i.date)}">
+                    <Button class="monthDayButton" :class="{selected: isSelectedDate(i.date),otherMonth: !(i.isSameMonth || ! i.isSelectableDate),disabled: isDateDisabled(i.date)}" :value="i.date" type="button" @click="onDateSelected(i)">
+                      <div class="hijrday">{{i.number}}</div>
+                      <div class="Gregorianday">{{GetDayGregorian(i.date)}}</div>
+                    </Button>
+                  </div>
                 </div>
               </div>
               <div class="TabYears" v-if="isYearList">
@@ -72,6 +74,7 @@ import GregorianCalenderProvider from './Providers/GregorianCalenderProvider';
   },
 })
 export default class HijriCalender extends Vue {
+  public forceShow: boolean = false;
   @Prop({ default: '', required: true })
   public value: string | any;
   @Prop({ default: '' })
@@ -87,9 +90,7 @@ export default class HijriCalender extends Vue {
   public isYearList: boolean | any = false;
   private calenderProvider: ICalenderProvider | any;
   public created() {
-    this.calenderProvider = new HijriCalenderProvider(
-      this.maxDate,
-      this.minDate);
+    this.calenderProvider = new HijriCalenderProvider(this.maxDate, this.minDate);
   }
   @Watch('value')
   public onValueChanged(value: string, oldValue: string) {
@@ -157,7 +158,7 @@ export default class HijriCalender extends Vue {
       this.$forceUpdate();
     }
   }
-  public onDateSelectedYear(Year: number) {
+  public onDateSelectedYear(Year: number): void {
     this.calenderProvider.currentDate.iYear(Year);
     this.isYearList = false;
     this.calenderProvider.reFillMonthDays();
@@ -190,6 +191,10 @@ export default class HijriCalender extends Vue {
     const indexcurrentYear = this.calenderProvider.recalculateYearPage();
     this.calenderProvider.reFillMonthDays();
     this.$forceUpdate();
+  }
+  public showYearSelect() {
+    this.isYearList = true;
+    this.forceShow = true;
   }
 }
 </script>
