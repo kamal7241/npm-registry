@@ -27,13 +27,13 @@ export default class App extends Vue {
     this.date = '';
   }
   public setDate() {
-    this.date = '2019-09-13';
+    this.date = '2019-11-05';
   }
   public setMinDate() {
-    this.minDate = '2019-09-01';
+    this.minDate = '2013-1-05';
   }
   public setMaxDate() {
-    this.maxDate = '2019-10-15';
+    this.maxDate = '2022-11-05';
   }
   public flipDisabled() {
     this.isDisabled = ! this.isDisabled;

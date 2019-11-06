@@ -39,32 +39,44 @@ export default class GregorianCalenderProvider implements  ICalenderProvider {
             this.yearsList.push(year);
         }
     }
-    public addMonth() {
+   public addMonth() {
         const temp = new moment(this.currentDate);
-        if (!temp.add(1, 'Month').isAfter(this.maxSupportedDate)) {
-            this.currentDate = this.currentDate.add(1, 'Month');
-            this.reFillMonthDays();
+        const tempAdd = temp.add(1, 'Month');
+        if (!tempAdd.isAfter(this.maxSupportedDate)) {
+            if (!this.isDateDisabled(tempAdd.locale('en').format('YYYY-MM-DD'))) {
+                this.currentDate = this.currentDate.add(1, 'Month');
+                this.reFillMonthDays();
+            }
         }
     }
     public subtractMonth() {
         const temp = new moment(this.currentDate);
-        if (!temp.subtract(1, 'Month').isBefore(this.minSupportedDate)) {
-            this.currentDate = this.currentDate.subtract(1, 'Month');
-            this.reFillMonthDays();
+        const tempsubtract = temp.subtract(1, 'Month');
+        if (!tempsubtract.isBefore(this.minSupportedDate)) {
+            if (!this.isDateDisabled(tempsubtract.locale('en').format('YYYY-MM-DD'))) {
+                this.currentDate = this.currentDate.subtract(1, 'Month');
+                this.reFillMonthDays();
+            }
         }
     }
     public addYear() {
         const temp = new moment(this.currentDate);
-        if (!temp.add(1, 'Year').isAfter(this.maxSupportedDate)) {
-            this.currentDate = this.currentDate.add(1, 'Year');
-            this.reFillMonthDays();
+        const tempAdd = temp.add(1, 'Year');
+        if (!tempAdd.isAfter(this.maxSupportedDate)) {
+            if (this.reGetYears().includes(tempAdd.locale('en').year())) {
+                this.currentDate = this.currentDate.add(1, 'Year');
+                this.reFillMonthDays();
+            }
         }
     }
     public subtractYear() {
         const temp = new moment(this.currentDate);
-        if (!temp.subtract(1, 'Year').isBefore(this.minSupportedDate)) {
-            this.currentDate = this.currentDate.subtract(1, 'Year');
-            this.reFillMonthDays();
+        const tempsubtract = temp.subtract(1, 'Year');
+        if (!tempsubtract.isBefore(this.minSupportedDate)) {
+            if (this.reGetYears().includes(tempsubtract.locale('en').year())) {
+                this.currentDate = this.currentDate.subtract(1, 'Year');
+                this.reFillMonthDays();
+            }
         }
     }
     public getCurrentDateFormated(): string {
@@ -202,11 +214,37 @@ export default class GregorianCalenderProvider implements  ICalenderProvider {
     public isSelectedDateYear(year: number): boolean {
         return year === this.currentDate.year();
     }
-    public recalculateYearPage(): void {
-        const indexcurrentYear =  this.yearsList.indexOf(this.currentDate.iYear());
-        this.pageNumber = Math.floor((indexcurrentYear / 21));
+    public reGetYears(): number[] {
+        const MinYear = moment(this.minDate, 'YYYY-MM-DD').iYear();
+        const MaxYear = moment(this.maxDate, 'YYYY-MM-DD').iYear();
+        let ArrayofYears = this.yearsList;
+        if (this.maxDate && this.minDate) {
+            ArrayofYears = this.yearsList.filter((Year) => (Year >= MinYear &&  Year <= MaxYear));
+        } else if (this.maxDate) {
+            ArrayofYears = this.yearsList.filter((Year) => Year <= MaxYear);
+        } else if (this.minDate) {
+            ArrayofYears = this.yearsList.filter((Year) => Year >= MinYear);
+        }
+        return ArrayofYears;
     }
 
+    public recalculateYearPage(): void {
+        const MinYear = moment(this.minDate, 'YYYY-MM-DD').iYear();
+        const MaxYear = moment(this.maxDate, 'YYYY-MM-DD').iYear();
+        let indexcurrentYear = this.yearsList.indexOf(this.currentDate.iYear());
+        if (this.maxDate && this.minDate) {
+            indexcurrentYear =  this.yearsList.filter((Year) => (Year >= MinYear &&  Year <= MaxYear))
+            .indexOf(this.currentDate.iYear());
+        } else if (this.maxDate) {
+            indexcurrentYear =  this.yearsList.filter((Year) => Year <= MaxYear).indexOf(this.currentDate.iYear());
+        } else if (this.minDate) {
+            indexcurrentYear =  this.yearsList.filter((Year) => Year >= MinYear).indexOf(this.currentDate.iYear());
+        }
+        this.pageNumber = Math.floor((indexcurrentYear / 21));
+    }
+    public ChangeYearSelected(Year: number) {
+        this.currentDate.year(Year);
+    }
     private getCurrentMonthStartDayNumber() {
         const time = new moment(this.currentDate);
         time.startOf('Month');

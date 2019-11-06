@@ -27,4 +27,6 @@ export default interface ICalenderProvider {
     setDate(value: string): void;
     isSelectedDateYear(year: number): boolean;
     recalculateYearPage(): void;
+    reGetYears(): number[];
+    ChangeYearSelected(year: number): void;
 }

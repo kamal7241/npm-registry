@@ -7,14 +7,14 @@
             <div class="hijriCalenderControls">
               <div class="HeaderCal">
                 <div class="H-sup">
-                  <button class="previousButton" @click="subtractYear" type="button">&lt;</button>
+                  <button class="nextButton" @click="addYear" title="التالي" type="button">&lt;</button>
                   <strong class="Btn-Year" @click="showYearSelect">{{getYearFormated()}}</strong>
-                  <button class="nextButton" @click="addYear" type="button">&gt;</button>
+                  <button class="previousButton" @click="subtractYear" title="السابق" type="button">&gt;</button>
                 </div>
                 <div class="H-sup">
-                  <button class="previousButton" @click="subtractMonth" type="button">&lt;</button>
+                  <button class="nextButton" @click="addMonth" title="التالي" type="button">&lt;</button>
                   <strong v-bind="calenderProvider.currentDate">{{getMonthFormated()}}</strong>
-                  <button class="nextButton" @click="addMonth" type="button">&gt;</button>
+                  <button class="previousButton" @click="subtractMonth" title="السابق" type="button">&gt;</button>
                 </div>
                 <div class="pt-2">
                   <strong v-bind="calenderProvider.currentDate">{{getMonthFormatedGregorian()}} {{getYearFormatedGregorian()}}</strong>
@@ -26,7 +26,7 @@
                 </div>
                 <div class="monthDays">
                   <div v-for="i in calenderProvider.selectedMonthDays" v-bind:key="i.date" class="monthDay" :class="{selected: isSelectedDate(i.date)}">
-                    <Button class="monthDayButton" :class="{selected: isSelectedDate(i.date),otherMonth: !(i.isSameMonth || ! i.isSelectableDate),disabled: isDateDisabled(i.date)}" :value="i.date" type="button" @click="onDateSelected(i)">
+                    <Button class="monthDayButton" :class="{selected: isSelectedDate(i.date),otherMonth: !(i.isSameMonth || ! i.isSelectableDate),disabled: isDateDisabled(i.date),currentDate: isCurrentDate(i.date)}" :value="i.date" type="button" @click="onDateSelected(i)">
                       <div class="hijrday">{{i.number}}</div>
                       <div class="Gregorianday">{{GetDayGregorian(i.date)}}</div>
                     </Button>
@@ -34,7 +34,7 @@
                 </div>
               </div>
               <div class="TabYears" v-if="isYearList">
-                <button class="previousButton" @click="prevPage()" type="button">&lt;</button>
+                <button class="nextButton" @click="nextPage()" title="التالي" type="button">&lt;</button>
                 <div class="monthDays YearsDiv">
                   <div v-for="i in GetYears()" v-bind:key="i" class="monthDay YearDiv" :class="{selected: isSelectedDateYear(i)}">
                     <Button class="monthDayButton YearDivButton" :class="{selected: isSelectedDateYear(i)}" :value="i" type="button" @click="onDateSelectedYear(i)">
@@ -42,7 +42,7 @@
                     </Button>
                   </div>
                 </div>
-                <button class="nextButton" @click="nextPage()" type="button">&gt;</button>
+                <button class="previousButton" @click="prevPage()" title="السابق" type="button">&gt;</button>
               </div>
               <div class="footerCal"></div>
             </div>
@@ -96,6 +96,7 @@ export default class HijriCalender extends Vue {
   public onValueChanged(value: string, oldValue: string) {
     this.calenderProvider.setDate(value);
     this.calenderProvider.reFillMonthDays();
+    this.forceShow = false;
   }
   @Watch('minDate')
   public onMinDateChanged(value: string, oldValue: string) {
@@ -159,7 +160,7 @@ export default class HijriCalender extends Vue {
     }
   }
   public onDateSelectedYear(Year: number): void {
-    this.calenderProvider.currentDate.iYear(Year);
+    this.calenderProvider.ChangeYearSelected(Year);
     this.isYearList = false;
     this.calenderProvider.reFillMonthDays();
   }
@@ -168,6 +169,9 @@ export default class HijriCalender extends Vue {
   }
   public isSelectedDate(date: string) {
     return date === this.value;
+  }
+  public isCurrentDate(date: string) {
+    return date === moment().locale('en').format('YYYY-MM-DD');
   }
   public isSelectedDateYear(year: number) {
     return this.calenderProvider.isSelectedDateYear(year);
@@ -226,11 +230,11 @@ export default class HijriCalender extends Vue {
 }
 .TabYears .previousButton {
   top: 45%;
-  right: 5px;
+  left: 5px;
 }
 .TabYears .nextButton {
   top: 45%;
-  left: 5px;
+  right: 5px;
 }
 button.monthDayButton.YearDivButton {
   height: 25px;
@@ -242,6 +246,7 @@ button.monthDayButton.YearDivButton {
 }
 .monthDays.YearsDiv {
   margin: 0 40px;
+  min-height: 231px;
 }
 .hijriCalender {
   width: 336px;
@@ -273,7 +278,7 @@ strong.Btn-Year {
   cursor: pointer;
   background-color: #305161;
   border-radius: 50%;
-  right: 0;
+  left: 0;
   color: #fff;
   width: 25px;
   height: 25px;
@@ -291,7 +296,7 @@ strong.Btn-Year {
   background-color: #305161;
   border-radius: 50%;
   color: #fff;
-  left: 0;
+  right: 0;
   width: 25px;
   height: 25px;
   top: 0;
@@ -299,7 +304,9 @@ strong.Btn-Year {
 .nextButton:hover {
   color: #888888;
 }
-
+button.monthDayButton.currentDate {
+    border: 1px solid #477388;
+}
 .dayNamesList {
   text-align: right;
   border-bottom: 1px solid #000;
@@ -390,11 +397,15 @@ strong.Btn-Year {
   background-color: #477388;
   color: #fff;
 }
-.monthDayButton.otherMonth {
-  background-color: #d8d8d8;
-  opacity: 0.6;
+.otherMonth:not(.disabled) .hijrday, .otherMonth .Gregorianday {
+    color: #9e9e9e;
 }
-
+.otherMonth:not(.disabled):hover .hijrday{
+   color: #000;
+}
+.otherMonth:not(.disabled):hover .Gregorianday{
+  color: #ff9900;
+}
 .monthDayButton.disabled {
   color: #c1d1e5;
   background-color: #f3f3f3 !important;
