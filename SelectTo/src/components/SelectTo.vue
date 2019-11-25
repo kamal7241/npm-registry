@@ -13,6 +13,8 @@
       :label="label"
       :NoResult="NoResult"
       :NoOptions="NoOptions"
+      :trackBy="trackBy"
+      :clear="clear"
     >
       <span slot="noResult">{{NoResult}}</span>
       <span slot="noOptions">{{NoOptions}}</span>
@@ -27,12 +29,12 @@ export default {
   name: "SelectTo",
   components: { Multiselect },
   props: {
-    Data: [],
+    Data: Array,
     isMulti: Boolean,
     isSearchable: Boolean,
     tittle: String,
     showPreserve: Boolean,
-    selectedoption: String,
+    selectedoption: Object,
     isDisabled: Boolean,
     label: String,
     NoResult: {
@@ -42,7 +44,9 @@ export default {
     NoOptions:{
       type: String,
       default: "لا توجد خيارات"
-    }
+    },
+    trackBy: String,
+    clear: Boolean,
   },
   data() {
     return {
@@ -59,6 +63,12 @@ export default {
     updateSelected(items) {
       this.$emit("SlectedItems", items);
       this.$emit("input", items);
+    },
+    clearOptions() {
+      console.log('inner clear');
+      this.value = null;
+      this.VmultiSelect = [];
+      //this.clear = false;
     }
   },
   watch: {
@@ -68,6 +78,9 @@ export default {
       this.VmultiSelect = this.selectedoption;
 
 
+    },
+    'clear': function() {
+      this.clearOptions();
     }
   }
 };
