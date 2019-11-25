@@ -65,7 +65,6 @@ export default {
       this.$emit("input", items);
     },
     clearOptions() {
-      console.log('inner clear');
       this.value = null;
       this.VmultiSelect = [];
       //this.clear = false;
