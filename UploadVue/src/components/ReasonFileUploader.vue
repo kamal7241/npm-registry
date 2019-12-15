@@ -67,7 +67,7 @@
                                     ref="componentRef" />
 
                         <span class="info-message" v-if="allowedEx && !validateExtension">
-                            الملفات المسموح بها {{fileAllowedExtensions}}
+                            الملفات المسموح بها {{acceptedFileExtensions}}
                             وحجم الملف {{maxSize}} Mb
                         </span>
                     </div>
@@ -258,7 +258,7 @@
             },
             fileAllowedExtensions: {
                 type: String,
-                default: "jpg,pdf,png,jpeg,JPEG,PNG"
+                default: ".JPG,.PDF,.JPEG,.PNG"
             },
             dataType: {
                 type: String,
@@ -360,7 +360,8 @@
                     "iso",
                     "rar",
                     "zz"
-                ]
+                ],
+                acceptedFileExtensions: "JPG,PDF,JPEG,PNG",
             };
         },
         mounted() {
@@ -478,6 +479,7 @@
             },
             checkFileSize(index) {
                 if (this.initSize > this.maxSize * 1024 * 1024) {
+                    this.$refs.componentRef.deleteFile();
                     this.newDataSource[index].error =
                         "حجم الملف اكبر من " + this.maxSize + "Mb";
                     return true;
@@ -532,28 +534,31 @@
             checkValidatFile(file, index) {
                 var fileEx = file.split(".").pop();
                 if (
-                    this.fileAllowedExtensions.includes(fileEx) &&
+                    this.fileAllowedExtensions.includes(fileEx.toUpperCase()) &&
                     !this.notAllowedEx.includes(fileEx)
                 ) {
                     this.allowedEx = true;
                     return true;
                 } else {
+                    this.$refs.componentRef.deleteFile();
                     this.newDataSource[index].error =
                         "امتداد غير مسموح / الملفات المسموحه" + this.fileAllowedExtensions;
                     return false;
                 }
             },
             selctedOption(selectOption) {
-                this.$emit("selectItems", selectOption);
+                if (selectOption) {
+                    this.$emit("selectItems", selectOption);
 
-                if (selectOption.id != -1) {
-                    this.showSecondText = false;
-                    this.reason = selectOption.description;
-                    this.requestReasonId = selectOption.id;
-                } else {
-                    this.showSecondText = true;
-                    this.reason = '';
-                    this.requestReasonId = null;
+                    if (selectOption.id != -1) {
+                        this.showSecondText = false;
+                        this.reason = selectOption.description;
+                        this.requestReasonId = selectOption.id;
+                    } else {
+                        this.showSecondText = true;
+                        this.reason = '';
+                        this.requestReasonId = null;
+                    }
                 }
             },
             addFile() {
@@ -565,27 +570,33 @@
                         ? true
                         : this.isArabic(this.reason))
                 ) {
-                    var dataSourceObject = {};
-                    dataSourceObject.reasonTexts = this.reason;
-                    dataSourceObject.reasonDates = this.selectDate;
-                    dataSourceObject.id = this.newDataSource.length + 1;
-                    dataSourceObject.reasonFiles = "";
-                    dataSourceObject.reasonFileId = "";
-                    dataSourceObject.reasonId = null;
-                    dataSourceObject.requestReasonId = this.requestReasonId;
-                    dataSourceObject.error = "";
-                    this.ThereReasons = true;
-                    if (document.getElementById("outerfile") != null) {
-                        dataSourceObject.reasonFiles = document.getElementById(
-                            "outerfile"
-                        ).files[0];
-                        // document.getElementById("outerfile").remove();
+                    const reasonText = this.reason;
+                    const isReasonExist = this.newDataSource.find(function (r) {
+                                                return r.reasonTexts === reasonText;
+                                            });
+                    if (!isReasonExist) {
+                        var dataSourceObject = {};
+                        dataSourceObject.reasonTexts = this.reason;
+                        dataSourceObject.reasonDates = this.selectDate;
+                        dataSourceObject.id = this.newDataSource.length + 1;
+                        dataSourceObject.reasonFiles = "";
+                        dataSourceObject.reasonFileId = "";
+                        dataSourceObject.reasonId = null;
+                        dataSourceObject.requestReasonId = this.requestReasonId;
+                        dataSourceObject.error = "";
+                        this.ThereReasons = true;
+                        if (document.getElementById("outerfile") != null) {
+                            dataSourceObject.reasonFiles = document.getElementById(
+                                "outerfile"
+                            ).files[0];
+                            // document.getElementById("outerfile").remove();
+                        }
+                        this.newDataSource.push(dataSourceObject);
+                        this.$emit("UpdateReson", this.newDataSource);
+                        this.reason = "";
+                        this.fileCount = this.fileCount + 1;
+                        this.$refs.componentRef.deleteFile();
                     }
-                    this.newDataSource.push(dataSourceObject);
-                    this.$emit("UpdateReson", this.newDataSource);
-                    this.reason = "";
-                    this.fileCount = this.fileCount + 1;
-                    this.$refs.componentRef.deleteFile();
                 }
             },
             deleteRow() {

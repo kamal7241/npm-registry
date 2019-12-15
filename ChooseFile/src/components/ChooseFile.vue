@@ -82,7 +82,7 @@ export default {
     },
     fileAllowedExtensions: {
       type: String,
-      default: ".jpg,.pdf,.png,.jpeg,.JPEG,.PNG"
+      default: ".JPG,.PDF,.JPEG,.PNG"
     },
     maxSize: {
       type: Number,
@@ -151,11 +151,12 @@ export default {
     },
     checkValidatFile(file) {
       var fileEx = file.split(".").pop();
-      if (this.fileAllowedExtensions.includes(fileEx)) {
+      if (this.fileAllowedExtensions.includes(fileEx.toUpperCase())) {
         return true;
       } else {
         this.isValidExtension = true;
         this.validateFileDialog = true;
+        this.deleteFile();
         return false;
       }
     },
@@ -164,6 +165,7 @@ export default {
       if (fileSize > this.maxSize * 1024 * 1024) {
         this.isValidExtension = false;
         this.validateFileDialog = true;
+        this.deleteFile();
         return true;
       } else {
         return false;
@@ -175,6 +177,7 @@ export default {
       this.myfile = "";
       this.pickedfileName = "";
       this.ThereFile = false;
+      document.getElementById("outerfile").value= "";
     }
   }
 };
