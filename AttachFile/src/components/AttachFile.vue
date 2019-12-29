@@ -30,9 +30,8 @@
         v-if="status=='Add' || status=='Edit'"
         :disabled="isDisabled"
         @click="$refs.file.click()"
-        id="upfiles"
-      >
-        تحميل المرفقات
+        id="upfiles" title="تحميل المرفقات"
+      >       
         <i class="fa fa-upload" aria-hidden="true"></i>
       </button>
     </div>
