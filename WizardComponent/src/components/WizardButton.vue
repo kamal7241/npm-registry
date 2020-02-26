@@ -4,7 +4,9 @@
   </button>
 </template>
 <script>
-export default {};
+export default {
+    name: "wizard-btn"
+};
 </script>
 <style>
 </style>

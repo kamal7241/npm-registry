@@ -1,25 +1,31 @@
 <template>
   <div id="app">
-    <FormWizard>
-      <TabContent title="Tab one" icon>Tab one</TabContent>
-      <TabContent title="Tab two" icon>Tab two</TabContent>
-      <TabContent title="Tab three" icon>Tab three</TabContent>
-      <TabContent title="Tab four" icon>Tab four</TabContent>
-      <TabContent title="Tab five" icon>Tab five</TabContent>
-      <TabContent title="Tab six" icon>Tab six</TabContent>
+    <FormWizard shape="tab" color="#9b59b6" ref="componentRef">
+      <TabContent title="Personal details" icon="ti-user">My first tab content</TabContent>
+      <TabContent title="Additional Info" icon="ti-settings">My second tab content</TabContent>
+      <TabContent title="Last step" icon="ti-check">Yuhuuu! This seems pretty damn simple</TabContent>
     </FormWizard>
+    <button @click="nextTab">Next</button>
+    <button @click="prevTab">Back</button>
   </div>
 </template>
 
 <script>
 import FormWizard from "./components/FormWizard";
 import TabContent from "./components/TabContent";
-
 export default {
   name: "app",
   components: {
     FormWizard,
     TabContent
+  },
+  methods: {
+    nextTab() {
+      this.$refs.componentRef.nextTab();
+    },
+    prevTab() {
+      this.$refs.componentRef.prevTab();
+    }
   }
 };
 </script>

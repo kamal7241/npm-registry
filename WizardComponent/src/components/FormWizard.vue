@@ -13,9 +13,9 @@
       </slot>
     </div>
     <div class="wizard-navigation">
-      <div class="wizard-progress-with-circle" v-if="!isVertical">
+      <!-- <div class="wizard-progress-with-circle" v-if="!isVertical">
         <div class="wizard-progress-bar" :style="progressBarStyle"></div>
-      </div>
+      </div> -->
       <ul class="wizard-nav wizard-nav-pills" role="tablist" :class="stepsClasses">
         <slot
           name="step"
@@ -43,7 +43,7 @@
 
     <div class="wizard-card-footer clearfix" v-if="!hideButtons">
       <slot name="footer" v-bind="slotProps">
-        <div class="wizard-footer-left">
+        <!-- <div class="wizard-footer-left">
           <slot name="custom-buttons-right" v-bind="slotProps"></slot>
           <span
             @click="nextTab"
@@ -61,9 +61,9 @@
               <wizard-button :style="fillButtonStyle" :disabled="loading">{{nextButtonText}}</wizard-button>
             </slot>
           </span>
-        </div>
+        </div> -->
 
-        <div class="wizard-footer-right">
+        <!-- <div class="wizard-footer-right">
           <span
             @click="prevTab"
             @keyup.enter="prevTab"
@@ -76,7 +76,7 @@
             </slot>
           </span>
           <slot name="custom-buttons-left" v-bind="slotProps"></slot>
-        </div>
+        </div> -->
       </slot>
     </div>
   </div>
@@ -86,7 +86,7 @@ import WizardButton from "./WizardButton.vue";
 import WizardStep from "./WizardStep.vue";
 import { isPromise, findElementAndFocus, getFocusedTabIndex } from "./helpers";
 export default {
-  name: "form-wizard",
+  name: "FormWizard",
   components: {
     WizardButton,
     WizardStep
@@ -485,5 +485,12 @@ export default {
 };
 </script>
 <style lang="scss">
+span.stepTitle {
+    padding-top: 5px;
+}
+
+.disabled .wizard-icon-circle {
+    color: #000;
+}
 @import "./../assets/wizard";
 </style>

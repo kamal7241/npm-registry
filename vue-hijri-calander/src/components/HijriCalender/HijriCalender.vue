@@ -17,7 +17,7 @@
                   <button class="previousButton" @click="subtractMonth" title="السابق" type="button">&gt;</button>
                 </div>
                 <div class="pt-2">
-                  <strong v-bind="calenderProvider.currentDate">{{getMonthFormatedGregorian()}} {{getYearFormatedGregorian()}}</strong>
+                  <strong v-bind="calenderProvider.currentDate">{{getMonthFormatedGregorian()}} - {{getYearFormatedGregorian()}}</strong>
                 </div>
               </div>
               <div v-if="!isYearList">

@@ -1,13 +1,9 @@
-import FormWizard from './components/FormWizard.vue'
-import TabContent from './components/TabContent.vue'
-import WizardButton from './components/WizardButton.vue'
-import WizardStep from './components/WizardStep.vue'
+import FormWizard from "./components/FormWizard.vue"
+import TabContent from "./components/TabContent.vue"
 const VueFormWizard = {
     install(Vue) {
-        Vue.component('form-wizard', FormWizard)
-        Vue.component('tab-content', TabContent)
-        Vue.component('wizard-button', WizardButton)
-        Vue.component('wizard-step', WizardStep)
+        Vue.component('FormWizard', FormWizard)
+        Vue.component('TabContent', TabContent)
     }
 }
 // Automatic installation if Vue has been added to the global scope.
@@ -19,6 +15,4 @@ export default VueFormWizard
 export {
     FormWizard,
     TabContent,
-    WizardButton,
-    WizardStep
 }

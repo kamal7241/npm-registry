@@ -80,10 +80,7 @@ export default class HijriCalenderProvider implements  ICalenderProvider {
         }
     }
     public getYearFormated(): string {
-        return this.currentDate.format('iYYYY');
-        // return this.currentDate.locale('ar-SA').format('iMMMM') +
-        // ' (' + this.currentDate.format('iMM') +
-        // ') ' + this.currentDate.format('iYYYY');
+        return this.currentDate.locale('ar-SA').format('iYYYY');
     }
     public getYearFormatedEn(): string {
         return this.currentDate.locale('en').format('iYYYY');
@@ -92,22 +89,39 @@ export default class HijriCalenderProvider implements  ICalenderProvider {
         // ') ' + this.currentDate.format('iYYYY');
     }
     public getYearFormatedGregorian(): string {
-        return this.currentDate.format('YYYY');
-        // return this.currentDate.locale('ar-SA').format('iMMMM') +
-        // ' (' + this.currentDate.format('iMM') +
-        // ') ' + this.currentDate.format('iYYYY');
+        const currentDateHijry = this.currentDate;
+        const currentYearHijry = currentDateHijry.locale('en').format('iYYYY');
+        const currentMonthHijry = currentDateHijry.locale('en').format('iMM');
+        const time = new moment(this.currentDate);
+        const NumberDaysInMonth = time.locale('en').iDaysInMonth();
+        const startHijry = moment('' + currentYearHijry + '-' + currentMonthHijry + '-01', 'iYYYY-iMM-iDD')
+        .format('YYYY');
+        const EndHijry = moment('' + currentYearHijry + '-' + currentMonthHijry + '-' + NumberDaysInMonth + '', 'iYYYY-iMM-iDD')
+        .format('YYYY');
+        if (startHijry === EndHijry) {
+            return startHijry;
+        } else {
+            return startHijry + ' / ' + EndHijry;
+        }
     }
     public getMonthFormatedGregorian(): string {
-        return this.currentDate.format('MMMM');
-        // return this.currentDate.locale('ar-SA').format('iMMMM') +
-        // ' (' + this.currentDate.format('iMM') +
-        // ') ' + this.currentDate.format('iYYYY');
+        const currentDateHijry = this.currentDate;
+        const currentYearHijry = currentDateHijry.locale('en').format('iYYYY');
+        const currentMonthHijry = currentDateHijry.locale('en').format('iMM');
+        const time = new moment(this.currentDate);
+        const NumberDaysInMonth = time.locale('en').iDaysInMonth();
+        const startHijry = moment('' + currentYearHijry + '-' + currentMonthHijry + '-01', 'iYYYY-iMM-iDD')
+        .format('MMMM');
+        const EndHijry = moment('' + currentYearHijry + '-' + currentMonthHijry + '-' + NumberDaysInMonth + '', 'iYYYY-iMM-iDD')
+        .format('MMMM');
+        if (startHijry === EndHijry) {
+            return startHijry;
+        } else {
+            return startHijry + ' / ' + EndHijry;
+        }
     }
     public getMonthFormated(): string {
-        return this.currentDate.format('iMMMM');
-        // return this.currentDate.locale('ar-SA').format('iMMMM') +
-        // ' (' + this.currentDate.format('iMM') +
-        // ') ' + this.currentDate.format('iYYYY');
+        return this.currentDate.locale('ar-SA').format('iMMMM');
     }
     public getCurrentYear(): number {
         return this.currentDate.iYear();
