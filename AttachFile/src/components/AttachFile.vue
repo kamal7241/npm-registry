@@ -69,7 +69,7 @@ export default {
     },
     fileAllowedExtensions: {
       type: String,
-      default: "jpg,pdf,png,jpeg,JPEG,PNG"
+      default: "jpg,pdf,png,jpeg"
     },
     isSingle: {
       type: Boolean,
@@ -159,7 +159,7 @@ export default {
     checkValidatFile(file) {
       var fileEx = file.split(".").pop();
       if (
-        this.fileAllowedExtensions.includes(fileEx) &&
+        this.fileAllowedExtensions.includes(fileEx.toLowerCase()) &&
         !this.notAllowedEx.includes(fileEx)
       ) {
         this.allowedEx = true;
