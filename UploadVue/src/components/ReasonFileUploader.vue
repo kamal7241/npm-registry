@@ -304,7 +304,7 @@
                 tittle: "أختر",
                 value: "",
                 dialogTittle: "",
-                ArabicChar: "يجب إدخال احرف عربيه فقط",
+                ArabicChar: "يجب إدخال احرف عربيه أو أرقام أو أحد الرموز التالية () + - = . ؟ !",
                 DeleteAttachmentLbl: "هل أنت متأكد من حذف السبب",
                 delStatus: "",
                 dir: {
@@ -507,8 +507,7 @@
                 }
             },
             isArabic(text) {
-                var pattern = /^([\u0600-\u06ff]|[\u0750-\u077f]|[\ufb50-\ufbc1]|[\ufbd3-\ufd3f]|[\ufd50-\ufd8f]|[\ufd92-\ufdc7]|[\ufe70-\ufefc]|[\ufdf0-\ufdfd]|[ ])*$/g;
-                var result = pattern.test(text);
+                var pattern = /^([\u0600-\u06ff]|[\u0750-\u077f]|[\ufb50-\ufbc1]|[\ufbd3-\ufd3f]|[\ufd50-\ufd8f]|[\ufd92-\ufdc7]|[\ufe70-\ufefc]|[\ufdf0-\ufdfd]|[0-9.]|[()+-=?!]|[ ])*$/g;                var result = pattern.test(text);
                 if (!result) {
                     this.reason = this.reason.substring(0, this.reason.length - 1);
                 }
