@@ -1,0 +1,59 @@
+<div class="dateContaner">
+  <input [(ngModel)]="myDateValue" readonly (click)="openDate()" type="text" class="hint_txt"
+    [placeholder]="inputTittle" />
+</div>
+
+<div *ngIf="showDialog" class="popper" (click)="dismissDate()">
+  <div class="hijriCalender">
+    <div class="hijriCalenderControls">
+      <div class="HeaderCal">
+        <div class="H-sup">
+          <button class="nextButton" (click)="addYear()" title="التالي" type="button">&lt;</button>
+          <strong class="Btn-Year" (click)="showYearSelect()">{{getYearFormated()}}</strong>
+          <button class="previousButton" (click)="subtractYear()" title="السابق" type="button">&gt;</button>
+        </div>
+        <div class="H-sup">
+          <button class="nextButton" (click)="addMonth()" title="التالي" type="button">&lt;</button>
+          <strong>{{getMonthFormated()}}</strong>
+          <button class="previousButton" (click)="subtractMonth()" title="السابق" type="button">&gt;</button>
+        </div>
+        <div class="pt-2">.
+          <strong>{{getMonthFormatedGregorian()}} -
+            {{getYearFormatedGregorian()}}</strong>
+        </div>
+      </div>
+      <div *ngIf="!isYearList">
+        <div class="dayNamesList">
+          <div class="dayName" *ngFor="let dayName of calenderProvider.dayNames">{{dayName}}</div>
+        </div>
+        <div class="monthDays">
+          <div *ngFor="let i of calenderProvider.selectedMonthDays" class="monthDay"
+            [ngClass]="{selected: isSelectedDate(i.date)}">
+
+            <Button class="monthDayButton"
+              [ngClass]="{selected: isSelectedDate(i.date),otherMonth: !(i.isSameMonth || ! i.isSelectableDate),disabled: isDateDisabled(i.date),currentDate: isCurrentDate(i.date)}"
+              value="i.date" type="button" (click)="onDateSelected(i)">
+              <div class="hijrday">{{i.number}}</div>
+              <div class="Gregorianday">{{GetDayGregorian(i.date)}}</div>
+            </Button>
+          </div>
+        </div>
+      </div>
+      <div class="TabYears" *ngIf="isYearList">
+        <button class="nextButton" (click)="nextPage()" title="التالي" type="button">&lt;</button>
+        <div class="monthDays YearsDiv">
+          <div *ngFor="let i of GetYears()" class="monthDay YearDiv" :class="{selected: isSelectedDateYear(i)}">
+
+
+            <Button class="monthDayButton YearDivButton" [ngClass]="{selected: isSelectedDateYear(i)}" value="i"
+              type="button" (click)="onDateSelectedYear(i)">
+              <div class="YearItem">{{i}}</div>
+            </Button>
+          </div>
+        </div>
+        <button class="previousButton" (click)="prevPage()" title="السابق" type="button">&gt;</button>
+      </div>
+      <div class="footerCal"></div>
+    </div>
+  </div>
+</div>
