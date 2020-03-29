@@ -30,8 +30,9 @@
         v-if="status=='Add' || status=='Edit'"
         :disabled="isDisabled"
         @click="$refs.file.click()"
-        id="upfiles" title="تحميل المرفقات"
-      >       
+        id="upfiles"
+        title="تحميل المرفقات"
+      >
         <i class="fa fa-upload" aria-hidden="true"></i>
       </button>
     </div>
@@ -63,6 +64,10 @@ import { saveAs } from "file-saver";
 export default {
   name: "AttachFile",
   props: {
+    attachmentsNumber: {
+      type: Number,
+      default: 2
+    },
     maximumSize: {
       type: Number,
       default: 10
@@ -73,7 +78,7 @@ export default {
     },
     isSingle: {
       type: Boolean,
-      default: true
+      default: false
     },
     isDisabled: {
       type: Boolean,
@@ -131,9 +136,12 @@ export default {
       if (this.isSingle) {
         this.uploadedFiles = [];
         this.uploadedFiles.push(fileData);
+        ``;
       } else {
-        this.uploadedFiles.push(fileData);
-        this.singleMsg = false;
+        if (this.uploadedFiles.length < this.attachmentsNumber) {
+          this.uploadedFiles.push(fileData);
+          this.singleMsg = false;
+        }
       }
 
       this.$emit("FilesArray", this.uploadedFiles);
@@ -154,6 +162,7 @@ export default {
         this.initSize = this.initSize - item.size;
       }
       this.checkFileSize();
+      document.getElementById("files1").value = "";
       this.$emit("FilesArray", this.uploadedFiles);
     },
     checkValidatFile(file) {
@@ -193,22 +202,22 @@ export default {
 </script>
 <style scoped>
 .item {
-    float: right;
-    border: 1px solid #cdcaca;
-    color: #5e5e5e;
-    border-radius: 10px;
-    text-align: center;
-    padding: 6px 15px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    height: 25px;
-    width: 158px;
-    margin: 0px;
-    overflow: visible;
-    position: relative;
-    margin-left: 10px;
-    margin-right: 18px;
+  float: right;
+  border: 1px solid #cdcaca;
+  color: #5e5e5e;
+  border-radius: 10px;
+  text-align: center;
+  padding: 6px 15px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  height: 25px;
+  width: 158px;
+  margin: 0px;
+  overflow: visible;
+  position: relative;
+  margin-left: 10px;
+  margin-right: 18px;
 }
 
 .attachments-box {
@@ -242,8 +251,8 @@ export default {
   float: right;
   display: block;
   box-sizing: border-box;
-width: 14px;
-    height: 14px;
+  width: 14px;
+  height: 14px;
   border-width: 3px;
   border-style: solid;
   border-color: red;
@@ -270,13 +279,13 @@ width: 14px;
 }
 
 .fileLabel {
-    float: right;
-    width: 125px;
-    line-height: 1;
-    font-size: 14px;
-    clear: both;
-    display: inline-block;
-    overflow: hidden;
-    white-space: nowrap;
+  float: right;
+  width: 125px;
+  line-height: 1;
+  font-size: 14px;
+  clear: both;
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
 }
 </style>
