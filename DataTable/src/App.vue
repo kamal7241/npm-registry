@@ -1,7 +1,32 @@
 <template>
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png" />
-    <DataTable :rows="rows" :columns="columns" :config="config" :classes="classes" @on-change-page="onChangePage"></DataTable>
+    <DataTable
+      :rows="rows"
+      :columns="columns"
+      :config="config"
+      :classes="classes"
+      @on-change-page="onChangePage"
+    >
+      <template slot="id" slot-scope="props">
+        <div class="inquery-item-id">
+          <a :href="props.row.name.last_name">
+            <span class="inqiery-link-info">
+              <span class="inquery-item-info-t">{{props.column.label}}</span>
+              <span class="inquery-item-info-v">{{props.row.id}}</span>
+            </span>
+            <span class="servicesButton__seeMore"></span>
+          </a>
+        </div>
+      </template>
+      <template slot="country" slot-scope="props">
+        <router-link :to="'/ViewRealEstateDeed/'+props.row.deedNumber">
+          <a :href="props.row.name.last_name">
+            رابط
+          </a>
+        </router-link>
+      </template>
+    </DataTable>
   </div>
 </template>
 
@@ -220,7 +245,7 @@ export default {
         },
         {
           label: "Country",
-          name: "address.country",
+          name: "country",
           filter: {
             type: "simple",
             placeholder: "Enter country"
@@ -233,11 +258,12 @@ export default {
         rows_selectable: true,
         card_title: "Vue Bootsrap 4 advanced table",
         dir: "rtl",
-         per_page_options:  [3,  4,  10,  14],
+        per_page_options: [3, 4, 10, 14]
       }
     };
-  },methods:{
-    onChangePage(vale){
+  },
+  methods: {
+    onChangePage(vale) {
       console.log(vale);
     }
   }

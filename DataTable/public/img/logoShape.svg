@@ -1,0 +1,16 @@
+<svg class="kv__logoShape" id="Group_20500" data-name="Group 20500" xmlns="http://www.w3.org/2000/svg" width="733.8" height="559.787" viewBox="0 0 733.8 559.787">
+  <clipPath id="myClip1">
+    <rect x="0" y="0" width="733.8" height="0" />
+  </clipPath>
+  <clipPath id="myClip2">
+    <rect x="0" y="0" top="100%" width="733.8" height="0" />
+  </clipPath>
+
+  <g clip-path="url(#myClip1)">
+    <path id="Path_4990" data-name="Path 4990" d="M284.633,32.7H74.9l56.049,106.222H340.682Z" transform="translate(-74.9 110.861)" fill="#f6b221"/>
+    <path id="Path_4989" data-name="Path 4989" d="M239.107,342.49h209.28L300.58,63.6H91.3Z" transform="translate(-17.17 217.297)" fill="#00ad68"/>
+  </g>
+  <g clip-path="url(#myClip2)">
+    <path id="Path_4988" data-name="Path 4988" d="M421.681.7,124.6,560.486H336.213L633.751.7Z" transform="translate(100.049 -0.7)" fill="#007166"/>
+  </g>
+</svg>

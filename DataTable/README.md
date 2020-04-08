@@ -36,8 +36,8 @@ import DataTable component in any of your vue component and start using it right
 ```vue
 <template>
     <div id="app">
-        <DataTable :rows="rows" :columns="columns" :config="config">
-        </DataTable>
+        <TableCard :rows="rows" :columns="columns" :config="config">
+        </TableCard>
     </div>
 </template>
 

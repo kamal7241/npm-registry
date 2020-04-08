@@ -1,29 +1,345 @@
 <template>
-  <div class="listing-items-cont">
-    <div class="inquery-item-cont" v-for="(row, index) in vbt_rows" :key="index">
-      <slot
-        :name="getCellSlotName(vbt_columns[0])"
-        :row="row"
-        :column="vbt_columns[0]"
-        :cell_value="getValueFromRow(row,vbt_columns[0].name)"
-      ></slot>
-      <div class="inquery-item-info-cont">
-        <div
-          class="fw-1 inquery-item-info"
-          v-for="(column, key, index) in vbt_columns.slice(1)"
-          :key="index"
-        >
-          <div class="inquery-item-info-t">{{column.label}}</div>
-          <div class="inquery-item-info-v">
-            <slot
-              :name="getCellSlotName(column)"
+  <!-- TODO configurable header title position -->
+  <div :class="[{card:card_mode} ,  {'rtl-class' : config.dir && config.dir == 'rtl'}]">
+    <div class="card-header" v-if="card_mode">
+      <slot name="card-header">
+        <template>{{card_title}}</template>
+      </slot>
+    </div>
+    <div :class="{'card-body':card_mode}">
+      <div :class="tableWrapperClasses" class="vbt-table-wrapper">
+        <table class="table" :class="tableClasses">
+          <thead>
+            <tr v-if="showToolsRow">
+              <th :colspan="headerColSpan">
+                <div class="row vbt-header-row no-gutters">
+                  <div class="col-md-4">
+                    <div class="row no-gutters">
+                      <!-- global search text starts here -->
+                      <div
+                        class="col-md-6 input-group vbt-global-search"
+                        v-if="global_search.visibility"
+                      >
+                        <div class="form-group has-clear-right" :class="global_search.class">
+                          <span
+                            v-if="global_search.showClearButton"
+                            class="form-control-feedback vbt-global-search-clear"
+                            @click="clearGlobalSearch"
+                          >
+                            <slot name="global-search-clear-icon">&#x24E7;</slot>
+                          </span>
+                          <input
+                            v-if="global_search.searchOnPressEnter"
+                            ref="global_search"
+                            type="text"
+                            class="form-control"
+                            :placeholder="global_search.placeholder"
+                            @keyup.enter="updateGlobalSearchHandler($event.target.value)"
+                          />
+                          <input
+                            v-else
+                            ref="global_search"
+                            type="text"
+                            class="form-control"
+                            :placeholder="global_search.placeholder"
+                            @keyup.stop="updateGlobalSearch($event.target.value)"
+                          />
+                        </div>
+                      </div>
+                      <!-- global search text ends here -->
+
+                      <!-- refresh & reset button starts here -->
+                      <div class="col-md-6" style="direction : ltr">
+                        <div class="btn-group" role="group" aria-label="Table Actions buttons">
+                          <button
+                            v-if="show_refresh_button"
+                            type="button"
+                            class="btn btn-secondary vbt-refresh-button"
+                            @click="$emit('refresh-data')"
+                          >
+                            <slot name="refresh-button-text">{{this.dir ? this.dir.Refresh : ""}}</slot>
+                          </button>
+                          <button
+                            type="button"
+                            v-if="show_reset_button"
+                            class="btn btn-secondary vbt-reset-button"
+                            @click="resetQuery"
+                          >
+                            <slot name="reset-button-text">{{this.dir ? this.dir.Reset_Query : ""}}</slot>
+                          </button>
+                        </div>
+                      </div>
+                      <!-- refresh & reset button ends here -->
+                    </div>
+                  </div>
+
+                  <!-- action buttons starts here -->
+                  <div class="col-md-8">
+                    <slot name="vbt-action-buttons">
+                      <div class="btn-group float-right" role="group" aria-label="Basic example">
+                        <button
+                          v-for="(action, key, index) in actions"
+                          :key="index"
+                          type="button"
+                          class="btn"
+                          :class="getActionButtonClass(action)"
+                          @click="emitActionEvent(action)"
+                        >
+                          <slot :name="action.btn_text_slot_name">
+                            <span v-html="action.btn_text"></span>
+                          </slot>
+                        </button>
+                      </div>
+                    </slot>
+                  </div>
+                  <!-- action buttons button ends here -->
+                </div>
+                <!-- <a href="" v-if="allRowsSelected">sadfsdf</a> -->
+              </th>
+            </tr>
+
+            <tr>
+              <select-all-rows-check-box
+                v-if="checkbox_rows"
+                :all-rows-selected="allRowsSelected"
+                :current-page-selection-count="currentPageSelectionCount"
+                @select-all-row-checkbox="selectAllCheckbox"
+              />
+
+              <slot name="columns" :columns="vbt_columns">
+                <template v-for="(column, key, index) in vbt_columns">
+                  <th
+                    v-if="canShowColumn(column)"
+                    :key="index"
+                    v-on="isSortableColumn(column) ? { click: () => updateSortQuery(column) } : {}"
+                    class="vbt-column-header"
+                    :class="columnClasses(column)"
+                  >
+                    <slot
+                      :name="'column_' + getCellSlotName(column)"
+                      :column="column"
+                    >{{column.label}}</slot>
+
+                    <template v-if="isSortableColumn(column)">
+                      <SortIcon :sort="query.sort" :column="column">
+                        <template slot="vbt-sort-asc-icon">
+                          <slot name="sort-asc-icon">&#8593;</slot>
+                        </template>
+                        <template slot="vbt-sort-desc-icon">
+                          <slot name="sort-desc-icon">&#8595;</slot>
+                        </template>
+                        <template slot="vbt-no-sort-icon">
+                          <slot name="
+                          ">&#8645;</slot>
+                        </template>
+                      </SortIcon>
+                    </template>
+                  </th>
+                </template>
+              </slot>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- filter row starts here -->
+            <tr class="table-active" v-if="showFilterRow">
+              <td v-show="checkbox_rows"></td>
+              <template v-for="(column, key, index) in vbt_columns">
+                <td v-if="canShowColumn(column)" :key="index" align="center">
+                  <template v-if="hasFilter(column)">
+                    <Simple
+                      v-if="column.filter.type == 'simple'"
+                      :column="column"
+                      @update-filter="updateFilter"
+                      @clear-filter="clearFilter"
+                    >
+                      <template slot="vbt-simple-filter-clear-icon">
+                        <slot name="simple-filter-clear-icon">&#x24E7;</slot>
+                      </template>
+                    </Simple>
+
+                    <!-- :options="column.filter.options" -->
+                    <MultiSelect
+                      v-if="column.filter.type == 'select'"
+                      :column="column"
+                      :rows="rows"
+                      @update-multi-select-filter="updateMultiSelectFilter"
+                      @clear-filter="clearFilter"
+                    ></MultiSelect>
+
+                    <DateFilter
+                      v-if="column.filter.type == 'date'"
+                      :column="column"
+                      @update-date-select-filter="updateDateSelectFilter"
+                      @clear-filter="clearFilter"
+                      :config="column.filter"
+                      :dir="config.dir"
+                    ></DateFilter>
+
+                    <template v-if="column.filter.type == 'custom'">
+                      <slot :name="column.filter.slot_name" :column="column"></slot>
+                    </template>
+                  </template>
+                </td>
+              </template>
+            </tr>
+            <!-- filter row ends here -->
+
+            <!-- data rows stars here -->
+            <row
+              v-for="(row, index) in vbt_rows"
+              :key="index"
               :row="row"
-              :column="column"
-              :cell_value="getValueFromRow(row,column.name)"
-            >{{getValueFromRow(row,column.name)}}</slot>
-          </div>
-        </div>
+              :columns="vbt_columns"
+              :row-index="index"
+              :checkbox-rows="checkbox_rows"
+              :rows-selectable="rows_selectable"
+              :selected-items="selected_items"
+              :highlight-row-hover="highlight_row_hover"
+              :highlight-row-hover-color="rowHighlightColor"
+              :prop-row-classes="classes.row"
+              :prop-cell-classes="classes.cell"
+              :unique-id="uniqueId"
+              @add-row="handleAddRow"
+              @remove-row="handleRemoveRow"
+            >
+              <template v-for="(column) in columns" :slot="'vbt-'+getCellSlotName(column)">
+                <slot
+                  :name="getCellSlotName(column)"
+                  :row="row"
+                  :column="column"
+                  :cell_value="getValueFromRow(row,column.name)"
+                >{{getValueFromRow(row,column.name)}}</slot>
+              </template>
+            </row>
+            <!-- empty row starts here -->
+            <tr v-show="vbt_rows == 0">
+              <td :colspan="headerColSpan">
+                <slot name="empty-results">{{this.dir ? this.dir.No_results_found : ""}}</slot>
+              </td>
+            </tr>
+            <!-- empty row ends here -->
+
+            <!-- data rows ends here -->
+
+            <!-- Pagination row starts here -->
+            <tr v-if="showPaginationRow" class="footer-pagination-row">
+              <td :colspan="headerColSpan">
+                <div class="row vbt-pagination-row no-gutters">
+                                    <!-- pagination info start here -->
+                  <div class="col-12 text-center">
+                    <div class="text-center justify-content-center">
+                      <template v-if="pagination_info">
+                        <slot
+                          name="pagination-info"
+                          :currentPageRowsLength="currentPageRowsLength"
+                          :filteredRowsLength="filteredRowsLength"
+                          :originalRowsLength="originalRowsLength"
+                        >
+                          <template
+                            v-if="currentPageRowsLength != 0"
+                          >{{this.from_1_to ? this.from_1_to : ""}} {{currentPageRows}} {{this.dir ? this.dir.of : ""}} {{filteredRowsLength}} {{this.dir ? this.dir.entries : ""}}</template>
+                          <template v-else>{{this.dir ? this.dir.No_results_found : ""}}</template>
+                          <template>({{originalRowsLength}} {{this.dir ? this.dir.total_records : ""}})</template>
+                        </slot>
+                      </template>
+                      <template v-if="selected_rows_info && pagination_info && isSelectable">
+                        <slot name="pagination-selected-rows-separator">|</slot>
+                      </template>
+                      <template v-if="selected_rows_info && isSelectable">
+                        <slot
+                          name="selected-rows-info"
+                          :selectedItemsCount="selectedItemsCount"
+                        >{{selectedItemsCount}} {{this.dir ? this.dir.rows_selected : ""}}</slot>
+                      </template>
+                    </div>
+                  </div>
+                  <!-- pagination info ends here -->
+
+                  
+                  <!-- pagination starts here -->
+                  <div class="col-12 text-center">
+                    <div v-if="pagination">
+                      <Pagination
+                        :page.sync="page"
+                        :per_page.sync="per_page"
+                        :per_page_options="per_page_options"
+                        :total="rowCount"
+                        :num_of_visibile_pagination_buttons="num_of_visibile_pagination_buttons"
+                        :dir="dir"
+                      >
+                        <template slot="vbt-paginataion-previous-button">
+                          <slot name="paginataion-previous-button">&laquo;</slot>
+                        </template>
+                        <template slot="vbt-paginataion-next-button">
+                          <slot name="paginataion-next-button">&raquo;</slot>
+                        </template>
+                      </Pagination>
+                    </div>
+                  </div>
+                  <!-- pagination ends here -->
+                </div>
+              </td>
+            </tr>
+            <!-- Pagination ends starts here -->
+          </tbody>
+        </table>
       </div>
+    </div>
+    <div class="card-footer" v-if="card_mode">
+      <slot name="card-footer">
+        <div class="row">
+          <!-- pagination starts here -->
+          <div class="col-md-6">
+            <div v-if="pagination">
+              <Pagination
+                :page.sync="page"
+                :per_page.sync="per_page"
+                :per_page_options="per_page_options"
+                :total="rowCount"
+                :num_of_visibile_pagination_buttons="num_of_visibile_pagination_buttons"
+              >
+                <template slot="vbt-paginataion-previous-button">
+                  <slot name="paginataion-previous-button">&laquo;</slot>
+                </template>
+                <template slot="vbt-paginataion-next-button">
+                  <slot name="paginataion-next-button">&raquo;</slot>
+                </template>
+              </Pagination>
+            </div>
+          </div>
+          <!-- pagination ends here -->
+
+          <!-- pagination info start here -->
+          <div class="col-md-6">
+            <div class="text-right justify-content-center">
+              <template v-if="pagination_info">
+                <slot
+                  name="pagination-info"
+                  :currentPageRowsLength="currentPageRowsLength"
+                  :filteredRowsLength="filteredRowsLength"
+                  :originalRowsLength="originalRowsLength"
+                >
+                  <template
+                    v-if="currentPageRowsLength != 0"
+                  >{{this.from_1_to ? this.from_1_to : ""}} {{currentPageRows}} {{this.dir ? this.dir.of : ""}} {{filteredRowsLength}} {{this.dir ? this.dir.entries : ""}}</template>
+                  <template v-else>{{this.dir ? this.dir.No_results_found : ""}}</template>
+                  <template>({{originalRowsLength}} {{this.dir ? this.dir.total_records : ""}})</template>
+                </slot>
+              </template>
+              <template v-if="pagination_info && selected_rows_info">
+                <slot name="pagination-selected-rows-separator">|</slot>
+              </template>
+              <template v-if="selected_rows_info">
+                <slot
+                  name="selected-rows-info"
+                  :selectedItemsCount="selectedItemsCount"
+                >{{selectedItemsCount}} {{this.dir ? this.dir.rows_selected : ""}}</slot>
+              </template>
+            </div>
+          </div>
+          <!-- pagination info ends here -->
+        </div>
+      </slot>
     </div>
   </div>
 </template>
@@ -100,11 +416,11 @@ export default {
       default() {
         return [];
       }
-    },
+    }
   },
   data() {
     return {
-      from_1_to: "",
+      from_1_to : "",
       vbt_rows: [],
       vbt_columns: [],
       query: {
@@ -183,10 +499,7 @@ export default {
       Go_to_page: "Go to page"
     };
 
-    this.from_1_to =
-      has(this.config, "dir") && this.config.dir == "rtl"
-        ? this.ar.From_1_to
-        : this.en.From_1_to;
+    this.from_1_to = has(this.config, "dir") && this.config.dir == "rtl" ? this.ar.From_1_to : this.en.From_1_to;
 
     this.vbt_rows = cloneDeep(this.rows);
     this.vbt_columns = cloneDeep(this.columns);
@@ -819,20 +1132,11 @@ export default {
               flag = true;
             }
           } else if (filter.type === "date") {
-            if (
-              filter.data &&
-              filter.data.fromDate &&
-              filter.data.toDate &&
-              this.dateSelectedFilter(row, filter)
-            ) {
+            if (filter.data && filter.data.fromDate && filter.data.toDate &&  this.dateSelectedFilter(row, filter)) {
               flag = true;
-            } else if (
-              filter.data &&
-              filter.data.fromDate &&
-              filter.data.toDate
-            ) {
-              flag = false;
-            } else {
+            } else if(filter.data && filter.data.fromDate && filter.data.toDate) {
+              flag =false;
+            }else{
               flag = true;
             }
             return true;
@@ -1179,11 +1483,11 @@ export default {
 
     currentPageRows() {
       var count = this.vbt_rows.length;
-      if (this.page > 1)
-        if (count < this.per_page) {
-          count = this.per_page * (this.page - 1) + count;
+      if(this.page > 1)
+        if(count < this.per_page){
+          count = (this.per_page * (this.page - 1)) + count;
         } else {
-          count = this.per_page * this.page;
+          count = this.per_page * this.page
         }
       return count;
     },
@@ -1462,14 +1766,12 @@ export default {
       } else {
         this.emitQueryParams(newVal);
       }
-      if (this.page == 1) this.from_1_to = this.dir.From_1_to;
-      else
-        this.from_1_to = this.dir.From_1_to.replace(
-          "1",
-          (this.page - 1) * this.per_page + 1 + ""
-        );
+      if(this.page == 1)
+        this.from_1_to = this.dir.From_1_to;
+       else
+        this.from_1_to = this.dir.From_1_to.replace('1',(((this.page - 1) * this.per_page)+1)+'');
 
-      this.$emit("on-change-page", this.page);
+      this.$emit("on-change-page",this.page);
     },
     "config.multi_column_sort": {
       handler(newVal, oldVal) {
@@ -1481,259 +1783,191 @@ export default {
 </script>
 
 <style scoped>
-/*inquiry page*/
-.listing-cont {
-  display: flex;
+.rtl-class {
+  direction: rtl !important;
+}
+.ltr-class {
+  direction: ltr !important;
+}
+.vbt-select-all-checkbox {
+  margin-bottom: 20px;
+}
+
+.vbt-sort-cursor {
+  cursor: pointer;
+}
+.custom-control-label {
+  vertical-align: top;
+}
+.vbt-column-header {
+  -webkit-user-select: none; /* Chrome all / Safari all */
+  -moz-user-select: none; /* Firefox all */
+  -ms-user-select: none; /* IE 10+ */
+  user-select: none; /* Likely future */
+}
+.vbt-global-search-clear {
+  cursor: pointer;
+}
+input[type="search"] {
+  -webkit-appearance: searchfield;
+}
+
+input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: searchfield-cancel-button;
+}
+
+/* Bootstrap 4 text input with clear icon on the right */
+
+.has-clear-right {
   position: relative;
 }
 
-.listing-items-cont {
-  width: 100%;
-  transition: all ease 0.3s;
+.has-clear-right .form-control {
+  padding-right: 2.375rem;
 }
-.opened .listing-items-cont {
-  width: calc(100% - 270px);
-}
-.listing-cont.closed.loaded .listing-sorting-cont {
-  display: none;
-}
-.listing-sorting-cont {
-  background-color: #faf9f4;
-  margin-bottom: 20px;
-  width: 250px;
-  animation-duration: 0.3s;
+
+.has-clear-right .form-control-feedback {
   position: absolute;
-  left: 0;
-}
-.inquery-page-col-row {
-  display: flex;
-  justify-content: space-between;
-}
-
-.inquery-page-search-cont {
-  position: fixed;
-  width: 30%;
-  padding-right: 20px;
-  right: 0;
   top: 0;
-  bottom: 0px;
-  width: 200px;
-  background-color: #e8e8e8;
-  z-index: 999999;
-}
-
-.inquery-items-cont {
-  flex: 1;
-  padding-right: 20px;
-  margin-top: 30px;
-}
-section.inquery-page-section {
-  min-height: calc(100vh - 270px);
-}
-.inquery-item-cont {
-  display: flex;
-  border: 1px solid #dbdbdb;
-  margin-bottom: 20px;
-  transition: all ease 0.3s;
-}
-
-.inquery-item-info-cont {
-  display: flex;
-  justify-content: space-between;
-  flex: 1;
-  padding: 0px 20px;
-}
-
-.inquery-item-id {
-  background-color: #faf9f4;
-  width: 220px;
-  justify-content: center;
-  display: flex;
-  flex-direction: column;
-}
-.inquery-item-id * {
-  color: #01353d !important;
-}
-.inquery-item-info-t {
-  font-size: 14px;
-  color: #435363;
-  margin-bottom: 10px;
-}
-
-.inquery-item-info-v {
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.inquery-item-info {
-  padding: 15px 10px;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-}
-.inquery-item-id a {
-  display: flex;
-  height: 100%;
-  padding: 20px;
-  justify-content: center;
-}
-
-.inquery-item-id a span {
+  right: 0;
+  z-index: 2;
   display: block;
+  width: 2.375rem;
+  height: 2.375rem;
+  line-height: 2.375rem;
+  text-align: center;
+  font-weight: normal;
 }
 
-.inquery-item-id a:hover .servicesButton__seeMore:after {
-  background-color: #e1d19c;
-  color: #fff;
-  margin-left: -20px;
+.has-clear-right .form-control-feedback:hover {
+  color: red;
 }
 
-.inquery-item-cont:hover {
-  box-shadow: 0 24px 24px -16px rgba(0, 0, 0, 0.08);
+/* Absolute Center Spinner */
+.loading {
+  position: fixed;
+  z-index: 999;
+  height: 2em;
+  width: 2em;
+  overflow: visible;
+  margin: auto;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
 }
 
-span.inqiery-link-info {
-  display: flex !important;
-  flex-direction: column;
-  justify-content: center;
+/* Transparent Overlay */
+.loading:before {
+  content: "";
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
 }
-#filters-group .card {
-  padding: 0 10px !important;
-  margin-top: 0px;
-  margin-bottom: 15px;
-  box-shadow: none !important;
+
+/* :not(:required) hides these rules from IE9 and below */
+.loading:not(:required) {
+  /* hide "loading..." text */
+  font: 0/0 a;
+  color: transparent;
+  text-shadow: none;
   background-color: transparent;
-  border: none;
-  border-right: 5px solid #37c5ba;
-}
-#filters-group .form-check {
-  margin-bottom: 10px;
-  font-size: 14px;
-  padding-right: 2rem;
-  vertical-align: middle;
-  display: flex;
-  align-items: center;
-  line-height: 20px;
+  border: 0;
 }
 
-#filters-group .form-check-input {
-  -webkit-appearance: checkbox;
-}
-
-#filters-group .card-header a {
-  display: flex;
-  font-size: 14px;
-  font-weight: bold;
-  outline: none !important;
-  align-items: center;
-}
-#filters-group .card-header a span {
-  flex: 1;
-}
-#filters-group .card-header {
-  background-color: transparent !important;
-  padding: 10px 0px;
-  border: none !important;
-}
-.sorting-block-title {
-  font-size: 16px;
-  font-weight: bold;
-  margin: 15px 15px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-#filters-group .card-body {
-  padding: 0px;
-  margin-top: 10px;
-  max-height: 130px;
-  overflow: auto;
-}
-
-#filters-group {
-  padding: 0px 15px;
-}
-#filters-group .card-header a.collapsed i.icon {
-  transform: rotate(180deg);
-}
-
-#filters-group .card-header a i.icon {
-  transition: all ease 0.3s;
+.loading:not(:required):after {
+  content: "";
+  display: block;
   font-size: 10px;
-}
-.listing-sorting-cont i.icon.icon-close {
-  background-color: #fff;
-  padding: 10px;
-  border: 1px solid #e8e8e8;
-  color: #36c5ba;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  cursor: pointer;
-}
-@media (max-width: 900px) {
-  .inquery-item-id {
-    order: 1;
-    width: unset;
-    flex: 1;
-  }
-  .inquery-item-cont {
-    flex-direction: column;
-  }
-  .inquery-item-info {
-    flex: none;
-    width: 50%;
-  }
-  .inquery-item-info-cont {
-    flex-wrap: wrap;
-  }
-  .inquery-items-cont {
-    padding: 0px;
-  }
-  .inquery-item-info-cont {
-    padding: 0px 10px;
-  }
+  width: 1em;
+  height: 1em;
+  margin-top: -0.5em;
+  -webkit-animation: spinner 1500ms infinite linear;
+  -moz-animation: spinner 1500ms infinite linear;
+  -ms-animation: spinner 1500ms infinite linear;
+  -o-animation: spinner 1500ms infinite linear;
+  animation: spinner 1500ms infinite linear;
+  border-radius: 0.5em;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0,
+    rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0,
+    rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.5) -1.5em 0 0 0,
+    rgba(0, 0, 0, 0.5) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0,
+    rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0;
+  box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0,
+    rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0,
+    rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) -1.5em 0 0 0,
+    rgba(0, 0, 0, 0.75) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0,
+    rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0;
 }
 
-@media (max-width: 500px) {
-  .inquery-item-info {
-    width: 100%;
-  }
-  .header-search {
-    display: none;
-  }
+/* Animation */
 
-  .user-side-menu {
-    display: none;
+@-webkit-keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
   }
-  .user-main-content {
-    padding: 0px 15px !important;
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
   }
-  html,
-  body {
-    overflow-x: hidden !important;
+}
+@-moz-keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
   }
-  footer.user-footer p {
-    width: 100%;
-    margin: 15px 0px;
-    text-align: center;
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
   }
-  footer.user-footer {
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
+}
+@-o-keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
   }
-  .opened .listing-items-cont {
-    width: 100% !important;
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
   }
-  .listing-sorting-cont.fadeInLeft {
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    width: 100%;
+}
+@keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
   }
 }
 </style>

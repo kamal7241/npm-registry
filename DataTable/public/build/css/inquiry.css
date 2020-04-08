@@ -1,0 +1,127 @@
+
+/*inquiry page*/
+.inquery-page-col-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.inquery-page-search-cont {
+    position: fixed;
+    width: 30%;
+    padding-right: 20px;
+    right: 0;
+    top:0;
+    bottom:0px;
+    width:200px;
+    background-color: #e8e8e8;
+    z-index: 999999;
+}
+
+.inquery-items-cont {
+    flex:1;
+    padding-right: 20px;
+    margin-top:30px;
+}
+section.inquery-page-section {
+    min-height: calc(100vh - 270px);
+}
+.inquery-item-cont {
+    display: flex;
+    border: 1px solid #dbdbdb;
+    margin-bottom: 20px;
+    transition: all ease 0.3s;
+}
+
+.inquery-item-info-cont {
+    display: flex;
+    justify-content: space-between;
+    flex: 1;
+    padding: 0px 20px;
+}
+
+.inquery-item-id {
+    background-color: #faf9f4;
+    width: 220px;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.inquery-item-info-t {
+    font-size: 14px;
+    color: #435363;
+    margin-bottom: 10px;
+}
+
+.inquery-item-info-v {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.inquery-item-info {
+    padding: 15px 10px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+.inquery-item-id a {
+    display: flex;
+    height: 100%;
+    padding: 20px;
+    justify-content: center;
+}
+
+.inquery-item-id a span {
+    display: block;
+}
+
+.inquery-item-id a:hover .servicesButton__seeMore:after {
+    background-color: #e1d19c;
+    color: #fff;
+    margin-left: -20px;
+}
+
+.inquery-item-cont:hover {
+    box-shadow: 0 24px 24px -16px rgba(0,0,0,.08);
+}
+
+span.inqiery-link-info {
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+}
+
+
+@media (max-width:900px) {
+    .inquery-item-id {
+        order: 1;
+        width: unset;
+        flex: 1;
+    }
+    .inquery-item-cont {
+        flex-direction: column;
+    }
+    .inquery-item-info {
+        flex: none;
+        width: 50%;
+    }
+    .inquery-item-info-cont {
+        flex-wrap: wrap;
+    }
+    .inquery-items-cont {
+        padding: 0px;
+    }
+    .inquery-item-info-cont {
+        padding: 0px 10px;
+    }
+}
+
+@media (max-width:500px) {
+    .inquery-item-info {
+        width: 100%;
+    }
+    .header-search {
+        display: none;
+    }
+}
+
