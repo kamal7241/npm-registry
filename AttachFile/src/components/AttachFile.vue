@@ -11,6 +11,7 @@
           @change="filesChange($event); fileCount = $event.target.files.length"
           id="files1"
           style="opacity: 0"
+          :accept="allowedFileExtentions()"
         />
         <div class="item" v-for="item in uploadedFiles" :key="item.name">
           <label class="fileLabel">{{item.name}}</label>
@@ -196,6 +197,14 @@ export default {
       axios.get("/file/" + fileId, { responseType: "blob" }).then(response => {
         saveAs(response.data, response.headers.filename);
       });
+      },
+    allowedFileExtentions(){
+        var exts = this.fileAllowedExtensions.split(',');
+        for (let i = 0; i < exts.length; i++) {
+            if(exts[i][0] !== '.')
+                exts[i] = '.' + exts[i];
+        }
+        return exts.join(',');
     }
   }
 };
