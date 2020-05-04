@@ -10,18 +10,18 @@ export default class GregorianCalenderProvider implements  ICalenderProvider {
     public maxDate: string;
     public minDate: string;
     public months: MonthVM[] = [
-        {number: 0, name: 'كانون الثاني'},
-        {number: 1, name: 'شباط'},
-        {number: 2, name: 'آذار'},
-        {number: 3, name: 'نيسان'},
-        {number: 4, name: 'أيار'},
-        {number: 5, name: 'حزيران'},
-        {number: 6, name: 'تموز'},
-        {number: 7, name: 'آب'},
-        {number: 8, name: 'أيلول'},
-        {number: 9, name: 'تشرين الأول'},
-        {number: 10, name: 'تشرين الثاني'},
-        {number: 11, name: 'كانون الأول'},
+        {number: 0, name: 'يناير'},
+        {number: 1, name: 'فبراير'},
+        {number: 2, name: 'مارس'},
+        {number: 3, name: 'ابريل'},
+        {number: 4, name: 'مايو'},
+        {number: 5, name: 'يونيو'},
+        {number: 6, name: 'يوليو'},
+        {number: 7, name: 'أغسطس'},
+        {number: 8, name: 'سبتمبر'},
+        {number: 9, name: 'أكتوبر'},
+        {number: 10, name: 'نوفمبر'},
+        {number: 11, name: 'ديسمبر'},
     ];
     public dayNames: string[] = ['ح', 'ن', 'ث', 'ر', 'خ', 'ج', 'س'];
     public selectedMonthDays: DayVM[] = [];
