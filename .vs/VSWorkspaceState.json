@@ -1,7 +1,13 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\DataTable\\src",
+    "\\DataTable\\src\\plugins",
+    "\\HijriMeladiPicker",
+    "\\HijriMeladiPicker\\build",
+    "\\HijriMeladiPicker\\src",
+    "\\HijriMeladiPicker\\src\\components"
   ],
-  "SelectedNode": "\\DataTable",
+  "SelectedNode": "\\HijriMeladiPicker\\package.json",
   "PreviewInSolutionExplorer": false
 }
