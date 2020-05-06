@@ -9,7 +9,7 @@
       ></slot>
       <div class="inquery-item-info-cont">
         <div
-          class="fw-1 inquery-item-info"
+          class="fw-05 inquery-item-info"
           v-for="(column, key, index) in vbt_columns.slice(1)"
           :key="index"
         >
