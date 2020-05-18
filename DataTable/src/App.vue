@@ -249,7 +249,11 @@ export default {
           filter: {
             type: "simple",
             placeholder: "Enter country"
-          }
+          },
+          visible: (row) => {
+                    debugger;
+                    return row.address.country === 'Mayotte';
+          },
         }
       ],
       config: {

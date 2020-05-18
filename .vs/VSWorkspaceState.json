@@ -1,13 +1,15 @@
 {
   "ExpandedNodes": [
     "",
-    "\\DataTable\\src",
-    "\\DataTable\\src\\plugins",
     "\\HijriMeladiPicker",
-    "\\HijriMeladiPicker\\build",
     "\\HijriMeladiPicker\\src",
-    "\\HijriMeladiPicker\\src\\components"
+    "\\HijriMeladiPicker\\src\\components",
+    "\\mobile-hijri-calander\\src",
+    "\\vue-hijri-calander",
+    "\\vue-hijri-calander\\src",
+    "\\vue-hijri-calander\\src\\components",
+    "\\vue-hijri-calander\\src\\components\\HijriCalender"
   ],
-  "SelectedNode": "\\HijriMeladiPicker\\package.json",
+  "SelectedNode": "\\vue-hijri-calander",
   "PreviewInSolutionExplorer": false
 }
