@@ -4,8 +4,6 @@ import MonthVM from '../Model/MonthVM';
 import DayVM from '../Model/DayVM';
 
 export default class HijriCalenderProvider implements  ICalenderProvider {
-    public size: number | any = 21;
-    public pageNumber: number | any  = 0;
     public currentDate: any;
     public maxDate: string;
     public minDate: string;
@@ -23,7 +21,7 @@ export default class HijriCalenderProvider implements  ICalenderProvider {
         {number: 10, name: 'ذو القعدة'},
         {number: 11, name: 'ذو الحجة'},
     ];
-    public dayNames: string[] = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+    public dayNames: string[] = ['ح', 'ن', 'ث', 'ر', 'خ', 'ج', 'س'];
     public selectedMonthDays: DayVM[] = [];
     public yearsList: number[];
     public minSupportedDate: any = new moment('1937-03-14', 'YYYY-MM-DD');
@@ -41,87 +39,22 @@ export default class HijriCalenderProvider implements  ICalenderProvider {
     }
     public addMonth() {
         const temp = new moment(this.currentDate);
-        const tempAdd = temp.add(1, 'iMonth');
-        if (!tempAdd.isAfter(this.maxSupportedDate)) {
-            if (!this.isDateDisabled(tempAdd.locale('en').format('YYYY-MM-DD'))) {
-                this.currentDate = this.currentDate.add(1, 'iMonth');
-                this.reFillMonthDays();
-            }
+        if (!temp.add(1, 'iMonth').isAfter(this.maxSupportedDate)) {
+            this.currentDate = this.currentDate.add(1, 'iMonth');
+            this.reFillMonthDays();
         }
     }
     public subtractMonth() {
         const temp = new moment(this.currentDate);
-        const tempsubtract = temp.subtract(1, 'iMonth');
-        if (!tempsubtract.isBefore(this.minSupportedDate)) {
-            if (!this.isDateDisabled(tempsubtract.locale('en').format('YYYY-MM-DD'))) {
-                this.currentDate = this.currentDate.subtract(1, 'iMonth');
-                this.reFillMonthDays();
-            }
+        if (!temp.subtract(1, 'iMonth').isBefore(this.minSupportedDate)) {
+            this.currentDate = this.currentDate.subtract(1, 'iMonth');
+            this.reFillMonthDays();
         }
     }
-    public addYear() {
-        const temp = new moment(this.currentDate);
-        const tempAdd = temp.add(1, 'iYear');
-        if (!tempAdd.isAfter(this.maxSupportedDate)) {
-            if (this.reGetYears().includes(tempAdd.locale('en').iYear())) {
-                this.currentDate = this.currentDate.add(1, 'iYear');
-                this.reFillMonthDays();
-            }
-        }
-    }
-    public subtractYear() {
-        const temp = new moment(this.currentDate);
-        const tempsubtract = temp.subtract(1, 'iYear');
-        if (!tempsubtract.isBefore(this.minSupportedDate)) {
-            if (this.reGetYears().includes(tempsubtract.locale('en').iYear())) {
-                this.currentDate = this.currentDate.subtract(1, 'iYear');
-                this.reFillMonthDays();
-            }
-        }
-    }
-    public getYearFormated(): string {
-        return this.currentDate.locale('ar-SA').format('iYYYY');
-    }
-    public getYearFormatedEn(): string {
-        return this.currentDate.locale('en').format('iYYYY');
-        // return this.currentDate.locale('ar-SA').format('iMMMM') +
-        // ' (' + this.currentDate.format('iMM') +
-        // ') ' + this.currentDate.format('iYYYY');
-    }
-    public getYearFormatedGregorian(): string {
-        const currentDateHijry = this.currentDate;
-        const currentYearHijry = currentDateHijry.locale('en').format('iYYYY');
-        const currentMonthHijry = currentDateHijry.locale('en').format('iMM');
-        const time = new moment(this.currentDate);
-        const NumberDaysInMonth = time.locale('en').iDaysInMonth();
-        const startHijry = moment('' + currentYearHijry + '-' + currentMonthHijry + '-01', 'iYYYY-iMM-iDD')
-        .format('YYYY');
-        const EndHijry = moment('' + currentYearHijry + '-' + currentMonthHijry + '-' + NumberDaysInMonth + '', 'iYYYY-iMM-iDD')
-        .format('YYYY');
-        if (startHijry === EndHijry) {
-            return startHijry;
-        } else {
-            return startHijry + ' / ' + EndHijry;
-        }
-    }
-    public getMonthFormatedGregorian(): string {
-        const currentDateHijry = this.currentDate;
-        const currentYearHijry = currentDateHijry.locale('en').format('iYYYY');
-        const currentMonthHijry = currentDateHijry.locale('en').format('iMM');
-        const time = new moment(this.currentDate);
-        const NumberDaysInMonth = time.locale('en').iDaysInMonth();
-        const startHijry = moment('' + currentYearHijry + '-' + currentMonthHijry + '-01', 'iYYYY-iMM-iDD')
-        .format('MMMM');
-        const EndHijry = moment('' + currentYearHijry + '-' + currentMonthHijry + '-' + NumberDaysInMonth + '', 'iYYYY-iMM-iDD')
-        .format('MMMM');
-        if (startHijry === EndHijry) {
-            return startHijry;
-        } else {
-            return startHijry + ' / ' + EndHijry;
-        }
-    }
-    public getMonthFormated(): string {
-        return this.currentDate.locale('ar-SA').format('iMMMM');
+    public getCurrentDateFormated(): string {
+        return this.currentDate.locale('ar-SA').format('iMMMM') +
+            ' (' + this.currentDate.format('iMM') +
+            ') ' + this.currentDate.format('iYYYY');
     }
     public getCurrentYear(): number {
         return this.currentDate.iYear();
@@ -136,27 +69,6 @@ export default class HijriCalenderProvider implements  ICalenderProvider {
             return '';
         }
     }
-    public ChangeYearSelected(Year: number) {
-        this.currentDate.iYear(Year);
-    }
-    public GetYears() {
-            const start = this.pageNumber * this.size;
-            const end = start + this.size;
-            return this.reGetYears().slice(start, end);
-    }
-    public nextPage() {
-        const start = this.pageNumber * this.size;
-        const end = start + this.size;
-        if (end < this.reGetYears().length ) {
-            this.pageNumber++;
-        }
-     }
-     public prevPage() {
-        const start = this.pageNumber * this.size;
-        if (start > 0 ) {
-            this.pageNumber--;
-        }
-     }
     public isDateDisabled(date: string): boolean {
         let result: boolean = false;
         if (this.maxDate) {
@@ -243,44 +155,6 @@ export default class HijriCalenderProvider implements  ICalenderProvider {
                 }
             }
         }
-    }
-    public setDate(value: string): void {
-        if (value) {
-            this.currentDate = new moment(value, 'YYYY-MM-DD');
-        } else {
-            this.currentDate = moment();
-        }
-    }
-    public isSelectedDateYear(year: number): boolean {
-        return year === this.currentDate.iYear();
-    }
-    public reGetYears(): number[] {
-        const MinYear = moment(this.minDate, 'YYYY-MM-DD').iYear();
-        const MaxYear = moment(this.maxDate, 'YYYY-MM-DD').iYear();
-        let ArrayofYears = this.yearsList;
-        if (this.maxDate && this.minDate) {
-            ArrayofYears = this.yearsList.filter((Year) => (Year >= MinYear &&  Year <= MaxYear));
-        } else if (this.maxDate) {
-            ArrayofYears = this.yearsList.filter((Year) => Year <= MaxYear);
-        } else if (this.minDate) {
-            ArrayofYears = this.yearsList.filter((Year) => Year >= MinYear);
-        }
-        return ArrayofYears;
-    }
-
-    public recalculateYearPage(): void {
-        const MinYear = moment(this.minDate, 'YYYY-MM-DD').iYear();
-        const MaxYear = moment(this.maxDate, 'YYYY-MM-DD').iYear();
-        let indexcurrentYear = this.yearsList.indexOf(this.currentDate.iYear());
-        if (this.maxDate && this.minDate) {
-            indexcurrentYear =  this.yearsList.filter((Year) => (Year >= MinYear &&  Year <= MaxYear))
-            .indexOf(this.currentDate.iYear());
-        } else if (this.maxDate) {
-            indexcurrentYear =  this.yearsList.filter((Year) => Year <= MaxYear).indexOf(this.currentDate.iYear());
-        } else if (this.minDate) {
-            indexcurrentYear =  this.yearsList.filter((Year) => Year >= MinYear).indexOf(this.currentDate.iYear());
-        }
-        this.pageNumber = Math.floor((indexcurrentYear / 21));
     }
 
     private getCurrentMonthStartDayNumber() {

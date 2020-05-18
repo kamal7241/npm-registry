@@ -1,6 +1,6 @@
 {
   "name": "@t2/hijri-meladi-picker",
-  "version": "0.2.17",
+  "version": "0.2.19",
   "private": false,
   "author": {
     "name": "Front-End Team"
@@ -28,7 +28,7 @@
     "*.scss"
   ],
   "dependencies": {
-    "@t2/vue-hijri-calander": "^0.3.14",
+    "@t2/vue-hijri-calander": "^0.3.15",
     "core-js": "^2.6.5",
     "moment": "^2.24.0",
     "moment-hijri": "^2.1.2",
