@@ -61,6 +61,7 @@
 </template>
 <script>
 import { saveAs } from "file-saver";
+import { prototype } from "events";
 
 export default {
   name: "AttachFile",
@@ -127,20 +128,35 @@ export default {
   methods: {
     filesChange(fileName) {
       if (!fileName.target.files.length) return;
-      if (!this.checkValidatFile(fileName.target.files[0].name)) return;
-      var fileData = fileName.target.files[0];
-      this.initSize += fileData.size;
-      if (this.checkFileSize()) {
-        this.initSize -= fileData.size;
-        return;
-      }
       if (this.isSingle) {
+        if (!this.checkValidatFile(fileName.target.files[0].name)) return;
+        var fileData = fileName.target.files[0];
+        this.initSize += fileData.size;
+        if (this.checkFileSize()) {
+          this.initSize -= fileData.size;
+          return;
+        }
         this.uploadedFiles = [];
         this.uploadedFiles.push(fileData);
         ``;
       } else {
-        if (this.uploadedFiles.length < this.attachmentsNumber) {
-          this.uploadedFiles.push(fileData);
+        if (
+          this.uploadedFiles.length < this.attachmentsNumber &&
+          this.uploadedFiles.length == 0
+        ) {
+          for (var i = 0; i < fileName.target.files.length; i++) {
+            if (!this.checkValidatFile(fileName.target.files[i].name)) return;
+            var fileData = fileName.target.files[i];
+            this.initSize += fileData.size;
+            if (this.checkFileSize()) {
+              this.initSize -= fileData.size;
+              return;
+            }
+          }
+
+          for (var i = 0; i < fileName.target.files.length; i++) {
+            this.uploadedFiles.push(fileName.target.files[i]);
+          }
           this.singleMsg = false;
         }
       }
@@ -197,14 +213,13 @@ export default {
       axios.get("/file/" + fileId, { responseType: "blob" }).then(response => {
         saveAs(response.data, response.headers.filename);
       });
-      },
-    allowedFileExtentions(){
-        var exts = this.fileAllowedExtensions.split(',');
-        for (let i = 0; i < exts.length; i++) {
-            if(exts[i][0] !== '.')
-                exts[i] = '.' + exts[i];
-        }
-        return exts.join(',');
+    },
+    allowedFileExtentions() {
+      var exts = this.fileAllowedExtensions.split(",");
+      for (let i = 0; i < exts.length; i++) {
+        if (exts[i][0] !== ".") exts[i] = "." + exts[i];
+      }
+      return exts.join(",");
     }
   }
 };
