@@ -68,7 +68,7 @@ export default {
   props: {
     attachmentsNumber: {
       type: Number,
-      default: 2
+      default: 1
     },
     maximumSize: {
       type: Number,
@@ -126,43 +126,30 @@ export default {
     this.setData();
   },
   methods: {
-    filesChange(fileName) {
-      if (!fileName.target.files.length) return;
-      if (this.isSingle) {
-        if (!this.checkValidatFile(fileName.target.files[0].name)) return;
-        var fileData = fileName.target.files[0];
-        this.initSize += fileData.size;
-        if (this.checkFileSize()) {
-          this.initSize -= fileData.size;
-          return;
-        }
-        this.uploadedFiles = [];
-        this.uploadedFiles.push(fileData);
-        ``;
-      } else {
-        if (
-          this.uploadedFiles.length < this.attachmentsNumber &&
-          this.uploadedFiles.length == 0
-        ) {
-          for (var i = 0; i < fileName.target.files.length; i++) {
-            if (!this.checkValidatFile(fileName.target.files[i].name)) return;
-            var fileData = fileName.target.files[i];
-            this.initSize += fileData.size;
-            if (this.checkFileSize()) {
-              this.initSize -= fileData.size;
-              return;
-            }
-          }
+      filesChange(fileName) {
+          if (!fileName.target.files.length) return;
+          var numberOfFilesToPush = Math.min(
+              this.attachmentsNumber,
+              fileName.target.files.length
+          );
 
-          for (var i = 0; i < fileName.target.files.length; i++) {
-            this.uploadedFiles.push(fileName.target.files[i]);
-          }
-          this.singleMsg = false;
-        }
-      }
+          if (this.uploadedFiles.length < this.attachmentsNumber) {
+              for (var i = 0; i < numberOfFilesToPush; i++) {
+                  if (!this.checkValidatFile(fileName.target.files[i].name)) return;
+                  var fileData = fileName.target.files[i];
+                  this.initSize += fileData.size;
+                  if (this.checkFileSize()) {
+                      this.initSize -= fileData.size;
+                      return;
+                  }
+              }
 
-      this.$emit("FilesArray", this.uploadedFiles);
-    },
+              for (var i = 0; i < numberOfFilesToPush; i++) {
+                  this.uploadedFiles.push(fileName.target.files[i]);
+              }
+          }
+          this.$emit("FilesArray", this.uploadedFiles);
+      },
     checkFileSize() {
       if (this.initSize > this.maximumSize * 1024 * 1024) {
         this.maxSize = true;
