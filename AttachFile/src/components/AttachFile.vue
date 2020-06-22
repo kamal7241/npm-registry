@@ -32,12 +32,12 @@
             </button>
         </div>
         <div class="AttachmentNote" v-if="status=='Add' || status=='Edit'">
-            <p v-if="this.allowedEx && !this.maxSize"
-               class="info-message">الملفات المسموح بها{{fileAllowedExtensions}}وحجم الملف{{maximumSize}}Mb</p>
+            <p v-if="this.allowedEx && !this.maxSize && this.maxFileSize>0"
+               class="info-message">الملفات المسموح بها{{fileAllowedExtensions}}وحجم الملف{{maxFileSize}}Mb</p>
             <span class="info-message"
                   style="color:red;font-weight:bold"
-                  v-if="this.maxSize && this.allowedEx">
-                حجم الملف تجاوز ال {{maximumSize}}
+                  v-if="this.maxSize && this.allowedEx && this.maxFileSize>0">
+                حجم الملف تجاوز ال {{maxFileSize}}
                 Mb
             </span>
             <span class="info-message" style="color:red;font-weight:bold" v-if="!this.allowedEx">
@@ -56,13 +56,17 @@
     export default {
         name: "AttachFile",
         props: {
+            maxFileSize: {
+                type: Number,
+                default: 0
+            },
             attachmentsNumber: {
                 type: Number,
                 default: 1
             },
             maximumSize: {
                 type: Number,
-                default: 10
+                default: 0
             },
             fileAllowedExtensions: {
                 type: String,
@@ -127,10 +131,18 @@
                     for (var i = 0; i < numberOfFilesToPush; i++) {
                         if (!this.checkValidatFile(fileName.target.files[i].name)) return;
                         var fileData = fileName.target.files[i];
-                        this.initSize += fileData.size;
-                        if (this.checkFileSize()) {
-                            this.initSize -= fileData.size;
-                            return;
+                        if (this.maxFileSize > 0) {
+                            if (this.checkFileSize(fileData.size)) {
+                                return;
+                            }
+                        }
+
+                        if (this.maximumSize > 0) {
+                            this.initSize += fileData.size;
+                            if (this.checkTotalFilesSize()) {
+                                this.initSize -= fileData.size;
+                                return;
+                            }
                         }
                     }
 
@@ -140,7 +152,16 @@
                 }
                 this.$emit("FilesArray", this.uploadedFiles);
             },
-            checkFileSize() {
+            checkFileSize(filesize) {
+                if (filesize > this.maxFileSize * 1024 * 1024) {
+                    this.maxSize = true;
+                    return true;
+                } else {
+                    this.maxSize = false;
+                    return false;
+                }
+            },
+            checkTotalFilesSize() {
                 if (this.initSize > this.maximumSize * 1024 * 1024) {
                     this.maxSize = true;
                     return true;
@@ -155,7 +176,9 @@
                     this.uploadedFiles.splice(index, 1);
                     this.initSize = this.initSize - item.size;
                 }
-                this.checkFileSize();
+                if (this.maximumSize > 0) {
+                    this.checkTotalFilesSize();
+                }
                 document.getElementById("files1").value = "";
                 this.$emit("FilesArray", this.uploadedFiles);
             },
