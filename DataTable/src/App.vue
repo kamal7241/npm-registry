@@ -6,7 +6,10 @@
       :columns="columns"
       :config="config"
       :classes="classes"
+      :total_rows="rows.length"
       @on-change-page="onChangePage"
+      @on-change-query="onChangeQuery"
+      @on-change-per-page="onChangePerPage"
     >
       <template slot="id" slot-scope="props">
         <div class="inquery-item-id">
@@ -262,13 +265,20 @@ export default {
         rows_selectable: true,
         card_title: "Vue Bootsrap 4 advanced table",
         dir: "rtl",
-        per_page_options: [3, 4, 10, 14]
+        per_page_options: [3, 4, 10, 14],
+        per_page: 4,
       }
     };
   },
   methods: {
-    onChangePage(vale) {
-      console.log(vale);
+    onChangePage(val) {
+      console.log("page changed: ", val);
+    },
+    onChangeQuery(val) {
+      console.log("query changed: ", val);
+    },
+    onChangePerPage(val) {
+      console.log("per page changed: ", val);
     }
   }
 };

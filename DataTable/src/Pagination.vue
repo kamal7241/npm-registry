@@ -243,7 +243,10 @@ export default {
     },
     totalPages(newVal, oldVal) {
       this.calculatePageRange();
-    }
+    },
+    per_page_options(newVal, oldVal) {
+      this.fillDropdown();
+    },
   }
 };
 </script>

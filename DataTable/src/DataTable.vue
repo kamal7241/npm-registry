@@ -20,6 +20,17 @@
         </div>
       </div>
     </div>
+    <Pagination v-if="pagination"
+      :page="page"
+      :per_page="per_page"
+      :total="totalRows"
+      :num_of_visibile_pagination_buttons="num_of_visibile_pagination_buttons"
+      :per_page_options="per_page_options"
+      :dir="'rtl'"
+      @update:page="update_page"
+      @update:per_page="update_per_page"
+     >
+   </Pagination>
   </div>
 </template>
 
@@ -112,7 +123,7 @@
         original_rows: [],
         num_of_visibile_pagination_buttons: 5,
         temp_filtered_results: [],
-        pagination: true,
+        pagination: false,
         pagination_info: true,
         checkbox_rows: false,
         selected_items: [],
@@ -239,6 +250,14 @@
         }
         return column.visible(row);
       },
+      update_page(payload) {
+        this.page = payload;
+        // this.$emit('on-change-page', payload);
+      },
+      update_per_page(payload) {
+        this.per_page = payload;
+        this.$emit('on-change-per-page', payload);
+      },
     initConfig() {
         if (isEmpty(this.config)) {
           return;
@@ -251,7 +270,7 @@
 
         this.pagination = has(this.config, "pagination")
           ? this.config.pagination
-          : true;
+          : false;
 
         this.num_of_visibile_pagination_buttons = has(
           this.config,
@@ -421,8 +440,12 @@
       },
 
       initGlobalSearch() {
-        this.$refs.global_search.value = this.global_search.init.value;
-        this.query.global_search = this.global_search.init.value;
+        if (this.$refs.global_search){
+           this.$refs.global_search.value = this.global_search.init.value;
+        }
+        if (this.query) {
+           this.query.global_search = this.global_search.init.value;
+        }
       },
 
       hasFilter(column) {
