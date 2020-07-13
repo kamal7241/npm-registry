@@ -498,7 +498,7 @@
                 }
             },
             isArabic(text) {
-                var pattern = /^([\u0600-\u06ff]|[\u0750-\u077f]|[\ufb50-\ufbc1]|[\ufbd3-\ufd3f]|[\ufd50-\ufd8f]|[\ufd92-\ufdc7]|[\ufe70-\ufefc]|[\ufdf0-\ufdfd]|[0-9.]|[()+-=?!]|[ ]|[\n])*$/g;
+                var pattern = /^([\u0600-\u06ff]|[\u0750-\u077f]|[\ufb50-\ufbc1]|[\ufbd3-\ufd3f]|[\ufd50-\ufd8f]|[\ufd92-\ufdc7]|[\ufe70-\ufefc]|[\ufdf0-\ufdfd]|[0-9.]|[()+-=?!@$%&*^#]|[ ]|[\n])*$/g;
                 var result = pattern.test(text);
                 if (!result) {
                     this.reason = this.reason.substring(0, this.reason.length - 1);
