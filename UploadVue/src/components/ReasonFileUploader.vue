@@ -123,7 +123,7 @@
                                                     v-if="data.reasonFiles !=null && data.reasonFiles != '' "
                                                     @click="downlaodPdf(data.reasonFiles)">
                                                 <p class="p-class">
-                                                    {{data.reasonFiles.name}}
+                                                    {{data.reasonFileName}}
                                                     <i class="fa fa-download" style="font-size:16px"></i>
                                                 </p>
                                             </button>
@@ -432,15 +432,6 @@
             Data() {
                 this.setData();
             },
-            dataSource(val) {
-                if (
-                    !val.find(function (x) {
-                        return x.id == -1;
-                    })
-                ) {
-                    val.push({ id: -1, description: "السبب غير موجود" });
-                }
-            }
         },
         methods: {
             downlaodPdf(downloadedFile) {
@@ -550,7 +541,7 @@
                 if (selectOption) {
                     this.$emit("selectItems", selectOption);
 
-                    if (selectOption.id != -1) {
+                    if (!selectOption.isOtherReason) {
                         this.showSecondText = false;
                         this.reason = selectOption.description;
                         this.requestReasonId = selectOption.id;
@@ -559,6 +550,10 @@
                         this.reason = '';
                         this.requestReasonId = null;
                     }
+                } else {
+                    this.showSecondText = false;
+                    this.reason = '';
+                    this.requestReasonId = null;
                 }
             },
             addFile() {
