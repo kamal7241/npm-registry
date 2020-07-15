@@ -123,7 +123,7 @@
                                                     v-if="data.reasonFiles !=null && data.reasonFiles != '' "
                                                     @click="downlaodPdf(data.reasonFiles)">
                                                 <p class="p-class">
-                                                    {{data.reasonFiles.name}}
+                                                    {{data.reasonFileName}}
                                                     <i class="fa fa-download" style="font-size:16px"></i>
                                                 </p>
                                             </button>
@@ -432,15 +432,6 @@
             Data() {
                 this.setData();
             },
-            dataSource(val) {
-                if (
-                    !val.find(function (x) {
-                        return x.id == -1;
-                    })
-                ) {
-                    val.push({ id: -1, description: "السبب غير موجود" });
-                }
-            }
         },
         methods: {
             downlaodPdf(downloadedFile) {
@@ -507,7 +498,7 @@
                 }
             },
             isArabic(text) {
-                var pattern = /^([\u0600-\u06ff]|[\u0750-\u077f]|[\ufb50-\ufbc1]|[\ufbd3-\ufd3f]|[\ufd50-\ufd8f]|[\ufd92-\ufdc7]|[\ufe70-\ufefc]|[\ufdf0-\ufdfd]|[0-9.]|[()+-=?!]|[ ]|[\n])*$/g;
+                var pattern = /^([\u0600-\u06ff]|[\u0750-\u077f]|[\ufb50-\ufbc1]|[\ufbd3-\ufd3f]|[\ufd50-\ufd8f]|[\ufd92-\ufdc7]|[\ufe70-\ufefc]|[\ufdf0-\ufdfd]|[0-9.]|[()+-=?!@$%&*^#]|[ ]|[\n])*$/g;
                 var result = pattern.test(text);
                 if (!result) {
                     this.reason = this.reason.substring(0, this.reason.length - 1);
@@ -550,7 +541,7 @@
                 if (selectOption) {
                     this.$emit("selectItems", selectOption);
 
-                    if (selectOption.id != -1) {
+                    if (!selectOption.isOtherReason) {
                         this.showSecondText = false;
                         this.reason = selectOption.description;
                         this.requestReasonId = selectOption.id;
@@ -559,6 +550,10 @@
                         this.reason = '';
                         this.requestReasonId = null;
                     }
+                } else {
+                    this.showSecondText = false;
+                    this.reason = '';
+                    this.requestReasonId = null;
                 }
             },
             addFile() {
