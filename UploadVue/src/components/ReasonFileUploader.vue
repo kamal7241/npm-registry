@@ -132,7 +132,7 @@
                                                     v-else-if="data.reasonFileId !=null && data.reasonFileId != '' "
                                                     @click="downlaodUrl(data.reasonFileId)">
                                                 <p class="p-class">
-                                                    <i class="fa fa-download" style="font-size:16px"></i>
+                                                    {{data.reasonFileName}}
                                                 </p>
                                             </button>
 
