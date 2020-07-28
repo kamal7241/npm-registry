@@ -123,7 +123,7 @@
                                                     v-if="data.reasonFiles !=null && data.reasonFiles != '' "
                                                     @click="downlaodPdf(data.reasonFiles)">
                                                 <p class="p-class">
-                                                    {{data.reasonFileName}}
+                                                    {{data.reasonFiles.name}}
                                                     <i class="fa fa-download" style="font-size:16px"></i>
                                                 </p>
                                             </button>
