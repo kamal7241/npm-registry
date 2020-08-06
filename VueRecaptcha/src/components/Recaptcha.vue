@@ -1,6 +1,6 @@
 <template>
   <div class="form-group">
-    <vue-recaptcha :ref="ref" :sitekey="sitekey" :loadRecaptchaScript="true"  @verify="verify" @expired="expired">
+    <vue-recaptcha :ref="ref" :sitekey="sitekey" :language="language" :loadRecaptchaScript="true"  @verify="verify" @expired="expired">
     </vue-recaptcha>
   </div>
 </template>
@@ -18,6 +18,10 @@ const Recaptcha = {
     sitekey: String,
     verify: {
       type: Function
+    },
+    language:{
+      type: String,
+      default: 'ar-sa'
     },
     expired:{
       type: Function

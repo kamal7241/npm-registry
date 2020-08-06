@@ -1,15 +1,10 @@
 {
   "ExpandedNodes": [
     "",
-    "\\HijriMeladiPicker",
-    "\\HijriMeladiPicker\\src",
-    "\\HijriMeladiPicker\\src\\components",
-    "\\mobile-hijri-calander\\src",
-    "\\vue-hijri-calander",
-    "\\vue-hijri-calander\\src",
-    "\\vue-hijri-calander\\src\\components",
-    "\\vue-hijri-calander\\src\\components\\HijriCalender"
+    "\\VueRecaptcha",
+    "\\VueRecaptcha\\src",
+    "\\VueRecaptcha\\src\\components"
   ],
-  "SelectedNode": "\\vue-hijri-calander",
+  "SelectedNode": "\\VueRecaptcha\\src\\components\\Recaptcha.vue",
   "PreviewInSolutionExplorer": false
 }
