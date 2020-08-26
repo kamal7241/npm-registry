@@ -20,7 +20,7 @@
         </div>
       </div>
     </div>
-    <Pagination v-if="pagination"
+    <Pagination v-if="havePagination"
       :page="page"
       :per_page="per_page"
       :total="totalRows"
@@ -107,6 +107,10 @@
           return [];
         }
       },
+      havePagination: {
+        type: Boolean,
+        default: false
+      },
     },
     data() {
       return {
@@ -123,7 +127,7 @@
         original_rows: [],
         num_of_visibile_pagination_buttons: 5,
         temp_filtered_results: [],
-        pagination: false,
+        pagination: this.havePagination,
         pagination_info: true,
         checkbox_rows: false,
         selected_items: [],
