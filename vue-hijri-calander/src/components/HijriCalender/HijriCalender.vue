@@ -14,7 +14,7 @@
                     <strong v-bind="calenderProvider.currentDate">{{getCurrentDateFormated()}}</strong>
                     <button class="nextButton" @click="addMonth" type="button">&gt;&gt;</button>
                     <div class="yearAndMonthList" v-if="showMonthYearSelect">
-                      <div>
+                      <div class="dropdowns">
                         <span class="yearListContainer">
                           <select class="yearSelect" :value="getCurrentYear()" @change="onYearChange($event)">
                             <option  v-for="year in calenderProvider.yearsList" v-bind:key="year" :value="year">{{year}}</option> 
@@ -180,16 +180,23 @@ export default class HijriCalender extends Vue {
   z-index: 1000;
   color: black !important;
 }
-.hijriCalenderControls {
+.hijriCalenderControls , .dropdowns {
   direction: rtl;
-  text-align: center;
+  text-align: center !important;
+}
+
+.hijriCalenderControls button {
+  font: 400 13.3333px Arial !important;
+}
+
+.hijriCalenderControls select {
+    border: 1px solid !important;
 }
 
 .previousButton {
   position: absolute;
   border: 0px;
-  font-weight: bold;
-  font-size: 15px;
+  font: 900 13.3333px Arial !important;
   cursor: pointer;
   background-color: #fff;
   right: 15px;
@@ -200,8 +207,7 @@ export default class HijriCalender extends Vue {
 .nextButton {
   position: absolute;
   border: 0px;
-  font-weight: bold;
-  font-size: 15px;
+  font: 900 13.3333px Arial !important;
   cursor: pointer;
   background-color: #fff;
   left: 15px;
@@ -221,7 +227,7 @@ export default class HijriCalender extends Vue {
   height: 25px;
   padding: 1px;
   border: 1px solid #fff;
-  text-align: center;
+  text-align: center !important;
   -webkit-box-sizing: unset !important;
   box-sizing: unset;
 }
@@ -289,6 +295,7 @@ export default class HijriCalender extends Vue {
     border-radius: 0px;
     background-color: white;
     color: "";
+    text-align: center !important;
 }
 .monthDayButton:focus {
   outline: unset;
