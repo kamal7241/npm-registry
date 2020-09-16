@@ -1,6 +1,6 @@
 {
   "name": "@t2/attach-file",
-  "version": "0.2.15",
+  "version": "0.2.19",
   "private": false,
   "main": "./src/index.js",
   "module": "dist/AttachFile.esm.js",
