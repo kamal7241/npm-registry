@@ -1,6 +1,7 @@
 <template>
   <div class="listing-items-cont">
-    <div class="inquery-item-cont" v-for="(row, index) in vbt_rows" :key="index">
+    <div class="inquery-item-cont" v-for="(row, index) in vbt_rows" :key="index"
+         @click="rowClick(row, index)">
       <slot :name="getCellSlotName(vbt_columns[0])"
             :row="row"
             :column="vbt_columns[0]"
@@ -261,6 +262,9 @@
       update_per_page(payload) {
         this.per_page = payload;
         this.$emit('on-change-per-page', payload);
+      },
+      rowClick(row, index) {
+        this.$emit('rowClick', { row: row, index: index });
       },
     initConfig() {
         if (isEmpty(this.config)) {
