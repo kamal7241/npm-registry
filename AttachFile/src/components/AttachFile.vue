@@ -28,7 +28,7 @@
                     </div>
                 </div>
             </div>
-            <button v-if="status == 'Add' || status == 'Edit'"
+            <button v-if="(status == 'Add' || status == 'Edit') && showUplodeFile()"
                     :disabled="isDisabled"
                     @click="$refs.file.click()"
                     id="upfiles"
@@ -45,16 +45,16 @@
             </p>
             <span class="info-message"
                   style="color: red; font-weight: bold"
-                  v-if="this.maxSize && maxFileSize > 0">
+                  v-if="this.maxSize && (maxFileSize > 0|| maximumSize > 0)">
                 حجم الملف تجاوز ال {{ maxFileSize }}
                 Mb
             </span>
-            <span class="info-message"
+            <!-- <span class="info-message"
                   style="color: red; font-weight: bold"
                   v-if="this.maxSize && maximumSize > 0">
                 حجم الملف تجاوز ال {{ maximumSize }}
                 Mb
-            </span>
+            </span> -->
             <span class="info-message"
                   style="color: red; font-weight: bold"
                   v-if="!this.allowedEx">
@@ -243,6 +243,16 @@
                 }
                 return exts.join(",");
             },
+            showUplodeFile() {
+                if(this.uploadedFiles && this.attachmentsNumber === this.uploadedFiles.length) {
+                    return false;
+                }else if(this.isSingle && this.uploadedFiles &&  this.uploadedFiles.length === 1 ){
+                    return false;
+                }else{
+                    return true;
+                }
+
+            }
         },
     };
 </script>
