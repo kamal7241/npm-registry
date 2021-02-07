@@ -105,6 +105,10 @@
                 type: Array,
                 default: () => [],
             },
+            axiosInstance:{
+                type: axios,
+                default: null
+            },
         },
         data() {
             return {
@@ -227,9 +231,9 @@
                 }
             },
             downloadFile(fileId) {
-                const baseUrl = process.env.BASE_URL;
-                axios
-                    .get(baseUrl.concat("/file/", fileId), {
+                const baseUrl = '';
+                this.axiosInstance
+                    .get(baseUrl.concat("file/", fileId), {
                         responseType: "blob",
                     })
                     .then((response) => {
