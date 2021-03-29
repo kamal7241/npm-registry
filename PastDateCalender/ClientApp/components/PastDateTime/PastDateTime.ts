@@ -22,7 +22,7 @@ export default class PastDateTime extends Vue {
     public days: number[] = [];
     public currentDate: string = '';
     public isMounted: boolean = false;
-    public cultureType: boolean = true;
+    public cultureType: boolean | string = true;
     public selectedYear: string = '';
     public selectedMonth: MonthModel = { key: '', value: 0 };
     public selectedDay: string = '';
@@ -156,9 +156,10 @@ export default class PastDateTime extends Vue {
         if (!date) {
             return '';
         }
-        if (!this.cultureType) {
+        if (!this.cultureType || this.cultureType === 'false') {
             return momenthijri(date, 'iYYYY-iMM-iDD').format('YYYY-MM-DD');
         }
+        this.bindedDate = date;
         return date;
     }
     @Emit('hijridate')
@@ -167,9 +168,10 @@ export default class PastDateTime extends Vue {
         if (!date) {
             return '';
         }
-        if (this.cultureType) {
+        if (this.cultureType || this.cultureType === 'true') {
             return momenthijri(date, 'YYYY-MM-DD').format('iYYYY-iMM-iDD');
         }
+        this.bindedDate = date;
         return date;
     }
     public checkDate() {
