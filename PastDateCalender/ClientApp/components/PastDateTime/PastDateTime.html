@@ -1,0 +1,41 @@
+<div>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group">
+                <div class="d-flex">
+                    <div class="custom-control custom-radio">
+                        <input type="radio" v-model="cultureType" value="true" name="radio-calenderType"
+                            class="Form__tileCheck" :disabled="isViewMode" @change="getCalenderType(true)">
+                        <label class="Form__tileLabel ">ميلادي</label>
+                    </div>
+                    <div class="custom-control custom-radio">
+                        <input type="radio" v-model="cultureType" value="false" name="radio-calenderType"
+                            class="Form__tileCheck" :disabled="isViewMode" @change="getCalenderType(false)">
+                        <label class="Form__tileLabel">
+                            هجري</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <label>السنة</label>
+            <SelectTo v-model="selectedYear" :Data="years" :isMulti="false" :isSearchable="true" tittle="إختر .."
+                :showPreserve="false" :selectedoption="selectedYear" @SlectedItems="onSelectedYear">
+            </SelectTo>
+        </div>
+        <div class="col-md-3">
+            <label>الشهر</label>
+            <SelectTo v-model="selectedMonth" :Data="months" :isMulti="false" :isSearchable="true" tittle="إختر .."
+                :showPreserve="false" :selectedoption="selectedMonth" label="key" @SlectedItems="onSelectedMonth">
+            </SelectTo>
+        </div>
+        <div class="col-md-3">
+            <label>اليوم</label>
+            <SelectTo v-model="selectedDay" :Data="days" :isMulti="false" :isSearchable="true" tittle="إختر .."
+                :showPreserve="false" :selectedoption="selectedDay" @SlectedItems="onSelectedDay">
+            </SelectTo>
+        </div>
+    </div>
+</div>
