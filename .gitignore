@@ -2,7 +2,7 @@
 */node_modules
 */dist
 */aot
-
+*/.vs
 # local env files
 .env.local
 .env.*.local
