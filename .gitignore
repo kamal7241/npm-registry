@@ -334,6 +334,6 @@ ASALocalRun/
 **/dist/
 
 **/ClientApp/dist/
-**/.vs/*
+
 
 package-lock.json
