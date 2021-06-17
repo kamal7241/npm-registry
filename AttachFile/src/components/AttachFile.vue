@@ -95,6 +95,10 @@
                 type: axios,
                 default: null
             },
+            title: {
+                type: String,
+                default: "",
+            },
         },
         data() {
             return {
