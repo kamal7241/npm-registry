@@ -1,69 +1,55 @@
 <template>
-    <div>
-        <div class="Attachment">
-            <div class="attachments-box">
-                <input v-if="status == 'Add' || status == 'Edit'"
-                       :disabled="isDisabled"
-                       type="file"
-                       ref="file"
-                       multiple
-                       @change="
-            filesChange($event);
-            fileCount = $event.target.files.length;
-          "
-                       id="files1"
-                       style="opacity: 0"
-                       :accept="allowedFileExtentions()" />
-                <div class="item" v-for="item in uploadedFiles" :key="item.name">
-                    <label class="fileLabel">{{ item.name }}</label>
-                    <i v-if="status == 'Add' || status == 'Edit'"
-                       :disabled="isDisabled"
-                       aria-hidden="true"
-                       class="close-icon"
-                       @click="deleteFile(item)"></i>
-                    <div v-if="status != 'Add'">
-                        <i @click="downloadFile(item.id)"
-                           class="fa fa-download pointer"
-                           style="font-size: 16px"></i>
-                    </div>
+   <div class="V2">
+    <div class="form-group">
+        <div v-if="uploadedFiles.length > 0">
+            <div v-for="item in uploadedFiles" :key="item.name">
+                <i v-if="status == 'Add' || status == 'Edit'" :disabled="isDisabled" aria-hidden="true"
+                    class="Form__fieldWrapper icon icon-close" @click="deleteFile(item)">
+                </i>
+            </div>
+        </div>
+        <div v-else class="Form__fieldWrapper icon icon-file"></div>
+        <label v-if="status == 'Add' || status == 'Edit'"
+            :class="{ 'input__upload input__field input__field--big input__field--noTop input__upload--fill': uploadedFiles.length > 0}"
+            class="input__upload input__field input__field--big input__field--noTop">
+            <div v-if="uploadedFiles.length > 0">
+                <div v-for="item in uploadedFiles" :key="item.name">
+                    <span>{{ item.name }} </span>
                 </div>
             </div>
-            <button v-if="(status == 'Add' || status == 'Edit') && showUplodeFile()"
-                    :disabled="isDisabled"
-                    @click="$refs.file.click()"
-                    id="upfiles"
-                    title="تحميل المرفقات">
-                <i class="fa fa-upload" aria-hidden="true"></i>
-            </button>
-        </div>
-        <div class="AttachmentNote" v-if="status == 'Add' || status == 'Edit'">
-            <p v-if="this.allowedEx && !this.maxSize && this.maxFileSize > 0"
-               class="info-message">
+            <div v-else>
+                <span> اختر الملف </span>
+            </div>
+            <input v-if="(status == 'Add' || status == 'Edit')" :disabled="(isDisabled || uploadedFiles.length > 0)"
+                type="file" ref="file" multiple @change="filesChange($event); fileCount = $event.target.files.length;"
+                id="files1" style="opacity: 0" :accept="allowedFileExtentions()" />
+        </label>
+        <div v-if="status == 'Add' || status == 'Edit'">
+            <small v-if="this.allowedEx && !this.maxSize && this.maxFileSize > 0" class="small form-text text-muted">
                 الملفات المسموح بها{{ fileAllowedExtensions }}وحجم الملف{{
-          maxFileSize
-                }}Mb
-            </p>
-            <span class="info-message"
-                  style="color: red; font-weight: bold"
-                  v-if="this.maxSize && (maxFileSize > 0|| maximumSize > 0)">
-                حجم الملف تجاوز ال {{ maxFileSize }}
-                Mb
-            </span>
-            <!-- <span class="info-message"
-                  style="color: red; font-weight: bold"
-                  v-if="this.maxSize && maximumSize > 0">
-                حجم الملف تجاوز ال {{ maximumSize }}
-                Mb
-            </span> -->
-            <span class="info-message"
-                  style="color: red; font-weight: bold"
-                  v-if="!this.allowedEx">
-                &nbsp;&nbsp;
-                <u>{{ fileAllowedExtensions }}</u>
-                &nbsp;&nbsp; امتداد الملف غير مسموح به الملفات المسموح بها
-            </span>
+                maxFileSize}}Mb</small>
+            <small v-if="this.maxSize && (maxFileSize > 0|| maximumSize > 0)" class="small form-text text-muted">حجم
+                الملف تجاوز ال {{ maxFileSize }}
+                Mb</small>
+            <small v-if="!this.allowedEx" class="small form-text text-muted">{{ fileAllowedExtensions }} امتداد الملف
+                غير مسموح به الملفات المسموح بها</small>
         </div>
     </div>
+
+    <div class="card" v-if="status != 'Add' && status != 'Edit'">
+        <div class="card-body">
+            <div class="card-btns mt-3">
+                <h5 class="card-title mb-1 d-flex flex-md-row align-items-center justify-content-between">
+                    <strong class="h5 mb-0 font-weight-bold">{{ title }}</strong>
+                </h5>
+                <div v-for="item in uploadedFiles" :key="item.name">
+                    <a @click="downloadFile(item.id)" class="btn btn-sm btn-primary px-2" style="font-size: 16px">تحميل
+                        الملف</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </template>
 <script>
     import { saveAs } from "file-saver";
@@ -260,83 +246,3 @@
         },
     };
 </script>
-<style scoped>
-    .item {
-        float: right;
-        border: 1px solid #cdcaca;
-        color: #5e5e5e;
-        border-radius: 10px;
-        text-align: center;
-        padding: 6px 15px;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        height: 25px;
-        width: 158px;
-        margin: 0px;
-        overflow: visible;
-        position: relative;
-        margin-left: 10px;
-        margin-right: 18px;
-    }
-
-    .attachments-box {
-        display: inline-block;
-        width: 100%;
-        margin: 0 5px;
-        padding: 0.375rem 0.75rem;
-        font-size: 1rem;
-        font-weight: 400;
-        line-height: 1.5;
-        color: #495057;
-        background-color: #fff;
-        background-clip: padding-box;
-        border: 1px solid #ced4da;
-        border-radius: 0.25rem;
-        -webkit-transition: border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
-        transition: border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
-        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
-        min-height: 35px;
-    }
-
-    .close-icon {
-        position: absolute;
-        color: white;
-        top: -10px;
-        left: -10px;
-        float: right;
-        display: block;
-        box-sizing: border-box;
-        width: 14px;
-        height: 14px;
-        border-width: 3px;
-        border-style: solid;
-        border-color: red;
-        border-radius: 100%;
-        background: -webkit-linear-gradient( -45deg, transparent 0%, transparent 46%, white 46%, white 56%, transparent 56%, transparent 100% ), -webkit-linear-gradient(45deg, transparent 0%, transparent 46%, white 46%, white 56%, transparent 56%, transparent 100%);
-        background-color: red;
-        transition: all 0.3s ease;
-    }
-
-    .img {
-        height: 20px;
-        float: left;
-        width: 20px;
-    }
-
-    .fileLabel {
-        float: right;
-        width: 125px;
-        line-height: 1;
-        font-size: 14px;
-        clear: both;
-        display: inline-block;
-        overflow: hidden;
-        white-space: nowrap;
-    }
-
-    .pointer {
-        cursor: pointer;
-    }
-</style>
