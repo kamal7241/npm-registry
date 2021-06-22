@@ -8,7 +8,7 @@
                 </i>
             </div>
         </div>
-        <div v-else class="Form__fieldWrapper icon icon-file"></div>
+        <div v-if="uploadedFiles.length == 0 && (status == 'Add' || status == 'Edit')" class="Form__fieldWrapper icon icon-file"></div>
         <label v-if="status == 'Add' || status == 'Edit'"
             :class="{ 'input__upload input__field input__field--big input__field--noTop input__upload--fill': uploadedFiles.length > 0}"
             class="input__upload input__field input__field--big input__field--noTop">
@@ -36,12 +36,12 @@
         </div>
     </div>
 
-    <div class="card" v-if="status != 'Add' && status != 'Edit'">
+    <div class="card mb-2" v-if="status != 'Add' && status != 'Edit' && uploadedFiles.length > 0">
         <div class="card-body">
-            <div class="card-btns mt-3">
-                <h5 class="card-title mb-1 d-flex flex-md-row align-items-center justify-content-between">
+             <h5 class="card-title mb-1 d-flex flex-md-row align-items-center justify-content-between">
                     <strong class="h5 mb-0 font-weight-bold">{{ title }}</strong>
                 </h5>
+            <div class="card-btns mt-3">
                 <div v-for="item in uploadedFiles" :key="item.name">
                     <a @click="downloadFile(item.id)" class="btn btn-sm btn-primary px-2" style="font-size: 16px">تحميل
                         الملف</a>
