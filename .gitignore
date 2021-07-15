@@ -334,7 +334,7 @@ ASALocalRun/
 **/dist/
 
 **/ClientApp/dist/
-
+**/aot/
 
 package-lock.json
 .DS_Store

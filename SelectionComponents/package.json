@@ -12,7 +12,8 @@
     "build:es": "rollup --config build/rollup.config.js --format es --file dist/selectioncomponents.esm.js",
     "build:umd": "rollup --config build/rollup.config.js --format umd --file dist/selectioncomponents.umd.js",
     "build:unpkg": "rollup --config build/rollup.config.js --format iife --file dist/selectioncomponents.min.js",
-    "dev": "node build/dev-server.js"
+    "dev": "node build/dev-server.js",
+    "refreshVSToken": "npx vsts-npm-auth -config .npmrc"
   },
   "main": "dist/selectioncomponents.umd.js",
   "module": "dist/selectioncomponents.esm.js",

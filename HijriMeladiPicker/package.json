@@ -12,7 +12,8 @@
     "build:es": "rollup --config build/rollup.config.js --format es --file dist/HGDatePicker.esm.js",
     "build:umd": "rollup --config build/rollup.config.js --format umd --file dist/HGDatePicker.umd.js",
     "build:unpkg": "rollup --config build/rollup.config.js --format iife --file dist/HGDatePicker.min.js",
-    "dev": "node build/dev-server.js"
+    "dev": "node build/dev-server.js",
+    "refreshVSToken": "npx vsts-npm-auth -config .npmrc"
   },
   "main": "dist/HGDatePicker.umd.js",
   "module": "dist/HGDatePicker.esm.js",

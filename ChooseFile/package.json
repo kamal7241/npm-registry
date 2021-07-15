@@ -15,7 +15,8 @@
   "scripts": {
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "serve": "vue-cli-service serve"
+    "serve": "vue-cli-service serve",
+    "refreshVSToken": "npx vsts-npm-auth -config .npmrc"
   },
   "dependencies": {
     "bootstrap": "^4.3.1",

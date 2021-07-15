@@ -13,7 +13,8 @@
     "build-bundle2": "vue-cli-service build --target wc --name DataTable ./src/components/*.vue",
     "build:es": "rollup --config build/rollup.config.js --format es --file dist/DataTable.esm.js",
     "build:umd": "rollup --config build/rollup.config.js --format umd --file dist/DataTable.umd.js",
-    "build:unpkg": "rollup --config build/rollup.config.js --format iife --file dist/DataTable.min.js"
+    "build:unpkg": "rollup --config build/rollup.config.js --format iife --file dist/DataTable.min.js",
+    "refreshVSToken": "npx vsts-npm-auth -config .npmrc"
   },
   "main": "dist/DataTable.umd.js",
   "module": "dist/DataTable.esm.js",
