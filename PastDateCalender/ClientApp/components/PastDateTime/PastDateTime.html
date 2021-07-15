@@ -1,45 +1,30 @@
 <div>
-    <div class="row">
-        <div class="col-md-8">
-            <div class="form-group">
-                <div class="step__radios row">
-                    <div class="col-sm-12 col-md-auto">
-                        <input type="radio" v-model="cultureType" value="true" name="radio-calenderType"
-                            class="radio__input" :disabled="isViewMode" @change="getCalenderType(true)"
-                            :id="'gregorian'+_uid">
-                        <label class="radio step__radio w-100 m-0" :for="'gregorian'+_uid">ميلادي</label>
-                    </div>
-                    <div class="col-sm-12 col-md-auto">
-                        <input type="radio" v-model="cultureType" value="false" name="radio-calenderType"
-                            class="radio__input" :disabled="isViewMode" @change="getCalenderType(false)"
-                            :id="'hijri'+_uid">
-                        <label class="radio step__radio w-100 m-0" :for="'hijri'+_uid">
-                            هجري</label>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="duration__togglerWrapper mr-auto">
+        <input type="checkbox" name="durationToggler" :disabled="isViewMode" v-model="isGregorianInternal"
+               @change="getCalenderType()" id="durationToggler">
+        <label for="durationToggler" class="duration__toggler">
+            <span class="duration__switch"></span>
+        </label>
+        <span>هجري</span>
+        <span>ميلادي</span>
     </div>
     <div class="row">
-        <div class="col-md-3">
-            <label>السنة</label>
-            <SelectTo v-model="selectedYear" :Data="years" :isMulti="false" :isSearchable="true" tittle="إختر .."
-                :showPreserve="false" :selectedoption="selectedYear" @SlectedItems="onSelectedYear"
-                :isDisabled="isViewMode" :id="'year'+_uid">
+        <div class="col">
+            <SelectTo v-model="selectedYear" :Data="years" :isMulti="false" :isSearchable="true" tittle="السنة"
+                      :showPreserve="false" :selectedoption="selectedYear" @SlectedItems="onSelectedYear"
+                      :isDisabled="isViewMode" :id="'year'+_uid">
             </SelectTo>
         </div>
-        <div class="col-md-3">
-            <label>الشهر</label>
-            <SelectTo v-model="selectedMonth" :Data="months" :isMulti="false" :isSearchable="true" tittle="إختر .."
-                :showPreserve="false" :selectedoption="selectedMonth" label="key" @SlectedItems="onSelectedMonth"
-                :isDisabled="isViewMode" :id="'month'+_uid">
+        <div class="col">
+            <SelectTo v-model="selectedMonth" :Data="months" :isMulti="false" :isSearchable="true" tittle="الشهر"
+                      :showPreserve="false" :selectedoption="selectedMonth" label="key" @SlectedItems="onSelectedMonth"
+                      :isDisabled="isViewMode" :id="'month'+_uid">
             </SelectTo>
         </div>
-        <div class="col-md-3">
-            <label>اليوم</label>
-            <SelectTo v-model="selectedDay" :Data="days" :isMulti="false" :isSearchable="true" tittle="إختر .."
-                :showPreserve="false" :selectedoption="selectedDay" @SlectedItems="onSelectedDay"
-                :isDisabled="isViewMode" :id="'day'+_uid">
+        <div class="col">
+            <SelectTo v-model="selectedDay" :Data="days" :isMulti="false" :isSearchable="true" tittle="اليوم"
+                      :showPreserve="false" :selectedoption="selectedDay" @SlectedItems="onSelectedDay"
+                      :isDisabled="isViewMode" :id="'day'+_uid">
             </SelectTo>
         </div>
     </div>

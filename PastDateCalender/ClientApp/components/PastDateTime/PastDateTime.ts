@@ -22,7 +22,7 @@ export default class PastDateTime extends Vue {
     public days: number[] = [];
     public currentDate: string = '';
     public isMounted: boolean = false;
-    public cultureType: boolean | string = true;
+    public isGregorianInternal: boolean = true;
     public selectedYear: string = '';
     public selectedMonth: MonthModel = { key: '', value: 0 };
     public selectedDay: string = '';
@@ -55,7 +55,7 @@ export default class PastDateTime extends Vue {
         'ذو الحجة - 12',
     ];
     public mounted() {
-        this.cultureType = this.isGregorian;
+        this.isGregorianInternal = this.isGregorian;
         moment.locale('en-us');
         if (this.isGregorian) {
             this.currentDate = moment().format('YYYY-MM-DD');
@@ -103,8 +103,8 @@ export default class PastDateTime extends Vue {
     public get isViewMode() {
         return this.mode === 'View';
     }
-    public getCalenderType(isGregorian: boolean) {
-        if (isGregorian) {
+    public getCalenderType() {
+        if (this.isGregorianInternal) {
             this.currentDate = momenthijri(this.currentDate, 'iYYYY-iMM-iDD').format('YYYY-MM-DD');
             if (this.bindedDate) {
                 this.bindedDate = momenthijri(this.bindedDate, 'iYYYY-iMM-iDD').format('YYYY-MM-DD');
@@ -115,7 +115,7 @@ export default class PastDateTime extends Vue {
                 this.bindedDate = momenthijri(this.bindedDate, 'YYYY-MM-DD').format('iYYYY-iMM-iDD');
             }
         }
-        this.isGregorian = isGregorian;
+        this.isGregorian = this.isGregorianInternal;
         this.getYears();
         this.getMonths();
         this.getDays(Number.parseInt(this.currentDate.split('-')[1], 10)
@@ -156,7 +156,7 @@ export default class PastDateTime extends Vue {
         if (!date) {
             return '';
         }
-        if (!this.cultureType || this.cultureType === 'false') {
+        if (!this.isGregorianInternal) {
             return momenthijri(date, 'iYYYY-iMM-iDD').format('YYYY-MM-DD');
         }
         this.bindedDate = date;
@@ -168,7 +168,7 @@ export default class PastDateTime extends Vue {
         if (!date) {
             return '';
         }
-        if (this.cultureType || this.cultureType === 'true') {
+        if (this.isGregorianInternal) {
             return momenthijri(date, 'YYYY-MM-DD').format('iYYYY-iMM-iDD');
         }
         this.bindedDate = date;
