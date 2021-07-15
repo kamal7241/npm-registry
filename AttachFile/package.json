@@ -24,7 +24,8 @@
         "build": "npm run build:umd & npm run build:es & npm run build:unpkg",
         "build:umd": "rollup --config build/rollup.config.js --format umd --file dist/AttachFile.umd.js",
         "build:es": "rollup --config build/rollup.config.js --format es --file dist/AttachFile.esm.js",
-        "build:unpkg": "rollup --config build/rollup.config.js --format iife --file dist/AttachFile.min.js"
+        "build:unpkg": "rollup --config build/rollup.config.js --format iife --file dist/AttachFile.min.js",
+        "refreshVSToken": "npx vsts-npm-auth -config .npmrc -F"
     },
     "dependencies": {
         "@types/file-saver": "^2.0.1",

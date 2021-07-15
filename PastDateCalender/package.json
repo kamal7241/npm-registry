@@ -9,7 +9,8 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "watch": "vue-cli-service build --watch"
+    "watch": "vue-cli-service build --watch",
+    "refreshVSToken": "npx vsts-npm-auth -config .npmrc -F"
   },
   "module": "ClientApp/components/PastDateTime/PastDateTime.ts",
   "dependencies": {
@@ -49,6 +50,7 @@
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
     "typescript": "^3.5.1",
+    "vsts-npm-auth": "^0.41.0",
     "vue-cli-plugin-axios": "0.0.4",
     "vue-cli-plugin-vuetify": "^0.5.0",
     "vue-template-compiler": "^2.6.10",

@@ -1,5 +1,5 @@
 {
-  "name": "@T2/MobileDatePicker",
+  "name": "@t2/mobile-date-picker",
   "version": "0.0.11",
   "author": "T2-MobileTeam",
   "description": "Date picker",
@@ -11,7 +11,8 @@
   "scripts": {
     "ngc": "ngc",
     "build": "npm run ngc",
-    "publishPackage": "npm run build && npm publish"
+    "publishPackage": "npm run build && npm publish",
+    "refreshVSToken": "npx vsts-npm-auth -config .npmrc -F"
   },
   "keywords": [],
   "dependencies": {
