@@ -10,22 +10,19 @@
     </div>
     <div class="row">
         <div class="col">
-            <label>السنة</label>
-            <SelectTo v-model="selectedYear" :Data="years" :isMulti="false" :isSearchable="true" tittle="إختر .."
+            <SelectTo v-model="selectedYear" :Data="years" :isMulti="false" :isSearchable="true" tittle="السنة"
                       :showPreserve="false" :selectedoption="selectedYear" @SlectedItems="onSelectedYear"
                       :isDisabled="isViewMode" :id="'year'+_uid">
             </SelectTo>
         </div>
         <div class="col">
-            <label>الشهر</label>
-            <SelectTo v-model="selectedMonth" :Data="months" :isMulti="false" :isSearchable="true" tittle="إختر .."
+            <SelectTo v-model="selectedMonth" :Data="months" :isMulti="false" :isSearchable="true" tittle="الشهر"
                       :showPreserve="false" :selectedoption="selectedMonth" label="key" @SlectedItems="onSelectedMonth"
                       :isDisabled="isViewMode" :id="'month'+_uid">
             </SelectTo>
         </div>
         <div class="col">
-            <label>اليوم</label>
-            <SelectTo v-model="selectedDay" :Data="days" :isMulti="false" :isSearchable="true" tittle="إختر .."
+            <SelectTo v-model="selectedDay" :Data="days" :isMulti="false" :isSearchable="true" tittle="اليوم"
                       :showPreserve="false" :selectedoption="selectedDay" @SlectedItems="onSelectedDay"
                       :isDisabled="isViewMode" :id="'day'+_uid">
             </SelectTo>
