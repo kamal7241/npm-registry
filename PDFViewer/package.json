@@ -13,7 +13,7 @@
     "build:umd": "rollup --config build/rollup.config.js --format umd --file dist/pdf.umd.js",
     "build:unpkg": "rollup --config build/rollup.config.js --format iife --file dist/pdf.min.js",
     "dev": "node build/dev-server.js",
-    "refreshVSToken": "npx vsts-npm-auth -config .npmrc"
+    "refreshVSToken": "npx vsts-npm-auth -config .npmrc -F"
   },
   "main": "dist/pdf.umd.js",
   "module": "dist/pdf.esm.js",

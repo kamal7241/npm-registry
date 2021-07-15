@@ -16,7 +16,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "refreshVSToken": "npx vsts-npm-auth -config .npmrc"
+    "refreshVSToken": "npx vsts-npm-auth -config .npmrc -F"
   },
   "dependencies": {
     "core-js": "^2.6.5",

@@ -12,7 +12,7 @@
     "ngc": "ngc",
     "build": "npm run ngc",
     "publishPackage": "npm run build && npm publish",
-    "refreshVSToken": "npx vsts-npm-auth -config .npmrc"
+    "refreshVSToken": "npx vsts-npm-auth -config .npmrc -F"
   },
   "keywords": [],
   "dependencies": {

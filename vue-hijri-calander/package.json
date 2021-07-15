@@ -13,7 +13,7 @@
     "build:umd": "rollup --config build/rollup.config.js --format umd --file dist/HijriCalender.umd.js",
     "build:unpkg": "rollup --config build/rollup.config.js --format iife --file dist/HijriCalender.min.js",
     "dev": "node build/dev-server.js",
-    "refreshVSToken": "npx vsts-npm-auth -config .npmrc"
+    "refreshVSToken": "npx vsts-npm-auth -config .npmrc -F"
   },
   "main": "dist/HijriCalender.umd.js",
   "module": "dist/HijriCalender.esm.js",

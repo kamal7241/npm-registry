@@ -26,7 +26,7 @@
     "build:umd": "rollup --config build/rollup.config.js --format umd --file dist/SelectTo.umd.js",
     "build:es": "rollup --config build/rollup.config.js --format es --file dist/SelectTo.esm.js",
     "build:unpkg": "rollup --config build/rollup.config.js --format iife --file dist/SelectTo.min.js",
-    "refreshVSToken": "npx vsts-npm-auth -config .npmrc"
+    "refreshVSToken": "npx vsts-npm-auth -config .npmrc -F"
   },
   "dependencies": {
     "core-js": "^2.6.5",
