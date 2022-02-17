@@ -2,17 +2,17 @@
   <div id="app">
     <AttachFile
       :maximumSize="10"
-      :fileExtinstion="fileExtinstion"
-      :isSingle="false"
+      :isSingle="true"
+
       @FilesArray="AllFiles"
-    ></AttachFile>
+    />
   </div>
 </template>
 
 <script>
 import AttachFile from "./components/AttachFile.vue";
 export default {
-  name: "app",
+  name: "App",
   components: { AttachFile },
   data() {
     return {
