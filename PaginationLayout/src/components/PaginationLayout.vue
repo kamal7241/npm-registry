@@ -145,9 +145,9 @@ export default {
       type: Boolean,
       default: true,
     },
-    isSSPDisabled: {
+    enableServerSidePagination: {
       type: Boolean,
-      default: false,
+      default: true,
     },    
     enableReadableStreamParse: {
       type: Boolean,
@@ -186,12 +186,12 @@ export default {
       return this.currentPage === this.availablePagesCount;
     },
     generatedList() {
-      const { currentPage, currentPageSize, isSSPDisabled, list } = this;
+      const { currentPage, currentPageSize, enableServerSidePagination, list } = this;
       const currentList = JSON.parse(JSON.stringify(list));
       const currentPageNumber = (currentPage * currentPageSize) - currentPageSize;
       const modifiedList = currentList.splice(currentPageNumber, currentPageSize);
 
-      return isSSPDisabled ? modifiedList : list;
+      return enableServerSidePagination ? list : modifiedList;
     },
     // for customization
     paginationProps() {
@@ -242,7 +242,7 @@ export default {
         ...data,
       };
 
-      if(!this.isSSPDisabled) {
+      if(this.enableServerSidePagination) {
         payload[this.serverPageSizeKey]= this.currentPageSize;
         payload[this.serverPageNumberKey]= this.currentPage;
       }
@@ -257,24 +257,24 @@ export default {
         let data = [];
         let totalCount = 0;
 
-        if(this.isSSPDisabled) {
+        if(!this.enableServerSidePagination) {
           data = this.isDirectData ? result : dataTarget;
         } else {
           data =  this.nestedDataKey ? dataTarget[this.nestedDataKey] : dataTarget;
           totalCount = result[this.totalCountKey];
         }
 
-        if (this.cascadeMode && !this.isSSPDisabled) {
+        if (this.cascadeMode && this.enableServerSidePagination) {
           this.list = this.list.concat(data);
         } else {
           this.list = data || [];
         }
 
-        this.totalCount = this.isSSPDisabled ? data.length : totalCount;
+        this.totalCount = this.enableServerSidePagination ? totalCount : data.length;
         // update parent
         this.$emit("search", { 
           data, 
-          totalCount : this.isSSPDisabled ?  data.length : totalCount
+          totalCount : this.enableServerSidePagination ? totalCount : data.length
         });
       } catch(err) {
         console.error('[ERROR IN FETCHING]', err.message)
@@ -286,7 +286,7 @@ export default {
     onFirstPageActionClicked() {
       this.currentPage = 0;
 
-      if(!this.isSSPDisabled) {
+      if(this.enableServerSidePagination) {
         this.loadResults();
       }
 
@@ -294,21 +294,21 @@ export default {
     onPreviousPageActionClicked() {
       this.currentPage -= 1;
 
-      if(!this.isSSPDisabled) {
+      if(this.enableServerSidePagination) {
         this.loadResults();
       }
     },    
     onNextPageActionClicked() {
       this.currentPage += 1;
 
-      if(!this.isSSPDisabled) {
+      if(this.enableServerSidePagination) {
         this.loadResults();
       }
     },    
     onLastPageActionClicked() {
       this.currentPage = this.availablePagesCount;
 
-      if(!this.isSSPDisabled) {
+      if(this.enableServerSidePagination) {
         this.loadResults();
       }
     },
@@ -316,7 +316,7 @@ export default {
       this.currentPageSize = currentPageSize;
       this.currentPage = 0;
 
-      if(!this.isSSPDisabled) {
+      if(this.enableServerSidePagination) {
         this.loadResults();
       }
     }
