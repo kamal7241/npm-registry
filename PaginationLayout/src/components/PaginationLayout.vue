@@ -20,7 +20,7 @@
     >
       <slot
         name="list"
-        :data="list"
+        :data="generatedList"
       />    
     
       <div class="navigation">
@@ -39,7 +39,7 @@
               :disabled="isFirstPageActionDisabled"
               @click="onFirstPageActionClicked"
             >
-              الصفحة الأولى
+              {{ strings.firstPageText }}
             </button>   
         
             <button
@@ -47,7 +47,7 @@
               :disabled="isFirstPageActionDisabled"
               @click="onPreviousPageActionClicked"
             >
-              السابق
+              {{ strings.prevPageText }}
             </button>   
         
             <button
@@ -55,7 +55,7 @@
               :disabled="isLastPageActionDisabled"
               @click="onNextPageActionClicked"
             >
-              التالي
+              {{ strings.nextPageText }}
             </button>
 
             <button
@@ -63,7 +63,7 @@
               :disabled="isLastPageActionDisabled"
               @click="onLastPageActionClicked"
             >
-              الصفحة الأخيرة
+              {{ strings.lastPageText }}
             </button>
           </div>
 
@@ -98,6 +98,10 @@ export default {
       required: true,
     },
     additionalPayload: {
+      type: Object,
+      default: () => ({}),
+    },        
+    localizations: {
       type: Object,
       default: () => ({}),
     },    
@@ -137,6 +141,14 @@ export default {
       type: Boolean,
       default: false,
     },    
+    isDirectData: {
+      type: Boolean,
+      default: true,
+    },
+    enableServerSidePagination: {
+      type: Boolean,
+      default: true,
+    },    
     enableReadableStreamParse: {
       type: Boolean,
       default: false,
@@ -165,13 +177,21 @@ export default {
   },
   computed: {
     availablePagesCount() {
-      return Math.ceil(this.totalCount / this.currentPageSize);
+      return Math.ceil(this.totalCount / this.currentPageSize) - 1;
     },
     isFirstPageActionDisabled() {
       return this.currentPage === 0;
     },
     isLastPageActionDisabled() {
       return this.currentPage === this.availablePagesCount;
+    },
+    generatedList() {
+      const { currentPage, currentPageSize, enableServerSidePagination, list } = this;
+      const currentList = JSON.parse(JSON.stringify(list));
+      const currentPageNumber = (currentPage * currentPageSize) - currentPageSize;
+      const modifiedList = currentList.splice(currentPageNumber, currentPageSize);
+
+      return enableServerSidePagination ? list : modifiedList;
     },
     // for customization
     paginationProps() {
@@ -182,6 +202,15 @@ export default {
         currentPageSize: this.currentPageSize,
         isLastPageActionDisabled: this.isLastPageActionDisabled,
         isFirstPageActionDisabled: this.isFirstPageActionDisabled,
+      }
+    },
+    strings() {
+      return {
+        firstPageText: 'الصفحة الأولى',
+        nextPageText: 'التالي',
+        prevPageText: 'السابق',
+        lastPageText: 'الصفحة الأخيرة',
+        ...this.localizations
       }
     }
   },
@@ -211,29 +240,42 @@ export default {
       // To be done [Show Loader]
       const payload = {
         ...data,
-        [this.serverPageSizeKey]: this.currentPageSize,
-        [this.serverPageNumberKey]: this.currentPage,
       };
+
+      if(this.enableServerSidePagination) {
+        payload[this.serverPageSizeKey]= this.currentPageSize;
+        payload[this.serverPageNumberKey]= this.currentPage;
+      }
 
       this.isLoading = true;
 
       try {
         const fetchData = await this.endpoint(serializeQueryParams(payload));
         const result = this.enableReadableStreamParse ? await fetchData.json() : fetchData;
-        const target = result[this.dataTargetKey] || [];
+        const dataTarget = result[this.dataTargetKey] || [];
 
-        const data = this.nestedDataKey ? target[this.nestedDataKey] : target;
-        const totalCount = result[this.totalCountKey];
+        let data = [];
+        let totalCount = 0;
 
-        if (this.cascadeMode) {
+        if(!this.enableServerSidePagination) {
+          data = this.isDirectData ? result : dataTarget;
+        } else {
+          data =  this.nestedDataKey ? dataTarget[this.nestedDataKey] : dataTarget;
+          totalCount = result[this.totalCountKey];
+        }
+
+        if (this.cascadeMode && this.enableServerSidePagination) {
           this.list = this.list.concat(data);
         } else {
           this.list = data || [];
         }
 
-        this.totalCount = totalCount;
+        this.totalCount = this.enableServerSidePagination ? totalCount : data.length;
         // update parent
-        this.$emit("search", { data, totalCount } || {});
+        this.$emit("search", { 
+          data, 
+          totalCount : this.enableServerSidePagination ? totalCount : data.length
+        });
       } catch(err) {
         console.error('[ERROR IN FETCHING]', err.message)
       }
@@ -244,28 +286,39 @@ export default {
     onFirstPageActionClicked() {
       this.currentPage = 0;
 
-      this.loadResults();
+      if(this.enableServerSidePagination) {
+        this.loadResults();
+      }
+
     },   
     onPreviousPageActionClicked() {
       this.currentPage -= 1;
 
-      this.loadResults();
+      if(this.enableServerSidePagination) {
+        this.loadResults();
+      }
     },    
     onNextPageActionClicked() {
       this.currentPage += 1;
 
-      this.loadResults();
+      if(this.enableServerSidePagination) {
+        this.loadResults();
+      }
     },    
     onLastPageActionClicked() {
       this.currentPage = this.availablePagesCount;
 
-      this.loadResults();
+      if(this.enableServerSidePagination) {
+        this.loadResults();
+      }
     },
     onChangePageSize(currentPageSize) {
       this.currentPageSize = currentPageSize;
       this.currentPage = 0;
 
-      this.loadResults();
+      if(this.enableServerSidePagination) {
+        this.loadResults();
+      }
     }
   },
 }
