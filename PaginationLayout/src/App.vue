@@ -9,8 +9,10 @@
       totalCountKey="totalPassengers"
       enableReadableStreamParse
       :cascadeMode="false"
+      :isSSPDisabled="false"
       :additionalPayload="additionalPayload"
       :pageSizeOptions="[50, 100, 30]"
+      :localizations="localizations"
       @search="onSearch"
     >
       <!-- Customize Loading slot -->
@@ -29,7 +31,7 @@
       </template>
       
       <!-- Customize pagination slot -->
-      <template
+      <!-- <template
         #pagination="{
           data,
           onChangePageSize,
@@ -70,7 +72,7 @@
         >
           الصفحة الأخيرة
         </button>
-      </template>
+      </template> -->
     </PaginationLayout>
   </div>
 </template>
@@ -84,8 +86,13 @@ export default {
   },
   data() {
     return {
-      additionalPayload: {name: 'mohammed'},
+      additionalPayload: {},
+      localizations: {
+        firstPageText: 'الأولى',
+        lastPageText: 'الأخيرة',
+      },
       endpoint: serverSideLink => fetch(`https://api.instantwebtools.net/v1/passenger${serverSideLink}`)
+      // endpoint: serverSideLink => fetch(`http://jsonplaceholder.typicode.com/photos?_limit=100${serverSideLink}`)
     };
   },
   methods: {
