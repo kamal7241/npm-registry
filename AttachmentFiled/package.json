@@ -1,5 +1,5 @@
 {
-    "name": "attachment-field",
+    "name": "@moj/attachment-field",
     "version": "0.0.3",
     "private": false,
     "main": "./src/index.js",
