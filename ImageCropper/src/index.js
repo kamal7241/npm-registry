@@ -1,18 +1,18 @@
 import ImageCropper from "./components/ImageCropper.vue";
 
-const UploadComponents = {
+const ImageCropperComponents = {
 	ImageCropper
 }
 
-const UploadComponentsPlugin = {
+const ImageCropperComponentsPlugin = {
 	install(Vue) {
-		Object.keys(UploadComponents).forEach((name) => {
-			Vue.component(name, UploadComponents[name])
+		Object.keys(ImageCropperComponents).forEach((name) => {
+			Vue.component(name, ImageCropperComponents[name])
 		})
 	}
 }
 
-export default UploadComponentsPlugin
+export default ImageCropperComponentsPlugin
 
 export {
 	ImageCropper

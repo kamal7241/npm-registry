@@ -1,16 +1,27 @@
 <template>
-  <div class='canvas-wrapper'>
-
+  <div class="canvas-wrapper">
     <CropperDialog
-      v-if='showModal'
-      :show='showModal'
-      :selectedImage='imageSrc'
-      :fileExtention='fileExtention'
-      @close='onCloseModal'
-      @save='onSaveCroppedImage'
+      v-if="showModal"
+      :show="showModal"
+      :selectedImage="imageSrc"
+      :fileExtention="fileExtention"
+      @close="onCloseModal"
+      @save="onSaveCroppedImage"
     />
 
     <div class="flex justify-center content-end mt-2">
+      <div
+        v-if="!croppedImage"
+        class="cropped-image-placeholder"
+      >
+        اضغط هنا 
+      </div>      
+      <div
+        v-else
+        class="cropped-image-placeholder"
+        :style="`background-image: url(${croppedImage})`"
+      />
+
       <button
         class="btn btn-blue w-32 mx-2"
         @click="$refs.imageInput.click()"
@@ -19,14 +30,13 @@
       </button>
 
       <input
-        type="file"
         ref="imageInput"
+        type="file"
         accept="image/*"
-        @change="onSelectImage"
         :style="{ display: 'none' }"
-      />
+        @change="onSelectImage"
+      >
     </div>
-
   </div>
 </template>
 
@@ -44,13 +54,21 @@ export default {
       // imageInput: null,
       selectedFile: null,
       imageSrc: null,
-      fileExtention: null
+      fileExtention: null,
+      croppedData: {}
+    }
+  },
+  computed: {
+    croppedImage() {
+      const { croppedImage } = this.croppedData;
+      
+      return croppedImage;
     }
   },
   methods: {
     onSelectImage (e) {
       const files = e.target.files || e.dataTransfer.files;
-
+  console.log('e.target.files',e.target.files)
       if (files.length) {
         const file = files[0];
         const fileReader = new FileReader();
@@ -75,7 +93,8 @@ export default {
     },
     onSaveCroppedImage (data) {
       this.onCloseModal();
-      console.log({ data })
+      console.log({ data });
+      this.croppedData = data;
       this.$emit('cropImage', data);
     },
   },
@@ -88,5 +107,15 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.cropped-image-placeholder {
+  width: 100px;
+  height: 100px;
+  border: 1px solid;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>

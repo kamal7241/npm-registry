@@ -13,10 +13,10 @@
         class="image-wrapper"
       >
         <img
-          class='image-canvas'
           ref="img"
+          class="image-canvas"
           :src="selectedImage"
-        />
+        >
       </div>
     </div>
     <div class="modal__action">
@@ -39,7 +39,10 @@ import Cropper from 'cropperjs';
 import 'cropperjs/dist/cropper.css';
 
 export default {
-  name: 'cropper-dialog',
+  name: 'CropperDialog',
+  components: {
+    VueFinalModal
+  },
   props: {
     show: {
       type: Boolean,
@@ -53,9 +56,6 @@ export default {
       type: String,
       default: ''
     }
-  },
-  components: {
-    VueFinalModal
   },
   data () {
     return {
@@ -86,8 +86,8 @@ export default {
   methods: {
     onCropImage () {
       const croppedImage = this.cropper.getCroppedCanvas({
-        // width: ,
-        // height: ,
+        width: 300,
+        height: 300,
         imageSmoothingQuality: 'high', // low - medium - high 
       }).toDataURL(this.fileExtention);
 
