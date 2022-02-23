@@ -1,0 +1,60 @@
+{
+    "name": "@moj/attachment-field",
+    "version": "0.0.3",
+    "private": false,
+    "main": "./src/index.js",
+    "module": "dist/AttachmentField.esm.js",
+    "unpkg": "dist/AttachmentField.min.js",
+    "browser": {
+        "./sfc": "src/components/AttachmentField.vue"
+    },
+    "author": {
+        "name": "Front-End Team"
+    },
+    "files": [
+        "src/*",
+        "*.json",
+        "*.js",
+        "*.scss"
+    ],
+    "scripts": {
+        "start": "npm run serve",
+        "dev": "node build/dev-server.js",
+        "serve": "vue-cli-service serve",
+        "lint": "vue-cli-service lint",
+        "build": "npm run build:umd & npm run build:es & npm run build:unpkg",
+        "build:umd": "rollup --config build/rollup.config.js --format umd --file dist/AttachmentField.umd.js",
+        "build:es": "rollup --config build/rollup.config.js --format es --file dist/AttachmentField.esm.js",
+        "build:unpkg": "rollup --config build/rollup.config.js --format iife --file dist/AttachmentField.min.js",
+        "refreshVSToken": "npx vsts-npm-auth -config .npmrc -F"
+    },
+    "dependencies": {
+        "@rollup/plugin-image": "^2.1.1",
+        "coa": "2.0.2",
+        "core-js": "^2.6.5",
+        "rollup": "^1.20.2",
+        "rollup-plugin-buble": "^0.19.8",
+        "rollup-plugin-commonjs": "^10.1.0",
+        "rollup-plugin-node-resolve": "^5.2.0",
+        "rollup-plugin-vue": "^5.1.2",
+        "vue": "^2.6.10"
+    },
+    "devDependencies": {
+        "@vue/cli-plugin-babel": "^3.11.0",
+        "@vue/cli-plugin-eslint": "^3.11.0",
+        "@vue/cli-service": "^3.11.0",
+        "babel-eslint": "^10.0.1",
+        "eslint": "^5.16.0",
+        "eslint-plugin-vue": "^5.2.3",
+        "vue-template-compiler": "^2.6.10"
+    },
+    "postcss": {
+        "plugins": {
+            "autoprefixer": {}
+        }
+    },
+    "browserslist": [
+        "> 1%",
+        "last 2 versions"
+    ]
+}
