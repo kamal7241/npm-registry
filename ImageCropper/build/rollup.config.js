@@ -6,7 +6,7 @@ import image from '@rollup/plugin-image';
 export default {
     input: 'src/wrapper.js', // Path relative to package.json
     output: {
-        name: 'AttachmentField',
+        name: 'ImageCropper',
         exports: 'named',
     },
     plugins: [

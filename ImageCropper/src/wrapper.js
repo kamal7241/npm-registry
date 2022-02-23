@@ -1,11 +1,11 @@
 // Import vue component
-import AttachmentField from './components/AttachmentField.vue';
+import ImageCropper from './components/ImageCropper.vue';
 
 // Declare install function executed by Vue.use()
 export function install(Vue) {
     if (install.installed) return;
     install.installed = true;
-    Vue.component('AttachmentField', AttachmentField);
+    Vue.component('ImageCropper', ImageCropper);
 }
 
 // Create module definition for Vue.use()
@@ -25,4 +25,4 @@ if (GlobalVue) {
 }
 
 // To allow use as module (npm/webpack/etc.) export component
-export default AttachmentField;
+export default ImageCropper;

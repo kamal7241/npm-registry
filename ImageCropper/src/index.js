@@ -1,7 +1,7 @@
-import AttachmentField from "./components/AttachmentField.vue";
+import ImageCropper from "./components/ImageCropper.vue";
 
 const UploadComponents = {
-	AttachmentField
+	ImageCropper
 }
 
 const UploadComponentsPlugin = {
@@ -15,5 +15,5 @@ const UploadComponentsPlugin = {
 export default UploadComponentsPlugin
 
 export {
-	AttachmentField
+	ImageCropper
 }
