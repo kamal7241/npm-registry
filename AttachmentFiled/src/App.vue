@@ -4,9 +4,12 @@
   >
     <AttachmentField 
       label="صورة شخصية "
+      name="association"
       placeholder="استعراض الملفات"
       isMultiple
+      isRequired
       @select="onSelectFiles"
+      @error="onErrorFound"
     >
       <!-- <template #hints="{data}">
         <div class="hints-placeholder">
@@ -61,6 +64,9 @@ export default {
   methods: {
     onSelectFiles(files) {
       console.log('onSelectFiles', files);
+    },    
+    onErrorFound(error) {
+      console.log('error', error);
     },
     getAllowedFileTypesText(data) {
       return `نوع الملف يجب أن يكون ${data.allowedExtentions}`; 

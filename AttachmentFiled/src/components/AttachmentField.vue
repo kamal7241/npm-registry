@@ -6,6 +6,10 @@
         class="label"
       >
         {{ label }}
+        <span
+          v-if="isRequired"
+          class="star"
+        >*</span>
       </p>
 
       <label class="file-input-wrapper icon icon-file">
@@ -90,6 +94,14 @@ export default {
     isMultiple: {
       type: Boolean,
       default: false
+    },       
+    resetErrorOnSelect: {
+      type: Boolean,
+      default: true
+    },       
+    isRequired: {
+      type: Boolean,
+      default: false
     },      
     enableFullnameDisplay: {
       type: Boolean,
@@ -100,6 +112,10 @@ export default {
       default: false
     },
     label: {
+      type: String,
+      default: "",
+    },      
+    name: {
       type: String,
       default: "",
     },        
@@ -116,6 +132,7 @@ export default {
       default: () => ([
         "zip",
         "exe",
+        'png',
         "ZIP",
         "EXE",
         "ZAP",
@@ -131,7 +148,8 @@ export default {
   data() {
     return {
       selectedFiles: [],
-      currentTotalSize: 0
+      currentTotalSize: 0,
+      error: ''
     }
   },
   computed: {
@@ -149,12 +167,22 @@ export default {
     },
     totalFilesSize() {
       return this.maxFilesSizeInMega * 1024 * 1024;
+    },
+    updatedValue() {
+      return {
+        [this.name]: this.selectedFiles,
+        isValid: this.isRequired ?  !!this.selectedFiles.length : true
+      }
     }
   },
   methods: {
     onSelectFiles(e) {
       const files = e.target.files;
       const firstFile = files[0];
+
+      if(this.resetErrorOnSelect && this.error) {
+        this.dispatchError();
+      }
     
       if(!this.isMultiple && this.isValidFile(firstFile)) {
         firstFile.displayName = this.enhanceFileName(firstFile.name);
@@ -176,7 +204,7 @@ export default {
         this.$refs.file.value = "";
       }
 
-      this.$emit("select", this.selectedFiles);
+      this.$emit("select", this.updatedValue);
     },
     enhanceFileName(fileName) {
       // animals.sd.png ===> .png
@@ -194,11 +222,19 @@ export default {
     getFileSizeInBytes(size) {
       return size * 1024 * 1024;
     },
-    isValidFileSize(fileSize) {
+    isValidFileSize(fileSize, fileName) {
       const isValidSizeLimit = fileSize <= this.getFileSizeInBytes(this.maxFileSizeInMega);
 
       const isValidCurrentSize = this.validateOnSingleFileSize ? isValidSizeLimit : true;
       const isValidWithTotalSize = (this.currentTotalSize + fileSize) <= this.getFileSizeInBytes(this.maxFilesSizeInMega);
+
+      if(!isValidCurrentSize) {
+        this.dispatchError('maxFileSizeExceeded', fileName);
+      }      
+      
+      if(!isValidWithTotalSize) {
+        this.dispatchError('maxFilesSizeExceeded');
+      }
 
       return isValidCurrentSize && isValidWithTotalSize;
     },
@@ -207,15 +243,37 @@ export default {
       // .ZIP ==> ZIP
       const extention = this.getFileExtention(file.name, true).slice(1);
       const isValidExtention = enhancedExcludedExtentions.includes(extention) === false;
-      const isValidSize = this.isValidFileSize(file.size);
+      const isValidSize = this.isValidFileSize(file.size, file.name);
+
+      if(!isValidExtention) {
+        this.dispatchError('fileExtention', file.name);
+      }
 
       return isValidExtention && isValidSize;
+    },
+    getSelectingError(fileName) {
+      const { maxFileSizeInMega, maxFilesSizeInMega } = this;
+
+      return {
+        maxFileSizeExceeded: ` الملف ${fileName} تجاوز الحد المسموح به  وهو ${maxFileSizeInMega} م.ب`,
+        maxFilesSizeExceeded: ` تم تجاوز الحد المسموح به لجميع الملفات وهو ${maxFilesSizeInMega} م.ب`,
+        fileExtention: `امتداد الملف ${fileName} غير مسموح به`,
+        // maxFileSizeExceeded: ` الملف ${fileName} تجاوز الحد المسموح به  وهو بببببب م.ب`,
+      };
+    },
+    dispatchError(target='', name= '') {
+      const error =  this.getSelectingError(name)[target];
+      this.error = error;
+
+      this.$emit('error', {
+        [this.name]: error
+      });
     },
     onDeleteFile(index) {
       this.selectedFiles.splice(index, 1);
       
       // update parent
-      this.$emit("select", this.selectedFiles);
+      this.$emit("select", this.updatedValue);
     },
     // Placeholder for default values
     getAllowedFileTypesText(allowedExtentions) {
@@ -247,6 +305,11 @@ export default {
   font-size: 14px;
   font-family: Almarai, Regular;
   margin-bottom: 10px;
+}
+
+.label-and-input-wrapper .label .star {
+  margin: 0 2px;
+  color: red
 }
 
 .label-and-input-wrapper .file-input-wrapper {
