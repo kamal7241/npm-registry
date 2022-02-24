@@ -4,11 +4,23 @@
   >
     <AttachmentField 
       label="صورة شخصية "
+      name="association"
       placeholder="استعراض الملفات"
       isMultiple
+      isRequired
+      activateInternalErrorPreview
       @select="onSelectFiles"
+      @error="onErrorFound"
     >
-      <!-- <template #hints="{data}">
+      <!-- <template #errors="{errors}">
+        <div class="error-placeholder">
+          <p class="text">
+            {{ errors }}
+          </p>
+        </div>
+      </template>         
+      
+      <template #hints="{data}">
         <div class="hints-placeholder">
           <p class="text">
             {{ getAllowedFileTypesText(data.hintsData) }}
@@ -61,6 +73,9 @@ export default {
   methods: {
     onSelectFiles(files) {
       console.log('onSelectFiles', files);
+    },    
+    onErrorFound(error) {
+      console.log('error', error);
     },
     getAllowedFileTypesText(data) {
       return `نوع الملف يجب أن يكون ${data.allowedExtentions}`; 
@@ -98,6 +113,10 @@ export default {
   justify-content: space-between;
   padding: 7px 11px;
   margin-bottom: 14px;
+}
+
+.error-placeholder .text {
+  color: red
 }
 
 .list-item .icon-name-wrapper,
