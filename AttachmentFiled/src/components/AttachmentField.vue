@@ -357,6 +357,10 @@ export default {
 </script>
 
 <style scoped>
+ul {
+  padding: 0;
+}
+
 .attachment-wrapper {
   /* margin: 50px auto; */
 }
