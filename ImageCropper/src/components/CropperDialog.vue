@@ -4,9 +4,15 @@
     classes="modal-container"
     content-class="modal-content"
   >
-    <span class="modal__title">
-      <slot name="title">Saber Demo </slot>
+    <span
+      v-if="strings.modalTitle"
+      class="modal__title"
+    >
+      <slot name="title">
+        <p>{{ strings.modalTitle }}</p>
+      </slot>
     </span>
+
     <div class="modal__content">
       <div
         v-show="selectedImage"
@@ -19,15 +25,19 @@
         >
       </div>
     </div>
+
     <div class="modal__action">
-      <button @click="onCropImage">
-        حفظ
+      <button
+        class="save"
+        @click="onCropImage"
+      >
+        {{ strings.modalSaveAction }}
       </button>
       <button
-        button
+        class="cancel"
         @click="onCancel"
       >
-        إلغاء
+        {{ strings.modalCancelAction }}
       </button>
     </div>
   </vue-final-modal>
@@ -55,7 +65,16 @@ export default {
     fileExtention: {
       type: String,
       default: ''
-    }
+    },    
+    strings: {
+      type: Object,
+      default: () => ({})
+    },    
+    cropperConfigs: {
+      type: Object,
+      default: () => ({})
+    },
+
   },
   data () {
     return {
@@ -65,39 +84,28 @@ export default {
   mounted () {
     this.cropper = new Cropper(this.$refs.img, {
       aspectRatio: 4 / 6,
-      // minCropBoxWidth: 256,
-      // minCropBoxHeight: 256,
       viewMode: 3,
       dragMode: 'move',
       background: true,
       cropBoxResizable: false,
-      // responsive
-      // cropBoxMovable: false,
-      // cropBoxResizable: false,
+      ...this.cropperConfigs,
     });
 
 
     // setInterval(() => this.cropper.scale(2), 2000)
   },
   destroyed () {
-    console.log('destroyed');
     this.cropper.destroy();
   },
   methods: {
     onCropImage () {
-      const croppedImage = this.cropper.getCroppedCanvas({
-        width: 300,
-        height: 300,
+      const croppedCanvas = this.cropper.getCroppedCanvas({
         imageSmoothingQuality: 'high', // low - medium - high 
-      }).toDataURL(this.fileExtention);
+      });
 
-      this.cropper
-        .getCroppedCanvas({
-          // width: ,
-          // height: ,
-          imageSmoothingQuality: 'high', // low - medium - high 
-        })
-        .toBlob((croppedBlob) => {
+      const croppedImage = croppedCanvas.toDataURL(this.fileExtention);
+
+      croppedCanvas.toBlob((croppedBlob) => {
           // update parent
           this.$emit('save', {
             croppedBlob,
@@ -125,13 +133,9 @@ export default {
 }
 
 .image-wrapper .cropper-container {
-  width: 100%;
+  width: 100% !important;
 }
 
-.image-wrapper .cropper-container .cropper-crop-box,
-.cropper-face {
-  border-radius: 50% !important;
-}
 /* Dialog styles */
 ::v-deep .modal-container {
   position: relative;
@@ -159,24 +163,49 @@ export default {
   position: relative;
   -ms-flex: 1 1 auto;
   flex: 1 1 auto;
-  padding: 1rem;
+  padding: 10px;
 }
 
 .modal__title {
-  margin: 0 2rem 0 0;
-  font-size: 1.5rem;
-  font-weight: 700;
+  padding: 10px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  border-bottom: 1px solid #eee;
 }
+
 .modal__content {
-  flex-grow: 1;
-  overflow-y: auto;
+  /* flex-grow: 1;
+  overflow-y: auto; */
 }
+
 .modal__action {
+  border-top: 1px solid #eee;
+  padding: 10px;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  flex-shrink: 0;
-  padding: 1rem 0 0;
+
+}
+
+.modal__action .save {
+  flex-basis: 70%;
+  color: #fff;
+  background-color: green;
+  padding: 5px;
+}
+
+.modal__action .save {
+  flex-basis: 70%;
+  color: #fff;
+  background-color: #158e8d;
+  padding: 5px;
+}
+
+.modal__action .cancel {
+  flex-basis: 25%;
+  color: #fff;
+  background-color: #ae351c;
+  padding: 5px;
 }
 
 @media (min-width: 576px) {
