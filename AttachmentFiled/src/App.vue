@@ -5,7 +5,7 @@
     <AttachmentField 
       label="صورة شخصية "
       name="association"
-      placeholder="استعراض الملفات"
+      placeholder="قم بسحب وإرفاق ملفاتك في هذه المنطقة"
       isMultiple
       isRequired
       activateInternalErrorPreview

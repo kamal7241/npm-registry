@@ -13,11 +13,30 @@
         >*</span>
       </p>
 
-      <label
+      <div
         v-if="addAttachmentAllowed && !readOnlyMode"
-        class="file-input-wrapper icon icon-file"
+        class="file-input-wrapper"
       >
-        <span> {{ placeholder }}</span>
+        <img
+          src="../assets/file.svg"
+          alt="icon"
+          width="25"
+          height="18"
+        >
+
+        <span
+          v-if="placeholder"
+          class="placeholder-wrapper"
+        > 
+          {{ placeholder }}
+        </span>
+
+        <button
+          class="file-chooser-action"
+          @click="$refs.file.click()"
+        >
+          {{ actionName }}
+        </button>
 
         <input
           ref="file"
@@ -27,7 +46,7 @@
           :accept="accept"
           @change="onSelectFiles"
         >
-      </label>
+      </div>
 
       <slot
         v-if="isErrorSlotAvailable"
@@ -147,6 +166,10 @@ export default {
     label: {
       type: String,
       default: "",
+    },   
+    actionName: {
+      type: String,
+      default: "استعراض الملفات",
     },      
     name: {
       type: String,
@@ -361,14 +384,6 @@ ul {
   padding: 0;
 }
 
-.attachment-wrapper {
-  /* margin: 50px auto; */
-}
-
-.label-and-input-wrapper {
-  /* margin: 50px auto; */
-}
-
 .label-and-input-wrapper .label {
   color: #02363D;
   font-size: 14px;
@@ -386,34 +401,35 @@ ul {
 }
 
 .label-and-input-wrapper .file-input-wrapper {
-  cursor: pointer;
   color: #DBDBDB;
   display: flex;
+  justify-content: center;
   align-items: center;
-  position: relative;
-  border: 1px solid #DBDBDB;
-  font-size: 15px;
-  padding: 16px;
+  flex-direction: column;
+  width: 320px;
+  height: 130px;
+  background-color: #E0CF971A;
+  border: 2px solid #DBDBDB;
+  font-size: 12px;
+}
+
+.label-and-input-wrapper .file-input-wrapper .placeholder-wrapper {
+  margin-top: 10px;
+  color: #02363D;
+  opacity: 0.6;
+}
+
+.label-and-input-wrapper .file-input-wrapper .file-chooser-action {
+  margin-top: 20px;
+  background-color: #158E8D;
+  padding: 5px 10px;
+  color: #fff;
 }
 
 .label-and-input-wrapper .file-input-wrapper input {
   display: none;
 }
 
-.label-and-input-wrapper .file-input-wrapper.icon-file::before {
-  font-family: icomoon;
-  content: "\E946";
-  color: #158e8d;
-  font-size: 20px;
-  position: absolute;
-  right: 16px;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 1;
-  top: 25px;
-  left: 16px;
-  right: unset;
-}
 /* For UI Place holders */
 .hints-placeholder,
 .error-placeholder {
@@ -465,6 +481,12 @@ ul {
   color: #067377;
   font-size: 9px;
   margin-left: 10px;
+}
+
+@media (max-width: 320px) {
+  .label-and-input-wrapper .file-input-wrapper {
+    width: 100%;
+  }
 }
 
 </style>
