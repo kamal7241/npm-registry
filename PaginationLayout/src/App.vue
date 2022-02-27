@@ -12,7 +12,6 @@
       :enableServerSidePagination="false"
       :additionalPayload="additionalPayload"
       :pageSizeOptions="[50, 100, 30]"
-      :localizations="localizations"
       @search="onSearch"
     >
       <!-- Customize Loading slot -->
@@ -87,11 +86,8 @@ export default {
   data() {
     return {
       additionalPayload: {},
-      localizations: {
-        firstPageText: 'الأولى',
-        lastPageText: 'الأخيرة',
-      },
       // endpoint: serverSideLink => fetch(`https://api.instantwebtools.net/v1/passenger${serverSideLink}`)
+      // client
       endpoint: serverSideLink => fetch(`http://jsonplaceholder.typicode.com/photos?_limit=100${serverSideLink}`)
     };
   },

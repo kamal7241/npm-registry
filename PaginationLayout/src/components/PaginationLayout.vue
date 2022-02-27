@@ -33,39 +33,47 @@
           :onNextPageActionClicked="onNextPageActionClicked"
           :onLastPageActionClicked="onLastPageActionClicked"
         >
-          <div class="actions">
-            <button
-              class="nav-controller"
-              :disabled="isFirstPageActionDisabled"
-              @click="onFirstPageActionClicked"
-            >
-              {{ strings.firstPageText }}
-            </button>   
-        
-            <button
-              class="nav-controller"
-              :disabled="isFirstPageActionDisabled"
-              @click="onPreviousPageActionClicked"
-            >
-              {{ strings.prevPageText }}
-            </button>   
-        
-            <button
-              class="nav-controller"
-              :disabled="isLastPageActionDisabled"
-              @click="onNextPageActionClicked"
-            >
-              {{ strings.nextPageText }}
-            </button>
+          <b-pagination
+            v-model="currentPage"
+            :total-rows="totalCount"
+            :per-page="currentPageSize"
+            @change="onChangePageIndex"
+          >
+            <template #first-text>
+              <img
+                src="../assets/first-page.png"
+                alt="fisrt-page"
+                width="10"
+                height="10"
+              >
+            </template>
+            <template #prev-text>
+              <img
+                src="../assets/prev-page.png"
+                alt="fisrt-page"
+                width="10"
+                height="10"
+              >
+            </template>
+            <template #next-text>
+              <img
+                src="../assets/next-page.png"
+                alt="fisrt-page"
+                width="10"
+                height="10"
+              >
+            </template>
+            <template #last-text>
+              <img
+                src="../assets/last-page.png"
+                alt="fisrt-page"
+                width="10"
+                height="10"
+              >
+            </template>
+          </b-pagination>
 
-            <button
-              class="nav-controller"
-              :disabled="isLastPageActionDisabled"
-              @click="onLastPageActionClicked"
-            >
-              {{ strings.lastPageText }}
-            </button>
-          </div>
+          <span class="separator" />
 
           <div class="page-size-wrapper">
             <Select
@@ -90,7 +98,7 @@ import 'vue-select/dist/vue-select.css';
 export default {
   name: 'PaginationLayout',
   components: {
-    Select
+    Select,
   },
   props: {
     endpoint: {
@@ -312,6 +320,13 @@ export default {
         this.loadResults();
       }
     },
+    onChangePageIndex(currentPage) {
+      this.currentPage = currentPage;
+
+      if(this.enableServerSidePagination) {
+        this.loadResults();
+      }
+    },  
     onChangePageSize(currentPageSize) {
       this.currentPageSize = currentPageSize;
       this.currentPage = 0;
@@ -324,7 +339,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style >
 .layout-wrapper {
   position: relative;
 }
@@ -348,6 +363,47 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 10px;
+}
+
+.navigation .pagination {
+  margin: 0;
+}
+
+.navigation .pagination .page-item,
+.navigation .pagination .page-item > .page-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navigation .pagination .page-item:not([role='separator']).disabled {
+  opacity: .5;
+}
+
+.navigation .pagination .page-item > .page-link {
+  padding: 0;
+  width: 36px;
+  height: 36px;
+  box-shadow: 0px 3px 6px #00000029;
+  border-radius: 5px;
+}
+
+.navigation .pagination .page-item:not(.active):hover > .page-link {
+  color: #158E8D;
+}
+
+.navigation .pagination .page-item:not(:first-of-type) {
+  margin: 0 5px;
+}
+.navigation .pagination .page-item.active > .page-link {
+  background-color: #158E8D;
+  outline: none;
+  border: none;
+}
+
+.separator {
+  margin: 0 10px;
 }
 
 .nav-controller {
@@ -363,7 +419,71 @@ export default {
 .nav-controller:active {
   box-shadow: unset;
 }
+
 .page-size-wrapper {
   width: 160px;
+}
+/* DDL */
+ .v-select {
+  direction: rtl;
+} 
+
+.v-select .vs__clear,
+.v-select .vs__open-indicator {
+  fill: #418C8C;
+  width: 15px;
+  height: 9px;
+  margin: 0 5px;
+}
+
+.v-select,
+.v-select .vs__dropdown-menu {
+  box-shadow: none;
+}
+
+.v-select .vs__dropdown-toggle {
+  border: 2px solid #DBDBDB;
+}
+
+.v-select .vs__dropdown-menu {
+  border: 1px solid #DBDBDB;
+  border-radius: 0;
+  border-top: 0;
+}
+.v-select .vs__dropdown-menu .vs__dropdown-option {
+  color: #02363D;
+  font-size: 15px;
+  padding: 5px 10px;
+  text-align: initial;
+  transition: background-color .3s ease-in;
+}
+
+.v-select .vs__dropdown-menu .vs__dropdown-option.vs__dropdown-option--highlight {
+  color: #fff;
+  background: #158E8D;
+}
+
+@media (max-width: 480px) {
+  .separator {
+    display: none;
+  }
+  .navigation {
+    flex-direction: column;
+  }
+
+  .navigation .pagination {
+    margin-bottom: 10px;
+  }
+
+  .page-size-wrapper {
+    width: 100%;
+  }
+}
+
+@media (max-width: 310px) {
+  .navigation .pagination .page-item > .page-link {
+    width: 30px;
+    height: 30px;
+  }
 }
 </style>
