@@ -124,7 +124,7 @@ export default {
 | **pageSizeOptions** | *Array of page size options to view* | **Array** | ***[5, 10, 30]*** | **false**
 | **dataTargetKey** | *to select the items from the response by key* | **String** | ***data*** | **false**
 | **totalCountKey** | *to target the total count from the response by key* | **String** | ***totalCount*** | **false**
-| **serverPageNumberKey** | *to change the name of the **page parameter** if required to be changed with request* | **String** | ***pageNumber*** | **false**
+| **serverPageNumberKey** | *to change the name of the **page parameter** if required to be changed with request* | **String** | ***pageIndex"*** | **false**
 | **serverPageSizeKey** | *to change the name of the **pageSize(items per page) parameter** if required to be changed with request* | **String** | ***pageSize*** | **false**
 | **nestedDataKey** | *to change the data target in case of the data is not direct in the response and it is nested* | **String** | ***""*** | **false**
 | **cascadeMode** | *option to keep the previously received results and append the new to them* | **Boolean** | ***false*** | **false**

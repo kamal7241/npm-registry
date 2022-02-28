@@ -9,6 +9,7 @@
       totalCountKey="totalPassengers"
       enableReadableStreamParse
       :cascadeMode="false"
+      isDirectData
       :enableServerSidePagination="false"
       :additionalPayload="additionalPayload"
       :pageSizeOptions="[50, 100, 30]"

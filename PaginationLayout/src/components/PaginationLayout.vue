@@ -92,6 +92,7 @@
 
 <script>
 import { serializeQueryParams } from './Utils';
+import { BPagination  } from 'bootstrap-vue'
 import Select from 'vue-select';
 import 'vue-select/dist/vue-select.css';
 
@@ -99,6 +100,7 @@ export default {
   name: 'PaginationLayout',
   components: {
     Select,
+    BPagination
   },
   props: {
     endpoint: {
@@ -115,7 +117,7 @@ export default {
     },
     pageNumber: {
       type: Number,
-      default: 0,
+      default: 1,
     },
     pageSize: {
       type: Number,
@@ -131,7 +133,7 @@ export default {
     },    
     serverPageNumberKey: {
       type: String,
-      default: "pageNumber",
+      default: "pageIndex",
     },    
     serverPageSizeKey: {
       type: String,
@@ -147,7 +149,7 @@ export default {
     },    
     isDirectData: {
       type: Boolean,
-      default: true,
+      default: false,
     },
     enableServerSidePagination: {
       type: Boolean,
@@ -264,7 +266,7 @@ export default {
         } else {
           this.list = data || [];
         }
-
+  console.log({data})
         this.totalCount = this.enableServerSidePagination ? totalCount : data.length;
         // update parent
         this.$emit("search", { 
