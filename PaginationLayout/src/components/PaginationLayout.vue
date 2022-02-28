@@ -339,7 +339,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 .layout-wrapper {
   position: relative;
 }
