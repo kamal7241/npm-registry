@@ -9,6 +9,7 @@
       totalCountKey="totalPassengers"
       enableReadableStreamParse
       :cascadeMode="false"
+      :enableServerSidePagination="false"
       :additionalPayload="additionalPayload"
       :pageSizeOptions="[50, 100, 30]"
       @search="onSearch"
@@ -24,7 +25,7 @@
           v-for="(item, i) in data"
           :key="i"
         >
-          {{ item.name }}
+          {{ item.title }}
         </p>
       </template>
       
@@ -85,9 +86,9 @@ export default {
   data() {
     return {
       additionalPayload: {},
-      endpoint: serverSideLink => fetch(`https://api.instantwebtools.net/v1/passenger${serverSideLink}`)
+      // endpoint: serverSideLink => fetch(`https://api.instantwebtools.net/v1/passenger${serverSideLink}`)
       // client
-      // endpoint: serverSideLink => fetch(`http://jsonplaceholder.typicode.com/photos?_limit=100${serverSideLink}`)
+      endpoint: serverSideLink => fetch(`http://jsonplaceholder.typicode.com/photos?_limit=100${serverSideLink}`)
     };
   },
   methods: {
