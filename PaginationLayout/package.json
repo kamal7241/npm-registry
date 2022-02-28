@@ -1,5 +1,5 @@
 {
-    "name": "pagination-layout",
+    "name": "@moj/pagination-layout",
     "version": "1.0.4",
     "private": false,
     "main": "./src/index.js",
