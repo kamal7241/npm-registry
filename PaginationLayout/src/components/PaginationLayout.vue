@@ -421,7 +421,7 @@ export default {
 }
 
 .page-size-wrapper {
-  width: 160px;
+  width: 90px;
 }
 /* DDL */
  .v-select {
@@ -449,6 +449,7 @@ export default {
   border: 1px solid #DBDBDB;
   border-radius: 0;
   border-top: 0;
+  min-width: 100%;
 }
 .v-select .vs__dropdown-menu .vs__dropdown-option {
   color: #02363D;
