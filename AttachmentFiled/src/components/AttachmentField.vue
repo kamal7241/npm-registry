@@ -18,10 +18,10 @@
         class="file-input-wrapper"
       >
         <img
-          src="../assets/file.svg"
+          src="../assets/folder.svg"
           alt="icon"
           width="25"
-          height="18"
+          height="25"
         >
 
         <span
@@ -193,7 +193,6 @@ export default {
         "zip",
         "exe",
         "ZIP",
-        "png",
         "EXE",
         "ZAP",
         "Z01",
@@ -380,113 +379,5 @@ export default {
 </script>
 
 <style scoped>
-ul {
-  padding: 0;
-}
-
-.label-and-input-wrapper .label {
-  color: #02363D;
-  font-size: 14px;
-  font-family: Almarai, Regular;
-  margin-bottom: 10px;
-}
-
-.error-placeholder .text {
-  color: red
-}
-
-.label-and-input-wrapper .label .star {
-  margin: 0 2px;
-  color: red
-}
-
-.label-and-input-wrapper .file-input-wrapper {
-  color: #DBDBDB;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  width: 320px;
-  height: 130px;
-  background-color: #E0CF971A;
-  border: 2px solid #DBDBDB;
-  font-size: 12px;
-}
-
-.label-and-input-wrapper .file-input-wrapper .placeholder-wrapper {
-  margin-top: 10px;
-  color: #02363D;
-  opacity: 0.6;
-}
-
-.label-and-input-wrapper .file-input-wrapper .file-chooser-action {
-  margin-top: 20px;
-  background-color: #158E8D;
-  padding: 5px 10px;
-  color: #fff;
-}
-
-.label-and-input-wrapper .file-input-wrapper input {
-  display: none;
-}
-
-/* For UI Place holders */
-.hints-placeholder,
-.error-placeholder {
-  margin-top: 9px;
-  margin-bottom: 22px;
-  color: #A8A8A8;
-  font-size: 12px;
-}
-
-.hints-placeholder .text, 
-.hints-placeholder .text {
-  margin-bottom: 10px;
-}
-
-.list-item {
-  /* height: 33px; */
-  border: 1px solid #DBDBDB;
-  border-radius: 1px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 7px 11px;
-  margin-bottom: 14px;
-}
-
-.list-item .icon-name-wrapper,
-.list-item .size-delete-wrapper {
-  display: flex;
-  align-items: center;
-}
-
-.list-item .icon-name-wrapper .img,
-.list-item .size-delete-wrapper .img {
-  width: 18px;
-  height: 18px;
-}
-
-.list-item .size-delete-wrapper .img {
-  cursor: pointer;
-}
-
-.list-item .icon-name-wrapper .file-name {
-  color: #02363D;
-  font-size: 12px;
-  margin-right: 23px;
-}
-
-.list-item .size-delete-wrapper .size {
-  color: #067377;
-  font-size: 9px;
-  margin-left: 10px;
-}
-
-@media (max-width: 320px) {
-  .label-and-input-wrapper .file-input-wrapper {
-    width: 100%;
-  }
-}
-
+@import './style.css';
 </style>
