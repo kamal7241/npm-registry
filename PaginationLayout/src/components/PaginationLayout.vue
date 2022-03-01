@@ -1,7 +1,7 @@
 <template>
   <div class="layout-wrapper">
     <div
-      v-if="isLoading"
+      v-if="isLoading && showLoader"
       class="loading-wrapper"
     >
       <slot name="loader">
@@ -33,39 +33,47 @@
           :onNextPageActionClicked="onNextPageActionClicked"
           :onLastPageActionClicked="onLastPageActionClicked"
         >
-          <div class="actions">
-            <button
-              class="nav-controller"
-              :disabled="isFirstPageActionDisabled"
-              @click="onFirstPageActionClicked"
-            >
-              {{ strings.firstPageText }}
-            </button>   
-        
-            <button
-              class="nav-controller"
-              :disabled="isFirstPageActionDisabled"
-              @click="onPreviousPageActionClicked"
-            >
-              {{ strings.prevPageText }}
-            </button>   
-        
-            <button
-              class="nav-controller"
-              :disabled="isLastPageActionDisabled"
-              @click="onNextPageActionClicked"
-            >
-              {{ strings.nextPageText }}
-            </button>
+          <b-pagination
+            v-model="currentPage"
+            :total-rows="totalCount"
+            :per-page="currentPageSize"
+            @change="onChangePageIndex"
+          >
+            <template #first-text>
+              <img
+                src="../assets/first-page.svg"
+                alt="fisrt-page"
+                width="10"
+                height="10"
+              >
+            </template>
+            <template #prev-text>
+              <img
+                src="../assets/prev-page.svg"
+                alt="fisrt-page"
+                width="10"
+                height="10"
+              >
+            </template>
+            <template #next-text>
+              <img
+                src="../assets/next-page.svg"
+                alt="fisrt-page"
+                width="10"
+                height="10"
+              >
+            </template>
+            <template #last-text>
+              <img
+                src="../assets/last-page.svg"
+                alt="fisrt-page"
+                width="10"
+                height="10"
+              >
+            </template>
+          </b-pagination>
 
-            <button
-              class="nav-controller"
-              :disabled="isLastPageActionDisabled"
-              @click="onLastPageActionClicked"
-            >
-              {{ strings.lastPageText }}
-            </button>
-          </div>
+          <span class="separator" />
 
           <div class="page-size-wrapper">
             <Select
@@ -84,13 +92,15 @@
 
 <script>
 import { serializeQueryParams } from './Utils';
+import { BPagination } from 'bootstrap-vue/src/index.js'
 import Select from 'vue-select';
 import 'vue-select/dist/vue-select.css';
 
 export default {
   name: 'PaginationLayout',
   components: {
-    Select
+    Select,
+    BPagination
   },
   props: {
     endpoint: {
@@ -100,18 +110,14 @@ export default {
     additionalPayload: {
       type: Object,
       default: () => ({}),
-    },        
-    localizations: {
-      type: Object,
-      default: () => ({}),
-    },    
+    },  
     pageSizeOptions: {
       type: Array,
       default: () => ([5, 10, 30]),
     },
     pageNumber: {
       type: Number,
-      default: 0,
+      default: 1,
     },
     pageSize: {
       type: Number,
@@ -127,7 +133,7 @@ export default {
     },    
     serverPageNumberKey: {
       type: String,
-      default: "pageNumber",
+      default: "pageIndex",
     },    
     serverPageSizeKey: {
       type: String,
@@ -141,9 +147,13 @@ export default {
       type: Boolean,
       default: false,
     },    
-    isDirectData: {
+    showLoader: {
       type: Boolean,
       default: true,
+    },    
+    isDirectData: {
+      type: Boolean,
+      default: false,
     },
     enableServerSidePagination: {
       type: Boolean,
@@ -203,15 +213,6 @@ export default {
         isLastPageActionDisabled: this.isLastPageActionDisabled,
         isFirstPageActionDisabled: this.isFirstPageActionDisabled,
       }
-    },
-    strings() {
-      return {
-        firstPageText: 'الصفحة الأولى',
-        nextPageText: 'التالي',
-        prevPageText: 'السابق',
-        lastPageText: 'الصفحة الأخيرة',
-        ...this.localizations
-      }
     }
   },
   watch: {
@@ -269,7 +270,7 @@ export default {
         } else {
           this.list = data || [];
         }
-
+  console.log({data})
         this.totalCount = this.enableServerSidePagination ? totalCount : data.length;
         // update parent
         this.$emit("search", { 
@@ -312,6 +313,13 @@ export default {
         this.loadResults();
       }
     },
+    onChangePageIndex(currentPage) {
+      this.currentPage = currentPage;
+
+      if(this.enableServerSidePagination) {
+        this.loadResults();
+      }
+    },  
     onChangePageSize(currentPageSize) {
       this.currentPageSize = currentPageSize;
       this.currentPage = 0;
@@ -325,45 +333,5 @@ export default {
 </script>
 
 <style scoped>
-.layout-wrapper {
-  position: relative;
-}
-
-.loading-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-}
-
-.data-placeholder.loading {
-  filter: blur(1px);
-}
-
-.navigation {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.nav-controller {
-  padding: 5px 15px;
-  margin: 5px;
-  border-radius: 5px;
-  font-size: 13px;
-  box-shadow: 2px 2px 5px #ccc;
-  cursor: pointer;
-  transition: box-shadow .11s ease-in-out;
-}
-
-.nav-controller:active {
-  box-shadow: unset;
-}
-.page-size-wrapper {
-  width: 160px;
-}
+@import './style.css';
 </style>
