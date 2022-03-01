@@ -1,6 +1,6 @@
 {
   "name": "@t2/date-picker",
-  "version": "0.1.3",
+  "version": "1.0.0",
   "private": false,
   "main": "dist/DatePicker.umd.js",
   "module": "dist/DatePicker.esm.js",

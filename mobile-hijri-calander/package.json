@@ -1,6 +1,6 @@
 {
   "name": "@t2/mobile-date-picker",
-  "version": "0.0.11",
+  "version": "1.0.0",
   "author": "T2-MobileTeam",
   "description": "Date picker",
   "main": "./dist/index.js",
