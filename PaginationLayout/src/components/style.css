@@ -11,6 +11,7 @@
   bottom: 0;
   right: 0;
   left: 0;
+  z-index: 2000;
 }
 
 .data-placeholder.loading {
@@ -79,7 +80,7 @@
 }
 
 .page-size-wrapper {
-  width: 90px;
+  width: 100px;
 }
 /* DDL */
  .v-select {

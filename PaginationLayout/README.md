@@ -8,6 +8,7 @@ Highly customizable pkg for Server Side Pagination
 - [x] Customization for **Loader**
 - [x] Customization for **Lisr Rendering**
 - [x] Customization for **pagination Actions**
+- [ ] Placeholder for empty data
 
 ## Example
 ```vue
@@ -128,6 +129,7 @@ export default {
 | **serverPageSizeKey** | *to change the name of the **pageSize(items per page) parameter** if required to be changed with request* | **String** | ***pageSize*** | **false**
 | **nestedDataKey** | *to change the data target in case of the data is not direct in the response and it is nested* | **String** | ***""*** | **false**
 | **cascadeMode** | *option to keep the previously received results and append the new to them* | **Boolean** | ***false*** | **false**
+| **showLoader** | *to hide/show loader layout* | **Boolean** | ***false*** | **false**
 | **enableServerSidePagination** | *option to **Enable ServerSidePagination** and **Disable Client side pagination*** | **Boolean** | ***true*** | **false**
 | **isDirectData** | *option to **target the data directly and no need for nested selectio** and **only related to Client side Pagination *** | **Boolean** | ***false*** | **false**
 | **enableReadableStreamParse** | *option to parse the response if it is Readable Stream data like response from (fetch API)* | **Boolean** | ***false*** | **false**

@@ -1,7 +1,7 @@
 <template>
   <div class="layout-wrapper">
     <div
-      v-if="isLoading"
+      v-if="isLoading && showLoader"
       class="loading-wrapper"
     >
       <slot name="loader">
@@ -41,7 +41,7 @@
           >
             <template #first-text>
               <img
-                src="../assets/first-page.png"
+                src="../assets/first-page.svg"
                 alt="fisrt-page"
                 width="10"
                 height="10"
@@ -49,7 +49,7 @@
             </template>
             <template #prev-text>
               <img
-                src="../assets/prev-page.png"
+                src="../assets/prev-page.svg"
                 alt="fisrt-page"
                 width="10"
                 height="10"
@@ -57,7 +57,7 @@
             </template>
             <template #next-text>
               <img
-                src="../assets/next-page.png"
+                src="../assets/next-page.svg"
                 alt="fisrt-page"
                 width="10"
                 height="10"
@@ -65,7 +65,7 @@
             </template>
             <template #last-text>
               <img
-                src="../assets/last-page.png"
+                src="../assets/last-page.svg"
                 alt="fisrt-page"
                 width="10"
                 height="10"
@@ -92,7 +92,7 @@
 
 <script>
 import { serializeQueryParams } from './Utils';
-import { BPagination  } from 'bootstrap-vue'
+import { BPagination } from 'bootstrap-vue/src/index.js'
 import Select from 'vue-select';
 import 'vue-select/dist/vue-select.css';
 
@@ -146,6 +146,10 @@ export default {
     cascadeMode: {
       type: Boolean,
       default: false,
+    },    
+    showLoader: {
+      type: Boolean,
+      default: true,
     },    
     isDirectData: {
       type: Boolean,
