@@ -13,11 +13,30 @@
         >*</span>
       </p>
 
-      <label
+      <div
         v-if="addAttachmentAllowed && !readOnlyMode"
-        class="file-input-wrapper icon icon-file"
+        class="file-input-wrapper"
       >
-        <span> {{ placeholder }}</span>
+        <img
+          src="../assets/folder.svg"
+          alt="icon"
+          width="25"
+          height="25"
+        >
+
+        <span
+          v-if="placeholder"
+          class="placeholder-wrapper"
+        > 
+          {{ placeholder }}
+        </span>
+
+        <button
+          class="file-chooser-action"
+          @click="$refs.file.click()"
+        >
+          {{ actionName }}
+        </button>
 
         <input
           ref="file"
@@ -27,7 +46,7 @@
           :accept="accept"
           @change="onSelectFiles"
         >
-      </label>
+      </div>
 
       <slot
         v-if="isErrorSlotAvailable"
@@ -147,6 +166,10 @@ export default {
     label: {
       type: String,
       default: "",
+    },   
+    actionName: {
+      type: String,
+      default: "استعراض الملفات",
     },      
     name: {
       type: String,
@@ -170,7 +193,6 @@ export default {
         "zip",
         "exe",
         "ZIP",
-        "png",
         "EXE",
         "ZAP",
         "Z01",
@@ -357,114 +379,5 @@ export default {
 </script>
 
 <style scoped>
-ul {
-  padding: 0;
-}
-
-.attachment-wrapper {
-  /* margin: 50px auto; */
-}
-
-.label-and-input-wrapper {
-  /* margin: 50px auto; */
-}
-
-.label-and-input-wrapper .label {
-  color: #02363D;
-  font-size: 14px;
-  font-family: Almarai, Regular;
-  margin-bottom: 10px;
-}
-
-.error-placeholder .text {
-  color: red
-}
-
-.label-and-input-wrapper .label .star {
-  margin: 0 2px;
-  color: red
-}
-
-.label-and-input-wrapper .file-input-wrapper {
-  cursor: pointer;
-  color: #DBDBDB;
-  display: flex;
-  align-items: center;
-  position: relative;
-  border: 1px solid #DBDBDB;
-  font-size: 15px;
-  padding: 16px;
-}
-
-.label-and-input-wrapper .file-input-wrapper input {
-  display: none;
-}
-
-.label-and-input-wrapper .file-input-wrapper.icon-file::before {
-  font-family: icomoon;
-  content: "\E946";
-  color: #158e8d;
-  font-size: 20px;
-  position: absolute;
-  right: 16px;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 1;
-  top: 25px;
-  left: 16px;
-  right: unset;
-}
-/* For UI Place holders */
-.hints-placeholder,
-.error-placeholder {
-  margin-top: 9px;
-  margin-bottom: 22px;
-  color: #A8A8A8;
-  font-size: 12px;
-}
-
-.hints-placeholder .text, 
-.hints-placeholder .text {
-  margin-bottom: 10px;
-}
-
-.list-item {
-  /* height: 33px; */
-  border: 1px solid #DBDBDB;
-  border-radius: 1px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 7px 11px;
-  margin-bottom: 14px;
-}
-
-.list-item .icon-name-wrapper,
-.list-item .size-delete-wrapper {
-  display: flex;
-  align-items: center;
-}
-
-.list-item .icon-name-wrapper .img,
-.list-item .size-delete-wrapper .img {
-  width: 18px;
-  height: 18px;
-}
-
-.list-item .size-delete-wrapper .img {
-  cursor: pointer;
-}
-
-.list-item .icon-name-wrapper .file-name {
-  color: #02363D;
-  font-size: 12px;
-  margin-right: 23px;
-}
-
-.list-item .size-delete-wrapper .size {
-  color: #067377;
-  font-size: 9px;
-  margin-left: 10px;
-}
-
+@import './style.css';
 </style>
