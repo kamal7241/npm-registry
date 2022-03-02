@@ -149,7 +149,7 @@ export default {
     },    
     showLoader: {
       type: Boolean,
-      default: true,
+      default: false,
     },    
     isDirectData: {
       type: Boolean,
