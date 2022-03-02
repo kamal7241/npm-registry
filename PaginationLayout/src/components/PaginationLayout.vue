@@ -166,6 +166,10 @@ export default {
     fetchOnMount: {
       type: Boolean,
       default: true,
+    },    
+    exportPayloadAsObject: {
+      type: Boolean,
+      default: false,
     },
     fetchOnPayloadChange: {
       type: Boolean,
@@ -251,7 +255,7 @@ export default {
       this.isLoading = true;
 
       try {
-        const fetchData = await this.endpoint(serializeQueryParams(payload));
+        const fetchData = await this.endpoint(this.exportPayloadAsObject ? payload : serializeQueryParams(payload));
         const result = this.enableReadableStreamParse ? await fetchData.json() : fetchData;
         const dataTarget = result[this.dataTargetKey] || [];
 
