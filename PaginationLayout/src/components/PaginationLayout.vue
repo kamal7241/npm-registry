@@ -224,7 +224,7 @@ export default {
       handler(newPayload, oldPayload) {
         if (JSON.stringify(newPayload) !== JSON.stringify(oldPayload)) {
           if (this.resetPageIndexOnPayloadChange) {
-            this.currentPage = 0;
+            this.currentPage = 1;
           }
 
           if (this.fetchOnPayloadChange) {
@@ -289,7 +289,7 @@ export default {
     },
     // Helpers for UI
     onFirstPageActionClicked() {
-      this.currentPage = 0;
+      this.currentPage = 1;
 
       if(this.enableServerSidePagination) {
         this.loadResults();
@@ -326,7 +326,7 @@ export default {
     },  
     onChangePageSize(currentPageSize) {
       this.currentPageSize = currentPageSize;
-      this.currentPage = 0;
+      this.currentPage = 1;
 
       if(this.enableServerSidePagination) {
         this.loadResults();

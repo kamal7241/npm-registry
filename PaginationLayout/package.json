@@ -1,6 +1,6 @@
 {
     "name": "@moj/pagination-layout",
-    "version": "1.0.10",
+    "version": "1.0.13",
     "private": false,
     "main": "./src/index.js",
     "module": "dist/PaginationLayout.esm.js",
