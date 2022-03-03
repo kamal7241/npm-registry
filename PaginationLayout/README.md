@@ -120,7 +120,7 @@ export default {
 | **@search** | *function that exposes an object ( **data - totalCount** ) as the first param* | **event** | ***@search="onSearch"*** | **false**
 | **endpoint** | *Required function that is needed to **call the API**.* | **Function** |  | **true**
 | **additionalPayload** | *any props for the endpoint need to be sent with request* | **Object** | ***{}** | *false*
-| **pageNumber** | *Initial page to start with* | **Number** | ***0*** | **false**
+| **initialPageNumber** | *Initial page to start with* | **Number** | ***0*** | **false**
 | **pageSize** | *Items per page* | **Number** | ***10*** | **false**
 | **pageSizeOptions** | *Array of page size options to view* | **Array** | ***[5, 10, 30]*** | **false**
 | **dataTargetKey** | *to select the items from the response by key* | **String** | ***data*** | **false**

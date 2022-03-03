@@ -115,7 +115,7 @@ export default {
       type: Array,
       default: () => ([5, 10, 30]),
     },
-    pageNumber: {
+    initialPageNumber: {
       type: Number,
       default: 1,
     },
@@ -125,11 +125,11 @@ export default {
     },
     dataTargetKey: {
       type: String,
-      default: "data",
+      default: "records",
     },
     totalCountKey: {
       type: String,
-      default: "totalCount",
+      default: "count",
     },    
     serverPageNumberKey: {
       type: String,
@@ -182,7 +182,7 @@ export default {
   },
   data() {
     return {
-      currentPage: this.pageNumber,
+      currentPage: this.initialPageNumber,
       currentPageSize: this.pageSize,
       list: [],
       totalCount: 0,
@@ -222,12 +222,14 @@ export default {
   watch: {
     additionalPayload: {
       handler(newPayload, oldPayload) {
+        console.log({newPayload, oldPayload})
         if (JSON.stringify(newPayload) !== JSON.stringify(oldPayload)) {
           if (this.resetPageIndexOnPayloadChange) {
-            this.currentPage = 0;
+            this.currentPage = this.initialPageNumber;
           }
 
           if (this.fetchOnPayloadChange) {
+            console.log('fetchOnPayloadChange')
             this.loadResults();
           }
         }
@@ -256,7 +258,7 @@ export default {
 
       try {
         const fetchData = await this.endpoint(this.exportPayloadAsObject ? payload : serializeQueryParams(payload));
-        const result = this.enableReadableStreamParse ? await fetchData.json() : fetchData;
+        const result = this.enableReadableStreamParse ? await fetchData.json() : fetchData.data || [];
         const dataTarget = result[this.dataTargetKey] || [];
 
         let data = [];
@@ -266,6 +268,7 @@ export default {
           data = this.isDirectData ? result : dataTarget;
         } else {
           data =  this.nestedDataKey ? dataTarget[this.nestedDataKey] : dataTarget;
+            
           totalCount = result[this.totalCountKey];
         }
 
@@ -274,7 +277,7 @@ export default {
         } else {
           this.list = data || [];
         }
-  console.log({data})
+
         this.totalCount = this.enableServerSidePagination ? totalCount : data.length;
         // update parent
         this.$emit("search", { 
@@ -289,7 +292,7 @@ export default {
     },
     // Helpers for UI
     onFirstPageActionClicked() {
-      this.currentPage = 0;
+      this.currentPage = this.initialPageNumber;
 
       if(this.enableServerSidePagination) {
         this.loadResults();
@@ -326,10 +329,14 @@ export default {
     },  
     onChangePageSize(currentPageSize) {
       this.currentPageSize = currentPageSize;
-      this.currentPage = 0;
 
-      if(this.enableServerSidePagination) {
-        this.loadResults();
+      if(this.generatedList.length) {
+
+        this.currentPage = this.initialPageNumber;
+
+        if(this.enableServerSidePagination) {
+          this.loadResults();
+        }
       }
     }
   },
