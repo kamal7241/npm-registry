@@ -23,53 +23,47 @@
     </p>
 
     <slot
-      v-if="!croppedImage"
-      :croppedImage="croppedImage"
-      :onUploadImage="onUploadImage"
-      name="emptyPlaceholder"
-    >
-      <div
-        class="empty-image-placeholder"
-        @click="onUploadImage"
-      >
-        {{ strings.clickHere }}
-      </div> 
-    </slot>
-
-    <slot
-      v-else
-      name="previewWithActions"
       :croppedImage="croppedImage"
       :onUploadImage="onUploadImage"
       :onEditSelectedImage="onEditSelectedImage"
       :onDeleteSelectedImage="onDeleteSelectedImage"
+      name="image-placeholder"
     >
-      <div class="cropped-image-placeholder">
-        <img
-          :src="croppedImage"
-          class="cropped-image"
-          alt="cropped-image"
+      <div class="input-wrapper">
+        <div
+          class="indicator pointer"
+          @click="onUploadImage"
         >
+          {{ strings.chooseFile }}
+        </div>
+
+        <div class="name-placeholder">
+          {{ selectedFile ? selectedFile.displayName : strings.clickHere }}
+        </div>
 
         <div class="actions">
           <img
-            src="../assets/edit.png"
-            alt="edit"
-            @click="onEditSelectedImage"
-          >
-
-          <img
-            src="../assets/delete.svg"
+            v-if="selectedFile"
+            src="../assets/cancel.svg"
+            class="action"
+            width="30"
+            height="30"
             alt="delete"
             @click="onDeleteSelectedImage"
-          >        
-        
-          <img
-            src="../assets/upload.png"
-            alt="upload"
-            @click="onUploadImage"
           >
         </div>
+      </div>
+    </slot>
+
+    <slot
+      v-if="error && activateInternalErrorPreview"
+      name="errors"
+      :errors="error"
+    >
+      <div class="error-placeholder">
+        <p class="text">
+          {{ strings.errorText || error }}
+        </p>
       </div>
     </slot>
 
@@ -99,7 +93,19 @@ export default {
     isRequired: {
       type: Boolean,
       default: false
+    },    
+    activateInternalErrorPreview: {
+      type: Boolean,
+      default: false
     },
+    enableFullnameDisplay: {
+      type: Boolean,
+      default: false
+    },
+    maxDisplayNameLength: {
+      type: Number,
+      default: 15,
+    },    
     cropperConfigs: {
       type: Object,
       default: () => ({})
@@ -116,6 +122,7 @@ export default {
       selectedFile: null,
       imageSrc: null,
       fileExtention: null,
+      error: '',
       croppedData: {}
     }
   },
@@ -128,6 +135,8 @@ export default {
         modalTitle: 'محرر الصورة',
         modalSaveAction: 'حفظ',
         modalCancelAction: 'إلغاء',
+        chooseFile: 'اختر ملف',
+        errorText: '',
         ...localizations
       };
     },
@@ -144,7 +153,7 @@ export default {
       if (files.length) {
         const file = files[0];
         const fileReader = new FileReader();
-
+        file.displayName = this.enhanceFileName(file.name);
         // update selected file
         this.selectedFile = file;
         this.fileExtention = file.type;
@@ -158,6 +167,19 @@ export default {
         };
       }
     },
+    enhanceFileName(fileName) {
+      // animals.sd.png ===> .png
+      const extention = this.getFileExtention(fileName);
+      const name = fileName.split(extention)[0];
+      const displayedName = this.enableFullnameDisplay ? name : name.slice(0, this.maxDisplayNameLength)
+      
+      return `${displayedName}${extention.toLowerCase()}`;
+    },
+    getFileExtention(fileName, enableLowerCase = false) {
+      const extention = fileName.substring(fileName.lastIndexOf('.'));
+
+      return enableLowerCase ? extention.toLowerCase() : extention;
+    },
     onEditSelectedImage() {
       this.showModal = true;
     },    
@@ -165,18 +187,22 @@ export default {
       this.onReset();
       this.croppedData = {};
 
+      this.error = 'الرجاء التحقق من هذا الحقل',
       this.$emit('cropImage', null);
     },    
     onUploadImage() {
       this.$refs.imageInput.click();
     },
-    onReset () {
+    onReset (allowResetSelectedFile = true) {
       this.showModal = false;
-      this.selectedFile = null;
       this.fileExtention = null;
+      this.error = '';
+      if(allowResetSelectedFile) {
+        this.selectedFile = null;
+      }
     },
     onSaveCroppedImage (data) {
-      this.onReset();
+      this.onReset(false);
 
       this.croppedData = data;
       this.$emit('cropImage', data);
@@ -188,59 +214,5 @@ export default {
 </script>
 
 <style scoped>
-.label {
-  margin-bottom: 10px;
-  font-weight: bold;
-  font-size: 15px;
-}
-
-.label .star {
-  color: red
-}
-
-.canvas-wrapper {
-  padding: 100px;
-  /* display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center; */
-}
-
-.cropped-image-placeholder,
-.empty-image-placeholder {
-  width: 200px;
-  height: 200px;
-  border: 1px solid;
-  cursor: pointer;
-  display: flex;
-}
-
-.empty-image-placeholder {
-  align-items: center;
-  justify-content: center;
-}
-
-.cropped-image-placeholder {
-  position: relative;
-  /* flex-direction: ; */
-}
-
-.cropped-image-placeholder .cropped-image {
-  width: 100%;
-  height: 100%;
-}
-.cropped-image-placeholder .actions {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  padding: 5px;
-  background: rgba(255, 255, 255, .5);
-}
-
-.cropped-image-placeholder .actions img{
-  width: 20px;
-  height: 20px;
-  margin: 0 5px;
-}
+@import './styles.css';
 </style>
