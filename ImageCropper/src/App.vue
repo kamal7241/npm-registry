@@ -4,16 +4,7 @@
     :cropperConfigs="cropperConfigs"
     @cropImage="onCropImage"
   >
-    <template #emptyPlaceholder="{croppedImage, onUploadImage}">
-      <div
-        class="empty-image-placeholder"
-        @click="onUploadImage"
-      >
-        choose
-      </div> 
-    </template> 
-    
-    <template #previewWithActions="{croppedImage, onEditSelectedImage, onDeleteSelectedImage, onUploadImage}">
+    <template #image-placeholder="{croppedImage, onEditSelectedImage, onDeleteSelectedImage, onUploadImage}">
       <div class="cropped-image-placeholder">
         <img
           :src="croppedImage"

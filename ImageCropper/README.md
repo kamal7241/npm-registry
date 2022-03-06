@@ -3,7 +3,7 @@ Highly customizable pkg for cropping Images
 
 ### **Features**
 - [x] Localization for all strings
-- [x] Customization for **Empty Placeholder**
+- [x] Customization for **Image Placeholder**
 - [x] Customization for **Rendered Cropped Image**
 
 ## Example
@@ -14,16 +14,7 @@ Highly customizable pkg for cropping Images
     :cropperConfigs="cropperConfigs"
     @cropImage="onCropImage"
   >
-    <template #emptyPlaceholder="{croppedImage, onUploadImage}">
-      <div
-        class="empty-image-placeholder"
-        @click="onUploadImage"
-      >
-        choose
-      </div> 
-    </template> 
-    
-    <template #previewWithActions="{croppedImage, onEditSelectedImage, onDeleteSelectedImage, onUploadImage}">
+    <template #image-placeholder="{croppedImage, onEditSelectedImage, onDeleteSelectedImage, onUploadImage}">
       <div class="cropped-image-placeholder">
         <img
           :src="croppedImage"
@@ -87,7 +78,9 @@ export default {
 | **localization** | *for checnging all the desired strings* | **Object** | ***{}*** | **false**
 | **label** | *Field label* | **String** | ***''*** | **false**
 | **isRequired** | *Flag for indicating whether the input is required or not * | **Boolean** | ***false*** | **false**
-
+| **maxDisplayNameLength** | *if the file name is too long it will cut it based on it's value* | **Number** | ***15*** | **false**
+| **enableFullnameDisplay** | *if true it will provide the fullName of the file regardless **maxDisplayNameLength** prop* | **Boolean** | ***false*** | **false**
+| **activateInternalErrorPreview** | *to show internal error* | **Boolean** | ***false*** | **false**
 
 ## Available localizations
 | Prop | default |
@@ -96,17 +89,17 @@ export default {
 | **modalTitle** | ***محرر الصورة*** |
 | **modalSaveAction** | ***حفظ*** |
 | **modalCancelAction** | ***إلغاء*** |
+| **chooseFile** | ***اختر ملف*** |
 ## Customizations
 *The available customization are*:
-1. **Empty Placeholder**: in order to customize it you will have to ***scoped slot*** with the name ***emptyPlaceholder*** and it will receive:
+1. **Image Placeholder**: in order to customize it you will have to ***scoped slot*** with the name ***image-placeholder*** and it will receive:
   - **croppedImage**: *Image src after cropping process to use it in UI or as a condition to hide/show the empty placeholder if needed*
   - **onUploadImage**: *To trigger the file chooser*
-
-2. **Preview And Actions**: To render preview and actions so in order to customize it you will have to ***scoped slot*** with the name ***previewWithActions*** and it will receive : 
-  - **croppedImage**: *Image src after cropping process*
-  - **onUploadImage**: *method to open the file dialog*
   - **onEditSelectedImage**: *method to open the cropper mode with the current selected file*
   - **onDeleteSelectedImage**: *method to reset all chosed files and `export null for the cropImage` *
+
+2. **Error section**: to render custom error `and it will not be available if activateInternalErrorPreview=false` so in order to customize it you will have to ***scoped slot*** with the name ***errors*** and it will receive the **errors** as an argument `which is a string`.
+
 ## Notes: 
 - ***@cropImage*** : *function that exposes all the cropped files as the first param as `{ croppedBlob: Blob, croppedImage: Base64 }`*
 

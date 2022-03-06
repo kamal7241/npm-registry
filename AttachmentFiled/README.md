@@ -127,6 +127,7 @@ export default {
 | **accept** | *the file types the file input should accept. [Accept Docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/accept)* | **String** | ***"jpg, pdf, png, jpeg"*** | false
 | **excludedExtentions** | *files with extention in this list will be ignored* | **Array** | ***["zip", "exe", "ZIP", "EXE", "ZAP", "Z01", "Z02", "Z03", "iso", "rar", "zz"]*** | false
 | **value** | *files to update the ui in the **readOnlyMode*** | **Array** | ***[]*** | false
+| **activateInternalErrorPreview** | *to show internal error* | **Boolean** | ***false*** | **false**
 
 ## Customizations
 *The available customization are*:
