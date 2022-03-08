@@ -235,6 +235,7 @@ export default {
     },
     updatedValue() {
       return {
+        name: this.name,
         [this.name]: this.selectedFiles,
         isValid: this.isRequired ?  !!this.selectedFiles.length : true
       }
@@ -345,6 +346,7 @@ export default {
       this.error = error;
 
       this.$emit('error', {
+        name: this.name,
         [this.name]: error
       });
     },
