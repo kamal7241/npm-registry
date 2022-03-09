@@ -208,7 +208,7 @@ export default {
     return {
       selectedFiles: [],
       currentTotalSize: 0,
-      error: ''
+      error: this.isRequired ? 'هذا الحقل مطلوب' : ''
     }
   },
   computed: {
@@ -249,6 +249,9 @@ export default {
     }
   },
   mounted() {
+    // initial notification to the parent
+    this.$emit("select", this.updatedValue);
+
     if(this.readOnlyMode && this.value.length) {
       this.loadData();
     }

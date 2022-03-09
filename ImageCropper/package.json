@@ -1,6 +1,6 @@
 {
     "name": "@moj/image-cropper",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "private": false,
     "main": "./src/index.js",
     "module": "dist/ImageCropper.esm.js",

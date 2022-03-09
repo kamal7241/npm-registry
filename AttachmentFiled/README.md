@@ -111,7 +111,7 @@ export default {
 | --- | --- | --- | --- | --- |
 | **@change** | *function that exposes all the selected files as the first param* | **event** | ***@change="onSelectFiles"*** | **true**
 | **@error** | *function that exposes the input error* | **event** | ***@error="onErrorFound"*** | **false**
-| **name** | *function that exposes all the selected files as the first param* | **String** | ***""*** | **true**
+| **name** | *field name to map results and errors to* | **String** | ***""*** | **true**
 | **maxFileSizeInMega** | *max single file size* | **Number** | ***2 MB*** | false
 | **maxFilesSizeInMega** | *total size for the selected files* | **Number** | ***5 MB*** | false
 | **maxAttachments** | *max selected attachments number* | **Number** | ***5*** | false

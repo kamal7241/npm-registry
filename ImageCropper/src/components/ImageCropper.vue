@@ -90,6 +90,10 @@ export default {
       type: String,
       default: ''
     },    
+    name: {
+      type: String,
+      default: ''
+    },    
     isRequired: {
       type: Boolean,
       default: false
@@ -122,10 +126,11 @@ export default {
       selectedFile: null,
       imageSrc: null,
       fileExtention: null,
-      error: '',
+      error: this.isRequired ? 'هذا الحقل مطلوب' : '',
       croppedData: {}
     }
   },
+
   computed: {
     strings() {
       const { localizations } = this;
@@ -146,12 +151,22 @@ export default {
       return croppedImage;
     }
   },
+  mounted() {
+    // initial notification to the parent
+    this.$emit('cropImage', {
+      name: this.name,
+      croppedBlob: null,
+      croppedImage: null,
+      isValid: !this.isRequired
+    });
+  },
   methods: {
     onSelectImage (e) {
       const files = e.target.files;
+      const file = files[0];
+      const isImageSelected = file && file.type.includes('image');
 
-      if (files.length) {
-        const file = files[0];
+      if (isImageSelected) {
         const fileReader = new FileReader();
         file.displayName = this.enhanceFileName(file.name);
         // update selected file
@@ -188,7 +203,12 @@ export default {
       this.croppedData = {};
 
       this.error = 'الرجاء التحقق من هذا الحقل',
-      this.$emit('cropImage', null);
+      this.$emit('cropImage', {
+        name: this.name,
+        croppedBlob: null,
+        croppedImage: null,
+        isValid: !this.isRequired
+      });
     },    
     onUploadImage() {
       this.$refs.imageInput.click();
@@ -205,7 +225,12 @@ export default {
       this.onReset(false);
 
       this.croppedData = data;
-      this.$emit('cropImage', data);
+      this.$emit('cropImage', {
+        name: this.name,
+        croppedBlob: data.croppedBlob,
+        croppedImage: data.croppedImage,
+        isValid: this.isRequired ? !!Object.keys(data).length : true
+      });
       // reset the value of the input 
       this.$refs.imageInput.value = '';
     },
