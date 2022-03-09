@@ -81,6 +81,7 @@ export default {
 | **maxDisplayNameLength** | *if the file name is too long it will cut it based on it's value* | **Number** | ***15*** | **false**
 | **enableFullnameDisplay** | *if true it will provide the fullName of the file regardless **maxDisplayNameLength** prop* | **Boolean** | ***false*** | **false**
 | **activateInternalErrorPreview** | *to show internal error* | **Boolean** | ***false*** | **false**
+| **name** | *field name to map results and errors to* | **String** | ***""*** | **true**
 
 ## Available localizations
 | Prop | default |

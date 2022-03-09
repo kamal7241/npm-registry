@@ -111,7 +111,7 @@ export default {
 | --- | --- | --- | --- | --- |
 | **@change** | *function that exposes all the selected files as the first param* | **event** | ***@change="onSelectFiles"*** | **true**
 | **@error** | *function that exposes the input error* | **event** | ***@error="onErrorFound"*** | **false**
-| **name** | *function that exposes all the selected files as the first param* | **String** | ***""*** | **true**
+| **name** | *field name to map results and errors to* | **String** | ***""*** | **true**
 | **maxFileSizeInMega** | *max single file size* | **Number** | ***2 MB*** | false
 | **maxFilesSizeInMega** | *total size for the selected files* | **Number** | ***5 MB*** | false
 | **maxAttachments** | *max selected attachments number* | **Number** | ***5*** | false
@@ -146,8 +146,8 @@ export default {
 3. **Error section**: to render custom error `and it will not be available if activateInternalErrorPreview=false` so in order to customize it you will have to ***scoped slot*** with the name ***errors*** and it will receive the **errors** as an argument `which is a string`.
 
 ## Notes: 
-- ***@change*** : *function that exposes all the selected files as the first param*
-- ***@error*** : *function that exposes all errors as the first param*
+- ***@change*** : *function that exposes all the selected files + name as the first param*
+- ***@error*** : *function that exposes all errors + name as the first param*
 - ***Each file*** : has the same props as in [Docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#getting_information_on_selected_files) in addition to **displayName** prop
 - ***displayName*** : we will count on it for **displaying the name** always **not the name prop**
 - ***value*** : *should consist of **name**, **downloadUrl** and **size in Bytes** *

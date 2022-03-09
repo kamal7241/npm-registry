@@ -208,7 +208,7 @@ export default {
     return {
       selectedFiles: [],
       currentTotalSize: 0,
-      error: ''
+      error: this.isRequired ? 'هذا الحقل مطلوب' : ''
     }
   },
   computed: {
@@ -235,6 +235,7 @@ export default {
     },
     updatedValue() {
       return {
+        name: this.name,
         [this.name]: this.selectedFiles,
         isValid: this.isRequired ?  !!this.selectedFiles.length : true
       }
@@ -248,6 +249,9 @@ export default {
     }
   },
   mounted() {
+    // initial notification to the parent
+    this.$emit("select", this.updatedValue);
+
     if(this.readOnlyMode && this.value.length) {
       this.loadData();
     }
@@ -345,6 +349,7 @@ export default {
       this.error = error;
 
       this.$emit('error', {
+        name: this.name,
         [this.name]: error
       });
     },
