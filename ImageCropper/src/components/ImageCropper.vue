@@ -186,6 +186,7 @@ export default {
     // initial notification to the parent
     this.$emit('cropImage', {
       name: this.name,
+      fileName: '',
       croppedBlob: null,
       croppedImage: null,
       isValid: !this.isRequired
@@ -248,6 +249,7 @@ export default {
       this.error = 'الرجاء التحقق من هذا الحقل',
       this.$emit('cropImage', {
         name: this.name,
+        fileName: '',
         croppedBlob: null,
         croppedImage: null,
         isValid: !this.isRequired
@@ -270,6 +272,7 @@ export default {
       this.croppedData = data;
       this.$emit('cropImage', {
         name: this.name,
+        fileName: this.selectedFile.name,
         croppedBlob: data.croppedBlob,
         croppedImage: data.croppedImage,
         isValid: this.isRequired ? !!Object.keys(data).length : true

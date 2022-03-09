@@ -173,11 +173,6 @@ export default {
   border-bottom: 1px solid #eee;
 }
 
-.modal__content {
-  /* flex-grow: 1;
-  overflow-y: auto; */
-}
-
 .modal__action {
   border-top: 1px solid #eee;
   padding: 10px;
