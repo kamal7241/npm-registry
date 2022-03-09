@@ -3,8 +3,8 @@
     label="نص تجريبي"
     name="personalInfo"
     isRequired
-    activateInternalErrorPreview
     :cropperConfigs="cropperConfigs"
+    :value="value"
     @cropImage="onCropImage"
   >
     <!-- <template #image-placeholder="{croppedImage, onEditSelectedImage, onDeleteSelectedImage, onUploadImage}">
@@ -51,6 +51,10 @@ export default {
     return {
       cropperConfigs: {
         aspectRatio: 4/6
+      },
+      value: {
+        name: 'sdfsdfsdf',
+        file: 'sdfsdfsdfsdf'
       }
     };
   },

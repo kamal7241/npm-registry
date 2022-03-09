@@ -34,7 +34,7 @@
         {{ strings.modalSaveAction }}
       </button>
       <button
-        class="cancel"
+        class="cancel-action"
         @click="onCancel"
       >
         {{ strings.modalCancelAction }}
@@ -173,11 +173,6 @@ export default {
   border-bottom: 1px solid #eee;
 }
 
-.modal__content {
-  /* flex-grow: 1;
-  overflow-y: auto; */
-}
-
 .modal__action {
   border-top: 1px solid #eee;
   padding: 10px;
@@ -201,7 +196,7 @@ export default {
   padding: 5px;
 }
 
-.modal__action .cancel {
+.modal__action .cancel-action {
   flex-basis: 25%;
   color: #fff;
   background-color: #ae351c;

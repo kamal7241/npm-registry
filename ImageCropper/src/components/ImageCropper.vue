@@ -14,6 +14,7 @@
     <p
       v-if="label"
       class="label"
+      :class="labelClassName"
     >
       {{ label }}
       <span
@@ -30,12 +31,13 @@
       name="image-placeholder"
     >
       <div class="input-wrapper">
-        <div
+        <button
+          :disabled="readOnlyMode"
           class="indicator pointer"
           @click="onUploadImage"
         >
           {{ strings.chooseFile }}
-        </div>
+        </button>
 
         <div class="name-placeholder">
           {{ selectedFile ? selectedFile.displayName : strings.clickHere }}
@@ -43,7 +45,7 @@
 
         <div class="actions">
           <img
-            v-if="selectedFile"
+            v-if="selectedFile && !readOnlyMode"
             src="../assets/cancel.svg"
             class="action"
             width="30"
@@ -93,6 +95,11 @@ export default {
     name: {
       type: String,
       default: ''
+    },        
+    
+    labelClassName: {
+      type: String,
+      default: ''
     },    
     isRequired: {
       type: Boolean,
@@ -103,6 +110,10 @@ export default {
       default: false
     },
     enableFullnameDisplay: {
+      type: Boolean,
+      default: false
+    },
+    readOnlyMode: {
       type: Boolean,
       default: false
     },
@@ -118,6 +129,10 @@ export default {
       type: Object,
       default: () => ({})
     },
+    value: {
+      type: Object,
+      default: () => ({})
+    }
   },
   data () {
     return {
@@ -149,18 +164,47 @@ export default {
       const { croppedImage } = this.croppedData;
       
       return croppedImage;
+    },
+    isValidValue() {
+      const { name, file } = this.value || {};
+
+      if(name && file) {
+        return true
+      }
+
+      return false;
+    }
+  },
+  watch: {
+    value() {
+      if(this.readOnlyMode && this.isValidValue) {
+        this.loadData();
+      }
     }
   },
   mounted() {
     // initial notification to the parent
     this.$emit('cropImage', {
       name: this.name,
+      fileName: '',
       croppedBlob: null,
       croppedImage: null,
       isValid: !this.isRequired
     });
+
+    if(this.readOnlyMode && this.isValidValue) {
+      this.loadData();
+    }
   },
   methods: {
+    loadData() {
+      const { name: displayName, croppedImage } = this.value;
+
+      this.selectedFile = {
+        displayName,
+        croppedImage
+      }
+    },
     onSelectImage (e) {
       const files = e.target.files;
       const file = files[0];
@@ -205,6 +249,7 @@ export default {
       this.error = 'الرجاء التحقق من هذا الحقل',
       this.$emit('cropImage', {
         name: this.name,
+        fileName: '',
         croppedBlob: null,
         croppedImage: null,
         isValid: !this.isRequired
@@ -227,6 +272,7 @@ export default {
       this.croppedData = data;
       this.$emit('cropImage', {
         name: this.name,
+        fileName: this.selectedFile.name,
         croppedBlob: data.croppedBlob,
         croppedImage: data.croppedImage,
         isValid: this.isRequired ? !!Object.keys(data).length : true

@@ -10,10 +10,16 @@
 }
 
 .input-wrapper .indicator{
-  padding: 15px 10px;
+  padding: 16px 10px;
+  outline: none;
   /* font-size: 16px; */
   color: #fff;
   background-color: #158E8D
+}
+
+.input-wrapper .indicator:disabled {
+  opacity: .6;
+  cursor: not-allowed;
 }
 
 .input-wrapper .name-placeholder{
@@ -43,10 +49,6 @@
 
 .label .star {
   color: red
-}
-
-.canvas-wrapper {
-  padding: 100px;
 }
 
 .cropped-image-placeholder,
