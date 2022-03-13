@@ -205,22 +205,6 @@ export default {
     localizations: {
       type: Object,
       default: () => ({})
-    },
-    excludedExtentions: {
-      type: Array,
-      default: () => ([
-        "zip",
-        "exe",
-        "ZIP",
-        "EXE",
-        "ZAP",
-        "Z01",
-        "Z02",
-        "Z03",
-        "iso",
-        "rar",
-        "zz",
-      ])
     }
   },
   data() {
@@ -353,15 +337,15 @@ export default {
       return isValidCurrentSize && isValidWithTotalSize;
     },
     isValidFile(file) {
-      const enhancedExcludedExtentions = this.excludedExtentions.map(ext => ext.toLowerCase());
+      const enhancedAcceptedExtentions = this.accept.toLowerCase();
       // .ZIP ==> ZIP
       const extention = this.getFileExtention(file.name, true).slice(1);
-      const isValidExtention = enhancedExcludedExtentions.includes(extention) === false;
+      const isValidExtention = enhancedAcceptedExtentions.includes(extention);
       const isValidSize = this.isValidFileSize(file.size, file.name);
 
       if(!isValidExtention) {
-        this.dispatchError('fileExtention', file.name);
-      }
+        return this.dispatchError('fileExtention', file.name);
+      } 
 
       return isValidExtention && isValidSize;
     },
