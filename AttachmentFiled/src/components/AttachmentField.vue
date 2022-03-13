@@ -14,7 +14,7 @@
       </p>
 
       <div
-        v-if="addAttachmentAllowed && !readOnlyMode"
+        v-if="enableFancyPreview && addAttachmentAllowed && !readOnlyMode"
         class="file-input-wrapper"
       >
         <img
@@ -25,27 +25,36 @@
         >
 
         <span
-          v-if="placeholder"
+          v-if="strings.placeholder"
           class="placeholder-wrapper"
         > 
-          {{ placeholder }}
+          {{ strings.placeholder }}
         </span>
 
         <button
           class="file-chooser-action"
           @click="$refs.file.click()"
         >
-          {{ actionName }}
+          {{ strings.actionName }}
         </button>
+      </div>
 
-        <input
-          ref="file"
-          class=""
-          type="file"
-          :multiple="isMultiple"
-          :accept="accept"
-          @change="onSelectFiles"
-        >
+      <div
+        v-if="!enableFancyPreview && addAttachmentAllowed && !readOnlyMode"
+      >
+        <div class="input-wrapper">
+          <button
+            :disabled="readOnlyMode"
+            class="indicator pointer"
+            @click="$refs.file.click()"
+          >
+            {{ strings.clickHere }}
+          </button>
+
+          <div class="name-placeholder">
+            {{ strings.chooseFile }}
+          </div>
+        </div>
       </div>
 
       <slot
@@ -61,6 +70,7 @@
       </slot>
 
       <slot
+        v-if="addAttachmentAllowed && !readOnlyMode"
         name="hints"
         :data="{ hintsData }"
       >
@@ -71,6 +81,15 @@
           <p>{{ getAllowedMaxFileSizeText(maxFilesSizeInMega) }}</p>
         </div>
       </slot>
+
+      <input
+        ref="file"
+        class=""
+        type="file"
+        :multiple="isMultiple"
+        :accept="accept"
+        @change="onSelectFiles"
+      >
     </div>
 
     <slot
@@ -138,6 +157,10 @@ export default {
     isMultiple: {
       type: Boolean,
       default: false
+    },        
+    enableFancyPreview: {
+      type: Boolean,
+      default: false
     },       
     resetErrorOnSelect: {
       type: Boolean,
@@ -166,19 +189,11 @@ export default {
     label: {
       type: String,
       default: "",
-    },   
-    actionName: {
-      type: String,
-      default: "استعراض الملفات",
     },      
     name: {
       type: String,
       default: "",
-    },        
-    placeholder: {
-      type: String,
-      default: "",
-    },    
+    },         
     accept: {
       type: String,
       default: "jpg,pdf,png,jpeg",
@@ -187,6 +202,10 @@ export default {
       type: Array,
       default: () => []
     }, 
+    localizations: {
+      type: Object,
+      default: () => ({})
+    },
     excludedExtentions: {
       type: Array,
       default: () => ([
@@ -236,10 +255,21 @@ export default {
     updatedValue() {
       return {
         name: this.name,
-        [this.name]: this.selectedFiles,
+        value: this.selectedFiles,
         isValid: this.isRequired ?  !!this.selectedFiles.length : true
       }
-    }
+    },
+    strings() {
+      const { localizations } = this;
+
+      return {
+        placeholder: '',
+        clickHere: 'اضغط هنا',
+        chooseFile: 'اختر ملف',
+        actionName: "استعراض الملفات",
+        ...localizations
+      };
+    },
   },
   watch: {
     value() {
@@ -350,7 +380,7 @@ export default {
 
       this.$emit('error', {
         name: this.name,
-        [this.name]: error
+        error
       });
     },
     onDeleteFile(index) {
