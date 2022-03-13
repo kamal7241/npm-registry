@@ -8,7 +8,9 @@
       placeholder="قم بسحب وإرفاق ملفاتك في هذه المنطقة"
       isMultiple
       isRequired
+      :localizations="localizations"
       activateInternalErrorPreview
+      
       @select="onSelectFiles"
       @error="onErrorFound"
     >
@@ -68,7 +70,10 @@ export default {
   },
   data() {
     return {
-    };
+      localizations: {
+        placeholder: 'استعراض الملفات'
+      }
+    }
   },
   methods: {
     onSelectFiles(files) {

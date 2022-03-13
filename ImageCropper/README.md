@@ -75,7 +75,7 @@ export default {
 | --- | --- | --- | --- | --- |
 | **@cropImage** | *function that exposes all the cropped files as the first param* | **Function** | ***@cropImage="onCropImage"*** | **true**
 | **cropperConfigs** | *configs for the cropper canvas [options](https://github.com/fengyuanchen/cropperjs#options) * | **Object** | ***{}*** | **false**
-| **localization** | *for checnging all the desired strings* | **Object** | ***{}*** | **false**
+| **localizations** | *for checnging all the desired strings* | **Object** | ***{}*** | **false**
 | **label** | *Field label* | **String** | ***''*** | **false**
 | **isRequired** | *Flag for indicating whether the input is required or not * | **Boolean** | ***false*** | **false**
 | **maxDisplayNameLength** | *if the file name is too long it will cut it based on it's value* | **Number** | ***15*** | **false**

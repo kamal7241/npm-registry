@@ -18,14 +18,16 @@ Highly customizable pkg for managing selecting files
     <AttachmentField 
       label="صورة شخصية "
       name="association"
-      placeholder="استعراض الملفات"
+      placeholder="قم بسحب وإرفاق ملفاتك في هذه المنطقة"
       isMultiple
       isRequired
+      :localizations="localizations"
       activateInternalErrorPreview
+      enableFancyPreview
       @select="onSelectFiles"
       @error="onErrorFound"
     >
-      <template #errors="{errors}">
+      <!-- <template #errors="{errors}">
         <div class="error-placeholder">
           <p class="text">
             {{ errors }}
@@ -67,7 +69,7 @@ Highly customizable pkg for managing selecting files
             </div>
           </li>
         </ul>
-      </template>
+      </template> -->
     </AttachmentField>
   </div>
 </template>
@@ -81,7 +83,10 @@ export default {
   },
   data() {
     return {
-    };
+      localizations: {
+        placeholder: 'استعراض الملفات'
+      }
+    }
   },
   methods: {
     onSelectFiles(files) {
@@ -109,7 +114,7 @@ export default {
 ## Props
 | Prop | Description | Type | Default | isRequired
 | --- | --- | --- | --- | --- |
-| **@change** | *function that exposes all the selected files as the first param* | **event** | ***@change="onSelectFiles"*** | **true**
+| **@select** | *function that exposes all the selected files as the first param* | **event** | ***@select="onSelectFiles"*** | **true**
 | **@error** | *function that exposes the input error* | **event** | ***@error="onErrorFound"*** | **false**
 | **name** | *field name to map results and errors to* | **String** | ***""*** | **true**
 | **maxFileSizeInMega** | *max single file size* | **Number** | ***2 MB*** | false
@@ -123,12 +128,22 @@ export default {
 | **enableFullnameDisplay** | *if true it will provide the fullName of the file regardless **maxDisplayNameLength** prop* | **Boolean** | ***false*** | **false**
 | **validateOnSingleFileSize** | *if true the selection will validate based on ***maxFileSizeInMega**** | **Boolean** | ***false*** | **false**
 | **label** | *label for input field* | **String** | ***""*** | **false**
-| **placeholder** | *placeholder for input field* | **String** | ***""*** | **false**
 | **accept** | *the file types the file input should accept. [Accept Docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/accept)* | **String** | ***"jpg, pdf, png, jpeg"*** | false
 | **excludedExtentions** | *files with extention in this list will be ignored* | **Array** | ***["zip", "exe", "ZIP", "EXE", "ZAP", "Z01", "Z02", "Z03", "iso", "rar", "zz"]*** | false
 | **value** | *files to update the ui in the **readOnlyMode*** | **Array** | ***[]*** | false
 | **activateInternalErrorPreview** | *to show internal error* | **Boolean** | ***false*** | **false**
 | **readOnlyMode** | *Disable The Field* | **Boolean** | ***false*** | false
+| **enableFancyPreview** | *Switch between 2 Views Normal/fancy look* | **Boolean** | ***false*** | false
+| **localizations** | *for checnging all the desired strings* | **Object** | ***{}*** | **false**
+
+
+## Available localizations
+| Prop | default | hint |
+| --- | --- | --- |
+| **placeholder** | ***''*** | *placeholder for input field in ( Fancy Mode )* |
+| **actionName** | ***استعراض الملفات*** | *Button Label ( Fancy Mode )* | 
+| **clickHere** | ***اضغط هنا*** | *Button Label ( Normal Mode )* |
+| **chooseFile** | ***اختر ملف*** | *placeholder for input field in ( Normal Mode )* |
 
 ## Customizations
 *The available customization are*:
@@ -147,8 +162,8 @@ export default {
 3. **Error section**: to render custom error `and it will not be available if activateInternalErrorPreview=false` so in order to customize it you will have to ***scoped slot*** with the name ***errors*** and it will receive the **errors** as an argument `which is a string`.
 
 ## Notes: 
-- ***@change*** : *function that exposes all the selected files + name as the first param*
-- ***@error*** : *function that exposes all errors + name as the first param*
+- ***@select*** : *function that exposes all the value(selected files), name and isValid as the first param*
+- ***@error*** : *function that exposes error + name as the first param*
 - ***Each file*** : has the same props as in [Docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#getting_information_on_selected_files) in addition to **displayName** prop
 - ***displayName*** : we will count on it for **displaying the name** always **not the name prop**
 - ***value*** : *should consist of **name**, **downloadUrl** and **size in Bytes** *
