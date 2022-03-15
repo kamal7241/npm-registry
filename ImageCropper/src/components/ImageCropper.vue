@@ -32,12 +32,21 @@
     >
       <div class="input-wrapper">
         <button
+          v-if="!selectedFile"
           :disabled="readOnlyMode"
           class="indicator pointer"
           @click="onUploadImage"
         >
           {{ strings.chooseFile }}
         </button>
+        <img
+          v-else
+          class="image-button-placeholder"
+          src="../assets/file.svg"
+          alt="icon"
+          width="25"
+          height="25"
+        >
 
         <div class="name-placeholder">
           {{ selectedFile ? selectedFile.displayName : strings.clickHere }}

@@ -84,7 +84,7 @@ export default {
 | **name** | *field name to map results and errors to* | **String** | ***""*** | **true**
 | **value** | *file to update the ui* | **Object** | ***{}*** | **false**
 | **readOnlyMode** | *Disable The Field* | **Boolean** | ***false*** | **false**
-| **enableDownload** | *To Allow Download previously saved image* | **Boolean** | ***false*** | **false**
+| **enableDownload** | *To Allow Download previously saved image* | **Boolean** | ***true*** | **false**
 
 ## Available localizations
 | Prop | default |
