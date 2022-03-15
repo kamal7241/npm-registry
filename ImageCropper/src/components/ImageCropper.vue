@@ -159,7 +159,6 @@ export default {
       croppedData: {}
     }
   },
-
   computed: {
     strings() {
       const { localizations } = this;
@@ -292,7 +291,7 @@ export default {
       this.showModal = false;
       this.fileExtention = null;
       this.error = '';
-      
+
       if(allowResetSelectedFile) {
         this.selectedFile = null;
       }

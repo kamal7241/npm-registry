@@ -257,7 +257,7 @@ export default {
   },
   watch: {
     value() {
-      if(this.readOnlyMode && this.value.length) {
+      if(this.value.length) {
         this.loadData();
       }
     }
@@ -266,7 +266,7 @@ export default {
     // initial notification to the parent
     this.$emit("select", this.updatedValue);
 
-    if(this.readOnlyMode && this.value.length) {
+    if(this.value.length) {
       this.loadData();
     }
   },
