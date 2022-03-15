@@ -168,7 +168,7 @@ export default {
     },       
     activateInternalErrorPreview: {
       type: Boolean,
-      default: false
+      default: true
     },       
     isRequired: {
       type: Boolean,
@@ -211,7 +211,7 @@ export default {
     return {
       selectedFiles: [],
       currentTotalSize: 0,
-      error: this.isRequired ? 'هذا الحقل مطلوب' : ''
+      error: ''
     }
   },
   computed: {
@@ -349,17 +349,18 @@ export default {
 
       return isValidExtention && isValidSize;
     },
-    getSelectingError(fileName) {
+    getSelectedError(fileName) {
       const { maxFileSizeInMega, maxFilesSizeInMega } = this;
 
       return {
+        fieldIsRequired: 'هذا الحقل مطلوب',
         maxFileSizeExceeded: ` الملف ${fileName} تجاوز الحد المسموح به  وهو ${maxFileSizeInMega} م.ب`,
         maxFilesSizeExceeded: ` تم تجاوز الحد المسموح به لجميع الملفات وهو ${maxFilesSizeInMega} م.ب`,
         fileExtention: `امتداد الملف ${fileName} غير مسموح به`,
       };
     },
     dispatchError(target='', name= '') {
-      const error =  this.getSelectingError(name)[target];
+      const error =  this.getSelectedError(name)[target];
       this.error = error;
 
       this.$emit('error', {
@@ -370,6 +371,10 @@ export default {
     onDeleteFile(index) {
       this.selectedFiles.splice(index, 1);
       
+      if(!this.isMultiple && this.isRequired) {
+        this.dispatchError('fieldIsRequired');
+      }
+
       // update parent
       this.$emit("select", this.updatedValue);
     },    
