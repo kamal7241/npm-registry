@@ -79,6 +79,7 @@ export default {
 | **label** | *Field label* | **String** | ***''*** | **false**
 | **isRequired** | *Flag for indicating whether the input is required or not * | **Boolean** | ***false*** | **false**
 | **maxDisplayNameLength** | *if the file name is too long it will cut it based on it's value* | **Number** | ***15*** | **false**
+| **exportInitialFieldMeta** | *Update Parent with Field info* | **Boolean** | ***false*** | false
 | **enableFullnameDisplay** | *if true it will provide the fullName of the file regardless **maxDisplayNameLength** prop* | **Boolean** | ***false*** | **false**
 | **activateInternalErrorPreview** | *to show internal error* | **Boolean** | ***false*** | **false**
 | **name** | *field name to map results and errors to* | **String** | ***""*** | **true**

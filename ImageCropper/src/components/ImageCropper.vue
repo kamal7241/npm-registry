@@ -140,6 +140,10 @@ export default {
       type: Boolean,
       default: false
     },
+    exportInitialFieldMeta: {
+      type: Boolean,
+      default: false
+    },
     maxDisplayNameLength: {
       type: Number,
       default: 15,
@@ -213,13 +217,15 @@ export default {
   },
   mounted() {
     // initial notification to the parent
-    this.$emit('cropImage', {
-      name: this.name,
-      fileName: '',
-      croppedBlob: null,
-      croppedImage: null,
-      isValid: !this.isRequired
-    });
+    if(this.exportInitialFieldMeta) {
+      this.$emit('cropImage', {
+        name: this.name,
+        fileName: '',
+        croppedBlob: null,
+        croppedImage: null,
+        isValid: !this.isRequired
+      });
+    }
 
     if(this.isValidValue) {
       this.loadData();
