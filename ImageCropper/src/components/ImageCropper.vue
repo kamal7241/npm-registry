@@ -188,7 +188,6 @@ export default {
       return false;
     },
     isDownloadAvailable() {
-      console.log('this.selectedFile', this.selectedFile)
       if(!this.selectedFile) {
         return false
       }
