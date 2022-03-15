@@ -6,11 +6,9 @@
       label="صورة شخصية "
       name="association"
       placeholder="قم بسحب وإرفاق ملفاتك في هذه المنطقة"
-
       isRequired
       :localizations="localizations"
       activateInternalErrorPreview
-      
       @select="onSelectFiles"
       @error="onErrorFound"
     >

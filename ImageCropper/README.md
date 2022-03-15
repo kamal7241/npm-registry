@@ -82,8 +82,9 @@ export default {
 | **enableFullnameDisplay** | *if true it will provide the fullName of the file regardless **maxDisplayNameLength** prop* | **Boolean** | ***false*** | **false**
 | **activateInternalErrorPreview** | *to show internal error* | **Boolean** | ***false*** | **false**
 | **name** | *field name to map results and errors to* | **String** | ***""*** | **true**
-| **value** | *file to update the ui in the **readOnlyMode*** | **Object** | ***{}*** | false
-| **readOnlyMode** | *Disable The Field* | **Boolean** | ***false*** | false
+| **value** | *file to update the ui* | **Object** | ***{}*** | **false**
+| **readOnlyMode** | *Disable The Field* | **Boolean** | ***false*** | **false**
+| **enableDownload** | *To Allow Download previously saved image* | **Boolean** | ***false*** | **false**
 
 ## Available localizations
 | Prop | default |

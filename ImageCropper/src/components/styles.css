@@ -31,6 +31,7 @@
 
 .input-wrapper .actions{
   padding: 8px;
+  margin: 0px 5px
 }
 .input-wrapper .actions .action{
   cursor: pointer;
