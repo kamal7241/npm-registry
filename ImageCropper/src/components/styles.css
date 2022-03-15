@@ -17,6 +17,11 @@
   background-color: #158E8D
 }
 
+.image-button-placeholder {
+  display: inline-block;
+  margin-right: 13px;
+}
+
 .input-wrapper .indicator:disabled {
   opacity: .6;
   cursor: not-allowed;

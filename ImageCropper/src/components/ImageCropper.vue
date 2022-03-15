@@ -32,12 +32,21 @@
     >
       <div class="input-wrapper">
         <button
+          v-if="!selectedFile"
           :disabled="readOnlyMode"
           class="indicator pointer"
           @click="onUploadImage"
         >
           {{ strings.chooseFile }}
         </button>
+        <img
+          v-else
+          class="image-button-placeholder"
+          src="../assets/file.svg"
+          alt="icon"
+          width="25"
+          height="25"
+        >
 
         <div class="name-placeholder">
           {{ selectedFile ? selectedFile.displayName : strings.clickHere }}
@@ -131,6 +140,10 @@ export default {
       type: Boolean,
       default: false
     },
+    exportInitialFieldMeta: {
+      type: Boolean,
+      default: false
+    },
     maxDisplayNameLength: {
       type: Number,
       default: 15,
@@ -204,13 +217,15 @@ export default {
   },
   mounted() {
     // initial notification to the parent
-    this.$emit('cropImage', {
-      name: this.name,
-      fileName: '',
-      croppedBlob: null,
-      croppedImage: null,
-      isValid: !this.isRequired
-    });
+    if(this.exportInitialFieldMeta) {
+      this.$emit('cropImage', {
+        name: this.name,
+        fileName: '',
+        croppedBlob: null,
+        croppedImage: null,
+        isValid: !this.isRequired
+      });
+    }
 
     if(this.isValidValue) {
       this.loadData();
