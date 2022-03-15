@@ -186,6 +186,10 @@ export default {
       type: Boolean,
       default: false
     },
+    exportInitialFieldMeta: {
+      type: Boolean,
+      default: false
+    },
     label: {
       type: String,
       default: "",
@@ -205,7 +209,8 @@ export default {
     localizations: {
       type: Object,
       default: () => ({})
-    }
+    },
+
   },
   data() {
     return {
@@ -264,7 +269,9 @@ export default {
   },
   mounted() {
     // initial notification to the parent
-    this.$emit("select", this.updatedValue);
+    if(this.exportInitialFieldMeta) {
+      this.$emit("select", this.updatedValue);
+    }
 
     if(this.value.length) {
       this.loadData();

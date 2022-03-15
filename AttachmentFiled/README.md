@@ -132,6 +132,7 @@ export default {
 | **value** | *files to update the ui in the **readOnlyMode*** | **Array** | ***[]*** | false
 | **activateInternalErrorPreview** | *to show internal error* | **Boolean** | ***false*** | **false**
 | **readOnlyMode** | *Disable The Field* | **Boolean** | ***false*** | false
+| **exportInitialFieldMeta** | *Update Parent with Field info* | **Boolean** | ***false*** | false
 | **enableFancyPreview** | *Switch between 2 Views Normal/fancy look* | **Boolean** | ***false*** | false
 | **localizations** | *for checnging all the desired strings* | **Object** | ***{}*** | **false**
 
