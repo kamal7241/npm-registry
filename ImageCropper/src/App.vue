@@ -5,6 +5,7 @@
     isRequired
     :cropperConfigs="cropperConfigs"
     :value="value"
+    enableDownload
     @cropImage="onCropImage"
   >
     <!-- <template #image-placeholder="{croppedImage, onEditSelectedImage, onDeleteSelectedImage, onUploadImage}">

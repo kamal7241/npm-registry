@@ -52,6 +52,16 @@
             height="30"
             alt="delete"
             @click="onDeleteSelectedImage"
+          >          
+          
+          <img
+            v-if="isDownloadAvailable"
+            src="../assets/download.png"
+            class="action"
+            width="20"
+            height="20"
+            alt="download"
+            @click="onDownloadSelectedImage"
           >
         </div>
       </div>
@@ -104,6 +114,10 @@ export default {
     isRequired: {
       type: Boolean,
       default: false
+    },      
+    enableDownload: {
+      type: Boolean,
+      default: false
     },    
     activateInternalErrorPreview: {
       type: Boolean,
@@ -145,7 +159,6 @@ export default {
       croppedData: {}
     }
   },
-
   computed: {
     strings() {
       const { localizations } = this;
@@ -173,11 +186,18 @@ export default {
       }
 
       return false;
+    },
+    isDownloadAvailable() {
+      if(!this.selectedFile) {
+        return false
+      }
+
+      return this.selectedFile.downloadUrl && this.enableDownload; 
     }
   },
   watch: {
     value() {
-      if(this.readOnlyMode && this.isValidValue) {
+      if(this.isValidValue) {
         this.loadData();
       }
     }
@@ -192,17 +212,17 @@ export default {
       isValid: !this.isRequired
     });
 
-    if(this.readOnlyMode && this.isValidValue) {
+    if(this.isValidValue) {
       this.loadData();
     }
   },
   methods: {
     loadData() {
-      const { name: displayName, croppedImage } = this.value;
+      const { name: displayName, file: downloadUrl } = this.value;
 
       this.selectedFile = {
         displayName,
-        croppedImage
+        downloadUrl
       }
     },
     onSelectImage (e) {
@@ -215,6 +235,7 @@ export default {
         file.displayName = this.enhanceFileName(file.name);
         // update selected file
         this.selectedFile = file;
+
         this.fileExtention = file.type;
 
         fileReader.readAsDataURL(file);
@@ -254,7 +275,14 @@ export default {
         croppedImage: null,
         isValid: !this.isRequired
       });
-    },    
+    }, 
+    onDownloadSelectedImage() {
+      const a = document.createElement("a"); 
+      a.setAttribute('href', this.selectedFile.downloadUrl)
+      a.setAttribute('download', this.selectedFile.displayName)
+
+      a.click();
+    },   
     onUploadImage() {
       this.$refs.imageInput.click();
     },
@@ -262,6 +290,7 @@ export default {
       this.showModal = false;
       this.fileExtention = null;
       this.error = '';
+
       if(allowResetSelectedFile) {
         this.selectedFile = null;
       }
