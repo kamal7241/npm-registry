@@ -309,6 +309,9 @@ export default {
       if(allowResetSelectedFile) {
         this.selectedFile = null;
       }
+      // reset the value of the input 
+      this.$refs.imageInput.value = '';
+      this.imageSrc = null;
     },
     onSaveCroppedImage (data) {
       this.onReset(false);
