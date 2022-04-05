@@ -5,6 +5,7 @@
     isRequired
     :cropperConfigs="cropperConfigs"
     :value="value"
+    hint="hint placeholder"
     enableDownload
     @cropImage="onCropImage"
   >

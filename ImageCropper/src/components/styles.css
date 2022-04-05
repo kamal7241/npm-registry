@@ -95,6 +95,7 @@
   margin: 0 5px;
 }
 
+.hints-placeholder,
 .error-placeholder {
   margin-top: 9px;
   margin-bottom: 22px;

@@ -88,6 +88,15 @@
       </div>
     </slot>
 
+    <slot
+      v-if="hint"
+      name="hints"
+    >
+      <div class="hints-placeholder">
+        {{ hint }}
+      </div>
+    </slot>
+
     <input
       ref="imageInput"
       type="file"
@@ -117,6 +126,10 @@ export default {
     },        
     
     labelClassName: {
+      type: String,
+      default: ''
+    },       
+    hint: {
       type: String,
       default: ''
     },    
