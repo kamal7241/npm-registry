@@ -5,6 +5,7 @@ Highly customizable pkg for cropping Images
 - [x] Localization for all strings
 - [x] Customization for **Image Placeholder**
 - [x] Customization for **Rendered Cropped Image**
+- [x] Customization for **Hints section if needed**
 
 ## Example
 ```vue
@@ -13,6 +14,7 @@ Highly customizable pkg for cropping Images
     label="نص تجريبي"
     :cropperConfigs="cropperConfigs"
     @cropImage="onCropImage"
+    hint="hint placeholder"
   >
     <template #image-placeholder="{croppedImage, onEditSelectedImage, onDeleteSelectedImage, onUploadImage}">
       <div class="cropped-image-placeholder">
@@ -79,11 +81,12 @@ export default {
 | **label** | *Field label* | **String** | ***''*** | **false**
 | **isRequired** | *Flag for indicating whether the input is required or not * | **Boolean** | ***false*** | **false**
 | **maxDisplayNameLength** | *if the file name is too long it will cut it based on it's value* | **Number** | ***15*** | **false**
-| **exportInitialFieldMeta** | *Update Parent with Field info* | **Boolean** | ***false*** | false
+| **exportInitialFieldMeta** | *Update Parent with Field info* | **Boolean** | ***false*** | **false**
 | **enableFullnameDisplay** | *if true it will provide the fullName of the file regardless **maxDisplayNameLength** prop* | **Boolean** | ***false*** | **false**
 | **activateInternalErrorPreview** | *to show internal error* | **Boolean** | ***false*** | **false**
 | **name** | *field name to map results and errors to* | **String** | ***""*** | **true**
-| **value** | *file to update the ui* | **Object** | ***{}*** | **false**
+| **value** | *file to update the ui* | **Object** | ***{}*** | **false** |
+| **hint** | *To Add hint below the field* | **string** | ***''*** | **false** |
 | **readOnlyMode** | *Disable The Field* | **Boolean** | ***false*** | **false**
 | **enableDownload** | *To Allow Download previously saved image* | **Boolean** | ***true*** | **false**
 
@@ -103,7 +106,9 @@ export default {
   - **onEditSelectedImage**: *method to open the cropper mode with the current selected file*
   - **onDeleteSelectedImage**: *method to reset all chosed files and `export null for the cropImage` *
 
-2. **Error section**: to render custom error `and it will not be available if activateInternalErrorPreview=false` so in order to customize it you will have to ***scoped slot*** with the name ***errors*** and it will receive the **errors** as an argument `which is a string`.
+2. **Error section**: to render custom error `and it will not be available if activateInternalErrorPreview=false` so in order to customize it you will have to ***scoped slot*** with the name ***errors*** 
+
+3. **Hints section**: to render custom Hint `and it will not be available if hint=''` so in order to customize it you will have to ***scoped slot*** with the name ***hints***.
 
 ## Notes: 
 - ***@cropImage*** : *function that exposes all the cropped files as the first param as `{ croppedBlob: Blob, croppedImage: Base64 }`*
