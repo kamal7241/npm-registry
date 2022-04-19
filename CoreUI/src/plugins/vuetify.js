@@ -1,12 +1,11 @@
 import Vue from 'vue';
 import ar from 'vuetify/lib/locale/ar';
 
-import Vuetify, { VDataTable, VApp, VBtn } from 'vuetify/lib'
+import Vuetify, { VDataTable, VApp, VBtn, VTextField, VCard, VCardTitle, VSpacer } from 'vuetify/lib'
 
 Vue.use(Vuetify, {
-  components: { VDataTable, VApp, VBtn }
+  components: { VDataTable, VApp, VBtn, VTextField, VCard, VCardTitle, VSpacer }
 })
-
 
 export default new Vuetify({
   rtl: true,
