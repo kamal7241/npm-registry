@@ -1,0 +1,26 @@
+{
+  "root": true,
+  "env": {
+    "node": true
+  },
+  "extends":  [
+      "eslint:recommended",
+      "plugin:vue/recommended"
+    ],
+    "parserOptions": {
+        "parser": "babel-eslint"
+      },
+      "rules": {
+          "no-unexpected-multiline": 2,
+          "indent": [0, 2],
+          "vue/attribute-hyphenation": 0,
+          "vue/max-attributes-per-line": [2, {
+              "singleline": {
+                "max": 1
+              },      
+              "multiline": {
+                "max": 1
+              }
+            }]
+      }
+}

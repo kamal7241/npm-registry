@@ -38,12 +38,12 @@ import {
   VCardActions,
   VSpacer,
   VBtn
-} from "vuetify/lib";
+} from 'vuetify/lib'
 export default {
-  name: "PDF",
+  name: 'PDF',
   props: {
-    //ref : String,
-    //documentUrl: String,
+    // ref : String,
+    // documentUrl: String,
   },
   components: {
     VCardTitle,
@@ -54,24 +54,24 @@ export default {
     VSpacer,
     VBtn
   },
-  data() {
+  data () {
     return {
       isShowPDf: false,
-      documentUrl: ""
-    };
+      documentUrl: ''
+    }
   },
   methods: {
-    open: function(url) {
-      if (url != null && url != "") {
-        this.documentUrl = url;
+    open: function (url) {
+      if (url != null && url != '') {
+        this.documentUrl = url
         this.isShowPDf = true
       }
     },
-    close() {
-      this.isShowPDf = false;
+    close () {
+      this.isShowPDf = false
     }
   }
-};
+}
 </script>
 <style scoped>
 .pdfStyle {
@@ -80,5 +80,3 @@ export default {
   display: block;
 }
 </style>
-
-

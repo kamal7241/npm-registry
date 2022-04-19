@@ -9,29 +9,28 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import pdf from "./components/pdf.vue";
+import { Component, Vue } from 'vue-property-decorator'
+import pdf from './components/pdf.vue'
 
 @Component({
   components: {
     pdf
   },
-  data() {
+  data () {
     return {
       pdfDialog: false
-    };
+    }
   },
   methods: {
-    show() {
+    show () {
       //  this.$refs.pdfViwer.open("sample.pdf");
-      (this.$refs.pdfViwer as any).open("sample.pdf");
+      (this.$refs.pdfViwer as any).open('sample.pdf')
     },
-    close() {
+    close () {
       //  this.$refs.pdfViwer.open("sample.pdf");
-      (this.$refs.pdfViwer as any).close();
+      (this.$refs.pdfViwer as any).close()
     }
   }
 })
 export default class App extends Vue {}
 </script>
-
