@@ -9,6 +9,7 @@ Highly customizable pkg for Server Side Pagination
 - [x] Customization for **Lisr Rendering**
 - [x] Customization for **pagination Actions**
 - [ ] Placeholder for empty data
+- [ ] Support LTR toggle
 
 ## Example
 ```vue
@@ -137,6 +138,8 @@ export default {
 | **fetchOnMount** | *option to control the initial fetch on component mount* | **Boolean** | ***true*** | **false**
 | **fetchOnPayloadChange** | *option to triger the fetch on payload change if needed* | **Boolean** | ***true*** | **false**
 | **resetPageIndexOnPayloadChange** | *option to reset the page index on payload change to gurantee the right calculations and results if needed* | **Boolean** | ***true*** | **false**
+| **isDisabled** | _option to disable the pagination_ | **Boolean** | **_false_** | **false**
+| **totalVisiblePages** | _option to handle the UI Total Number Visible Buttons_ | **Number** | **_7_** | **false**
 
 ## Customizations
 *The available customization are*:

@@ -22,86 +22,87 @@
         name="list"
         :data="generatedList"
       />    
-    
-      <div class="navigation">
-        <slot
-          name="pagination"
-          :data="paginationProps"
-          :onChangePageSize="onChangePageSize"
-          :onFirstPageActionClicked="onFirstPageActionClicked"
-          :onPreviousPageActionClicked="onPreviousPageActionClicked"
-          :onNextPageActionClicked="onNextPageActionClicked"
-          :onLastPageActionClicked="onLastPageActionClicked"
-        >
-          <b-pagination
-            v-model="currentPage"
-            :total-rows="totalCount"
-            :per-page="currentPageSize"
-            @change="onChangePageIndex"
+      <v-app>
+        <div class="navigation">
+          <slot
+            name="pagination"
+            :data="paginationProps"
+            :onChangePageSize="onChangePageSize"
+            :onFirstPageActionClicked="onFirstPageActionClicked"
+            :onPreviousPageActionClicked="onPreviousPageActionClicked"
+            :onNextPageActionClicked="onNextPageActionClicked"
+            :onLastPageActionClicked="onLastPageActionClicked"
           >
-            <template #first-text>
-              <img
-                src="../assets/first-page.svg"
-                alt="fisrt-page"
-                width="10"
-                height="10"
-              >
-            </template>
-            <template #prev-text>
-              <img
-                src="../assets/prev-page.svg"
-                alt="fisrt-page"
-                width="10"
-                height="10"
-              >
-            </template>
-            <template #next-text>
-              <img
-                src="../assets/next-page.svg"
-                alt="fisrt-page"
-                width="10"
-                height="10"
-              >
-            </template>
-            <template #last-text>
-              <img
-                src="../assets/last-page.svg"
-                alt="fisrt-page"
-                width="10"
-                height="10"
-              >
-            </template>
-          </b-pagination>
+            <v-pagination
+              v-model="currentPage"
+              :length="availablePagesCount"
+              :total-rows="totalCount"
+              :per-page="currentPageSize"
+              :total-visible="totalVisiblePages"
+              :disabled="isDisabled"
+              @input="onChangePageIndex"
+            >
+              <template #first-text>
+                <img
+                  src="../assets/first-page.svg"
+                  alt="fisrt-page"
+                  width="10"
+                  height="10"
+                >
+              </template>
+              <template #prev-text>
+                <img
+                  src="../assets/prev-page.svg"
+                  alt="fisrt-page"
+                  width="10"
+                  height="10"
+                >
+              </template>
+              <template #next-text>
+                <img
+                  src="../assets/next-page.svg"
+                  alt="fisrt-page"
+                  width="10"
+                  height="10"
+                >
+              </template>
+              <template #last-text>
+                <img
+                  src="../assets/last-page.svg"
+                  alt="fisrt-page"
+                  width="10"
+                  height="10"
+                >
+              </template>
+            </v-pagination>
 
-          <span class="separator" />
+            <span class="separator" />
 
-          <div class="page-size-wrapper">
-            <Select
-              :value="currentPageSize"
-              :options="pageSizeOptions"
-              :clearable="false"
-              :searchable="false"
-              @input="onChangePageSize"
-            />
-          </div>
-        </slot>
-      </div>
+            <div class="page-size-wrapper">
+              <v-select
+                v-model="currentPageSize"
+                :items="pageSizeOptions"
+                outlined
+                :disabled="isDisabled"
+                append-icon="mdi-chevron-down"
+                hide-details
+                :menu-props="{ bottom: true, offsetY: true }"
+                @input="onChangePageSize"
+              />
+            </div>
+          </slot>
+        </div>
+      </v-app>
     </div>
   </div>
 </template>
 
 <script>
 import { serializeQueryParams } from './Utils';
-import { BPagination } from 'bootstrap-vue/src/index.js'
-import Select from 'vue-select';
-import 'vue-select/dist/vue-select.css';
 
 export default {
   name: 'PaginationLayout',
-  components: {
-    Select,
-    BPagination
-  },
+
   props: {
     endpoint: {
       type: Function,
@@ -122,6 +123,10 @@ export default {
     pageSize: {
       type: Number,
       default: 10,
+    },
+    totalVisiblePages: {
+      type: Number,
+      default: 7,
     },
     dataTargetKey: {
       type: String,
@@ -146,7 +151,11 @@ export default {
     cascadeMode: {
       type: Boolean,
       default: false,
-    },    
+    }, 
+    isDisabled: {
+      type: Boolean,
+      default: false
+    },  
     showLoader: {
       type: Boolean,
       default: false,
@@ -222,14 +231,12 @@ export default {
   watch: {
     additionalPayload: {
       handler(newPayload, oldPayload) {
-        console.log({newPayload, oldPayload})
         if (JSON.stringify(newPayload) !== JSON.stringify(oldPayload)) {
           if (this.resetPageIndexOnPayloadChange) {
             this.currentPage = this.initialPageNumber;
           }
 
           if (this.fetchOnPayloadChange) {
-            console.log('fetchOnPayloadChange')
             this.loadResults();
           }
         }
@@ -342,7 +349,3 @@ export default {
   },
 }
 </script>
-
-<style scoped>
-@import './style.css';
-</style>
