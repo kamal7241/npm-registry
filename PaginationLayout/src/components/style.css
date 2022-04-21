@@ -1,3 +1,7 @@
+.v-application--wrap {
+  min-height: unset;
+}
+
 .layout-wrapper {
   position: relative;
 }
@@ -20,7 +24,7 @@
 
 .navigation {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   padding: 10px;
 }
@@ -30,7 +34,7 @@
 }
 
 .navigation .pagination .page-item,
-.navigation .pagination .page-item > .page-link {
+.navigation .pagination .page-item>.page-link {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -40,7 +44,7 @@
   opacity: .5;
 }
 
-.navigation .pagination .page-item > .page-link {
+.navigation .pagination .page-item>.page-link {
   padding: 0;
   width: 36px;
   height: 36px;
@@ -48,14 +52,15 @@
   border-radius: 5px;
 }
 
-.navigation .pagination .page-item:not(.active):hover > .page-link {
+.navigation .pagination .page-item:not(.active):hover>.page-link {
   color: #158E8D;
 }
 
 .navigation .pagination .page-item:not(:first-of-type) {
   margin: 0 5px;
 }
-.navigation .pagination .page-item.active > .page-link {
+
+.navigation .pagination .page-item.active>.page-link {
   background-color: #158E8D;
   outline: none;
   border: none;
@@ -82,51 +87,12 @@
 .page-size-wrapper {
   width: 100px;
 }
-/* DDL */
- .v-select {
-  direction: rtl;
-} 
-
-.v-select .vs__clear,
-.v-select .vs__open-indicator {
-  fill: #418C8C;
-  width: 15px;
-  height: 9px;
-  margin: 0 5px;
-}
-
-.v-select,
-.v-select .vs__dropdown-menu {
-  box-shadow: none;
-}
-
-.v-select .vs__dropdown-toggle {
-  border: 2px solid #DBDBDB;
-}
-
-.v-select .vs__dropdown-menu {
-  border: 1px solid #DBDBDB;
-  border-radius: 0;
-  border-top: 0;
-  min-width: 100%;
-}
-.v-select .vs__dropdown-menu .vs__dropdown-option {
-  color: #02363D;
-  font-size: 15px;
-  padding: 5px 10px;
-  text-align: initial;
-  transition: background-color .3s ease-in;
-}
-
-.v-select .vs__dropdown-menu .vs__dropdown-option.vs__dropdown-option--highlight {
-  color: #fff;
-  background: #158E8D;
-}
 
 @media (max-width: 480px) {
   .separator {
     display: none;
   }
+
   .navigation {
     flex-direction: column;
   }
@@ -141,8 +107,61 @@
 }
 
 @media (max-width: 310px) {
-  .navigation .pagination .page-item > .page-link {
+  .navigation .pagination .page-item>.page-link {
     width: 30px;
     height: 30px;
   }
+}
+
+/* Vuetify */
+.v-text-field--filled>.v-input__control>.v-input__slot,
+.v-text-field--full-width>.v-input__control>.v-input__slot,
+.v-text-field--outlined>.v-input__control>.v-input__slot {
+  min-height: unset;
+}
+
+.theme--light.v-select .v-select__selections {
+  min-height: unset;
+}
+
+.v-text-field--enclosed .v-input__append-inner,
+.v-text-field--enclosed .v-input__append-outer,
+.v-text-field--enclosed .v-input__prepend-inner,
+.v-text-field--enclosed .v-input__prepend-outer,
+.v-text-field--full-width .v-input__append-inner,
+.v-text-field--full-width .v-input__append-outer,
+.v-text-field--full-width .v-input__prepend-inner,
+.v-text-field--full-width .v-input__prepend-outer {
+  margin-top: 7px;
+}
+
+.v-select__selection--comma {
+  margin: 0 4px 0 0;
+}
+
+.v-select.v-text-field--outlined:not(.v-text-field--single-line) .v-select__selections {
+  padding: 2px 0;
+}
+
+.v-input__icon .v-icon.v-icon {
+  color: #418c8c;
+  font-size: 28px;
+}
+
+.theme--light.v-text-field--outlined:not(.v-input--is-focused):not(.v-input--has-state)>.v-input__control>.v-input__slot fieldset {
+  color: #DBDBDB;
+}
+
+.v-text-field--outlined.v-input--has-state fieldset,
+.v-text-field--outlined.v-input--is-focused fieldset {
+  color: #DBDBDB;
+}
+
+.v-text-field--outlined.v-input--has-state fieldset,
+.v-text-field--outlined fieldset:hover {
+  color: #DBDBDB;
+}
+
+.v-text-field.v-text-field--enclosed {
+    margin-top: 5px;
 }

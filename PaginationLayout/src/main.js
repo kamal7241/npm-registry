@@ -1,12 +1,10 @@
 import Vue from 'vue'
 import App from './App.vue'
-
-// Import Bootstrap an BootstrapVue CSS files (order is important)
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
+import vuetify from '@/plugins/vuetify' // path to vuetify export
 
 Vue.config.productionTip = false
 
 new Vue({
+  vuetify,
   render: h => h(App),
 }).$mount('#app')

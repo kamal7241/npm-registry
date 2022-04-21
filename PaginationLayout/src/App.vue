@@ -9,10 +9,11 @@
       totalCountKey="totalPassengers"
       enableReadableStreamParse
       :cascadeMode="false"
+      dataTargetKey="data"
       isDirectData
       :enableServerSidePagination="true"
       :additionalPayload="additionalPayload"
-      :pageSizeOptions="[50, 100, 30]"
+      :pageSizeOptions="[10, 50, 100, 30]"
       @search="onSearch"
     >
       <!-- Customize Loading slot -->
@@ -26,7 +27,7 @@
           v-for="(item, i) in data"
           :key="i"
         >
-          {{ item.title }}
+          {{ item.name }}
         </p>
       </template>
       
