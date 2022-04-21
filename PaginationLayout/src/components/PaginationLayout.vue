@@ -85,6 +85,8 @@
                 outlined
                 :disabled="isDisabled"
                 append-icon="mdi-chevron-down"
+                hide-details
+                :menu-props="{ bottom: true, offsetY: true }"
                 @input="onChangePageSize"
               />
             </div>
