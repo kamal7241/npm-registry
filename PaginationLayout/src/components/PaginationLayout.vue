@@ -1,28 +1,28 @@
 <template>
-  <div class="layout-wrapper">
-    <div
-      v-if="isLoading && showLoader"
-      class="loading-wrapper"
-    >
-      <slot name="loader">
-        <img
-          src="../assets/loading.gif"
-          alt="loading img"
-          width="200"
-          height="200"
-        >
-      </slot> 
-    </div>
-        
-    <div
-      class="data-placeholder"
-      :class="{'loading': isLoading}"
-    >
-      <slot
-        name="list"
-        :data="generatedList"
-      />    
-      <v-app>
+  <v-app>
+    <div class="layout-wrapper">
+      <div
+        v-if="isLoading && showLoader"
+        class="loading-wrapper"
+      >
+        <slot name="loader">
+          <img
+            src="../assets/loading.gif"
+            alt="loading img"
+            width="200"
+            height="200"
+          >
+        </slot> 
+      </div>
+          
+      <div
+        class="data-placeholder"
+        :class="{'loading': isLoading}"
+      >
+        <slot
+          name="list"
+          :data="generatedList"
+        />    
         <div class="navigation">
           <slot
             name="pagination"
@@ -82,9 +82,9 @@
               <v-select
                 v-model="currentPageSize"
                 :items="pageSizeOptions"
-                outlined
+                outline
                 :disabled="isDisabled"
-                append-icon="mdi-chevron-down"
+                append-icon="expand_more"
                 hide-details
                 :menu-props="{ bottom: true, offsetY: true }"
                 @input="onChangePageSize"
@@ -92,16 +92,22 @@
             </div>
           </slot>
         </div>
-      </v-app>
+      </div>
     </div>
-  </div>
+  </v-app>
 </template>
 
 <script>
 import { serializeQueryParams } from './Utils';
+import { VSelect, VPagination } from 'vuetify/lib';
 
 export default {
   name: 'PaginationLayout',
+
+  components: {
+    VSelect,
+    VPagination
+  },
 
   props: {
     endpoint: {
@@ -349,3 +355,6 @@ export default {
   },
 }
 </script>
+<style scoped>
+  @import './style.css';
+</style>
