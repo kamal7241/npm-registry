@@ -32,6 +32,7 @@
         "@rollup/plugin-image": "^2.1.1",
         "coa": "2.0.2",
         "core-js": "^2.6.5",
+        "material-design-icons-iconfont": "^6.7.0",
         "rollup": "^1.20.2",
         "rollup-plugin-buble": "^0.19.8",
         "rollup-plugin-commonjs": "^10.1.0",
