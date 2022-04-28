@@ -220,6 +220,11 @@
   color: rgba(20, 53, 60, 0.5);
 }
 
+.theme--light.application {
+  background: unset;
+  color: unset;
+}
+
 @media (max-width: 500px) {
 
   .v-pagination__item,
