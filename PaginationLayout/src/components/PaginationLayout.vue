@@ -98,6 +98,7 @@
 </template>
 
 <script>
+import 'material-design-icons-iconfont/dist/material-design-icons.min.css'
 import { serializeQueryParams } from './Utils';
 import { VSelect, VPagination } from 'vuetify/lib';
 
