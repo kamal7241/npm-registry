@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app class="min-h-unset">
     <div class="layout-wrapper">
       <div
         v-if="isLoading && showLoader"
