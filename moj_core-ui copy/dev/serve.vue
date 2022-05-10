@@ -43,12 +43,14 @@
 import { defineComponent } from 'vue';
 // Uncomment import and local "components" registration if library is not registered globally.
 // import { MojCoreUiSample } from '@/entry.esm';
+import { AttachmentField, ImageCropper } from '@moj/core-ui';
 
 export default defineComponent({
   name: 'ServeDev',
-  // components: {
-  //  MojCoreUiSample,
-  // }
+  components: {
+   AttachmentField,
+   ImageCropper
+  },
   methods: {
     logVue2: files => console.log('V2', files),
     logVue3: files => console.log('V3', files),
