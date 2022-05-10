@@ -157,9 +157,9 @@ export default {
 2. **List section**: to render ***custom list*** so in order to customize it you will have to use ***scoped slot*** with the name ***list*** and it will receive the **data** as an argument and ***onDeleteFile***.
 ***data array*** to loop through.
 
-3. **Empty List placholder section**: to render **_custom template_** so in order to customize it you will have to use **_scoped slot_** with the name **_emptyPlaceholderText_**.
+3. **Empty List placholder section**: to render **_custom Empty list placeholder template_** so in order to customize it you will have to use **_scoped slot_** with the name **_empty-placeholder_**.
 
-4. **Pagination section**: to render ***custom list*** so in order to customize it you will have to use ***scoped slot*** with the name ***pagination*** and it will receive the ***data object  and 5 methods *** as an argument.
+4. **Pagination section**: to render ***custom pagination section*** so in order to customize it you will have to use ***scoped slot*** with the name ***pagination*** and it will receive the ***data object  and 5 methods *** as an argument.
 ***data object*** contains of:
   - **isLoading**: to check if the request is loading or not.
   - **totalCount**: total records count
