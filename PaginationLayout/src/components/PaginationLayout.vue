@@ -16,6 +16,7 @@
       </div>
           
       <div
+        v-if="generatedList.length"
         class="data-placeholder"
         :class="{'loading': isLoading}"
       >
@@ -93,6 +94,13 @@
           </slot>
         </div>
       </div>
+      <div v-else>
+        <slot name="empty-placeholder">
+          <div class="empty-list">
+            <h4>{{ emptyPlaceholderText }}</h4>
+          </div>
+        </slot>
+      </div>
     </div>
   </v-app>
 </template>
@@ -134,6 +142,10 @@ export default {
     totalVisiblePages: {
       type: Number,
       default: 7,
+    },
+    emptyPlaceholderText: {
+      type: String,
+      default: 'لا توجد بيانات لعرضها'
     },
     dataTargetKey: {
       type: String,
