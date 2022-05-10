@@ -225,6 +225,16 @@
   color: unset;
 }
 
+.empty-list {
+  text-align: center;
+  padding: 30px;
+  border: 1px solid #dbdbdb;
+}
+
+.empty-list h4 {
+  font-size: 1.7rem;
+}
+
 @media (max-width: 500px) {
 
   .v-pagination__item,
