@@ -298,7 +298,6 @@ export default defineComponent({
       }
 
       if(isMultiple.value) {
-        console.log('files', files);
         for(let i = 0; i < files.length; i++) {
           const file = files[i];
 
@@ -310,7 +309,6 @@ export default defineComponent({
           }
         }
         // reset field value
-        console.log('fileInputRef.value', fileInputRef.value, fileInputRef.value.value)
         fileInputRef.value.value = "";
       }
 

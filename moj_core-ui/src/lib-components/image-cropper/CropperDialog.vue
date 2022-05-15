@@ -114,7 +114,7 @@ export default defineComponent({
         }, fileExtention.value)
     }
 
-    function onCancel () {
+    function onCancel() {
       emit('close');
     }
 

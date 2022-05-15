@@ -1,13 +1,12 @@
 <template>
   <div class="canvas-wrapper">
     <CropperDialog
-      v-if="showModal"
       :show="showModal"
       :strings="strings"
       :cropperConfigs="cropperConfigs"
       :selectedImage="imageSrc"
       :fileExtention="fileExtention"
-      @close="onReset"
+      @close="onCloseDialog"
       @save="onSaveCroppedImage"
     />
 
@@ -310,7 +309,7 @@ export default defineComponent({
     }
 
     function onDeleteSelectedImage() {
-      onReset();
+      onCloseDialog();
       croppedData.value = {};
 
       error.value = 'الرجاء التحقق من هذا الحقل',
@@ -335,7 +334,7 @@ export default defineComponent({
       imageInput.value.click();
     }
 
-    function onReset(allowResetSelectedFile = true) {
+    function onCloseDialog(allowResetSelectedFile = true) {
       showModal.value = false;
       fileExtention.value = null;
       
@@ -349,7 +348,7 @@ export default defineComponent({
     }
 
     function onSaveCroppedImage (data) {
-      onReset(false);
+      onCloseDialog(false);
       
       error.value = '';
       croppedData.value = data;
@@ -375,7 +374,7 @@ export default defineComponent({
       selectedFile,
       fileExtention,
       // Methods
-      onReset,
+      onCloseDialog,
       onSelectImage,
       onUploadImage,
       onSaveCroppedImage,
