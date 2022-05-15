@@ -253,7 +253,7 @@
       },
       setData() {
         const files = this.dataSource;
-        console.log('setData', files);
+
         if (files && this.status != "Add") {
           this.isSingle = false;
           this.uploadedFiles = [];

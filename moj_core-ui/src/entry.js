@@ -5,7 +5,6 @@ import plugin, * as components from '@/entry.esm';
 // only expose one global var, with component exports exposed as properties of
 // that global var (eg. plugin.component)
 Object.entries(components).forEach(([componentName, component]) => {
-  console.log({plugin, components});
   if (componentName !== 'default') {
     plugin[componentName] = component;
   }
