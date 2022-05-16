@@ -34,6 +34,7 @@
             :onLastPageActionClicked="onLastPageActionClicked"
           >
             <v-pagination
+              v-if="availablePagesCount"
               v-model="currentPage"
               :length="availablePagesCount"
               :total-rows="totalCount"
