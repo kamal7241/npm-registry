@@ -23,6 +23,7 @@ Highly customizable pkg for Server Side Pagination
       serverPageSizeKey="size"
       totalCountKey="totalPassengers"
       enableReadableStreamParse
+      emptyPlaceholderText="لا توجد بيانات لعرضها"
       :cascadeMode="false"
       :enableServerSidePagination="false"
       :additionalPayload="additionalPayload"
@@ -42,6 +43,13 @@ Highly customizable pkg for Server Side Pagination
         >
           {{ item.title }}
         </p>
+      </template>
+
+      <!-- Customize empty list placeholder -->
+      <template #empty-placeholder>
+        <div class="empty-list">
+            <h4>{{ emptyPlaceholderText }}</h4>
+        </div>
       </template>
       
       <!-- Customize pagination slot -->
@@ -140,6 +148,7 @@ export default {
 | **resetPageIndexOnPayloadChange** | *option to reset the page index on payload change to gurantee the right calculations and results if needed* | **Boolean** | ***true*** | **false**
 | **isDisabled** | _option to disable the pagination_ | **Boolean** | **_false_** | **false**
 | **totalVisiblePages** | _option to handle the UI Total Number Visible Buttons_ | **Number** | **_7_** | **false**
+| **emptyPlaceholderText** | _option to replace the text of empty list placeholder text_ | **String** | **_لا توجد بيانات لعرضها_** | **false**
 
 ## Customizations
 *The available customization are*:
@@ -148,7 +157,9 @@ export default {
 2. **List section**: to render ***custom list*** so in order to customize it you will have to use ***scoped slot*** with the name ***list*** and it will receive the **data** as an argument and ***onDeleteFile***.
 ***data array*** to loop through.
 
-3. **Pagination section**: to render ***custom list*** so in order to customize it you will have to use ***scoped slot*** with the name ***pagination*** and it will receive the ***data object  and 5 methods *** as an argument.
+3. **Empty List placholder section**: to render **_custom Empty list placeholder template_** so in order to customize it you will have to use **_scoped slot_** with the name **_empty-placeholder_**.
+
+4. **Pagination section**: to render ***custom pagination section*** so in order to customize it you will have to use ***scoped slot*** with the name ***pagination*** and it will receive the ***data object  and 5 methods *** as an argument.
 ***data object*** contains of:
   - **isLoading**: to check if the request is loading or not.
   - **totalCount**: total records count
