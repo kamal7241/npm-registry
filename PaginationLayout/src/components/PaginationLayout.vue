@@ -211,7 +211,7 @@ export default {
   },
   data() {
     return {
-      currentPage: this.initialPageNumber,
+      currentPage: this.initialPageNumber || 1,
       currentPageSize: this.pageSize,
       list: [],
       totalCount: 0,
@@ -253,7 +253,7 @@ export default {
       handler(newPayload, oldPayload) {
         if (JSON.stringify(newPayload) !== JSON.stringify(oldPayload)) {
           if (this.resetPageIndexOnPayloadChange) {
-            this.currentPage = this.initialPageNumber;
+            this.currentPage = this.initialPageNumber || 1;
           }
 
           if (this.fetchOnPayloadChange) {
@@ -278,7 +278,16 @@ export default {
 
       if(this.enableServerSidePagination) {
         payload[this.serverPageSizeKey]= this.currentPageSize;
-        payload[this.serverPageNumberKey]= this.currentPage;
+
+        if (this.initialPageNumber) {
+          payload[this.serverPageNumberKey] = this.currentPage;
+        } else {
+          if (this.currentPage > 1) {
+            payload[this.serverPageNumberKey] = this.currentPage - 1
+          } else {
+            payload[this.serverPageNumberKey] = 0
+          }
+        }
       }
 
       this.isLoading = true;
@@ -359,7 +368,7 @@ export default {
 
       if(this.generatedList.length) {
 
-        this.currentPage = this.initialPageNumber;
+        this.currentPage = this.initialPageNumber || 1;
 
         if(this.enableServerSidePagination) {
           this.loadResults();
