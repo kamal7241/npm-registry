@@ -1,5 +1,11 @@
-export const serializeQueryParams = (params = {}) => {
-  const query = Object.keys(params).map(key => `${key}=${params[key]}`).join('&');
+export const serializeNonQueryParams = (params = {}) => {
+  const query = [];
 
-  return query ? `?${query}` : query
+  Object.keys(params).forEach(key => {
+    if(params[key]) {
+      query.push(`${key}=${params[key]}`)
+    }
+  });
+
+  return query ? `?${query.join('&')}` : query
 }
