@@ -108,7 +108,7 @@
 
 <script>
 import 'material-design-icons-iconfont/dist/material-design-icons.min.css'
-import { serializeQueryParams } from './Utils';
+import { serializeNonQueryParams } from './Utils';
 import { VSelect, VPagination } from 'vuetify/lib';
 
 export default {
@@ -293,7 +293,7 @@ export default {
       this.isLoading = true;
 
       try {
-        const fetchData = await this.endpoint(this.exportPayloadAsObject ? payload : serializeQueryParams(payload));
+        const fetchData = await this.endpoint(this.exportPayloadAsObject ? payload : serializeNonQueryParams(payload));
         const result = this.enableReadableStreamParse ? await fetchData.json() : fetchData.data || [];
         const dataTarget = result[this.dataTargetKey] || [];
 
