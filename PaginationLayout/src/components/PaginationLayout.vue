@@ -294,7 +294,7 @@ export default {
 
       try {
         const fetchData = await this.endpoint(this.exportPayloadAsObject ? payload : serializeNonQueryParams(payload));
-        const result = this.enableReadableStreamParse ? await fetchData.json() : fetchData.data || [];
+        const result = this.enableReadableStreamParse ? await fetchData.json() : (this.isDirectData ? fetchData : fetchData.data || []);
         const dataTarget = result[this.dataTargetKey] || [];
 
         let data = [];
@@ -304,7 +304,7 @@ export default {
           data = this.isDirectData ? result : dataTarget;
         } else {
           data =  this.nestedDataKey ? dataTarget[this.nestedDataKey] : dataTarget;
-            
+
           totalCount = result[this.totalCountKey];
         }
 
