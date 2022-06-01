@@ -305,9 +305,9 @@ export default {
             this.currentTotalSize += file.size;
           }
         }
-        // reset field value
-        this.$refs.file.value = "";
       }
+      // reset field value
+      this.$refs.file.value = "";
 
       this.$emit("select", this.updatedValue);
     },
@@ -384,13 +384,27 @@ export default {
 
       // update parent
       this.$emit("select", this.updatedValue);
-    },    
-    onDownloadFile(file) {
+    },
+    
+    generateFileDownloadUrl(url, name) {
       const a = document.createElement('a');
-      a.href = file.downloadUrl,
-      a.download = file.name;
-
+      a.href = url;
+      a.download = name;
       a.click();
+    },
+
+    onDownloadFile(file) {
+      const { baseFile, downloadUrl, name } = file;
+      if (baseFile) {
+        fetch(baseFile)
+          .then(res => res.blob())
+          .then(blob => {
+            const url = window.URL.createObjectURL(blob);
+            this.generateFileDownloadUrl(url, name)
+          })
+      } else {
+        this.generateFileDownloadUrl(downloadUrl, name)
+      }
       // console.log('onDownloadFile',file);
     },
     // Placeholder for default values
@@ -401,9 +415,9 @@ export default {
       return `كحد أقصى ${maxFilesSizeInMega} م.ب`;
     },
     getFileSizeInKiloByte(sizeInBytes) {
-      const sizeInKiloByte = sizeInBytes / 1000;
+      const sizeInKiloByte = parseFloat(sizeInBytes / 1024).toFixed(2);
 
-      return `${sizeInKiloByte}KB`;
+      return `${sizeInKiloByte} ك.ب`;
     }
   },
 }
