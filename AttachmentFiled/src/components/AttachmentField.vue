@@ -279,7 +279,10 @@ export default {
   },
   methods: {
     loadData() {
-      this.selectedFiles = this.value.map(file => ({ ...file, displayName: file.name }));
+      this.selectedFiles = this.value.map((file) => {
+        file.displayName = this.enhanceFileName(file.name);
+        return file;
+      });
     },
     onSelectFiles(e) {
       const files = e.target.files;
@@ -397,13 +400,16 @@ export default {
       const { baseFile, downloadUrl, name } = file;
       if (baseFile) {
         fetch(baseFile)
-          .then(res => res.blob())
-          .then(blob => {
+          .then((res) => res.blob())
+          .then((blob) => {
             const url = window.URL.createObjectURL(blob);
-            this.generateFileDownloadUrl(url, name)
-          })
+            this.generateFileDownloadUrl(url, name);
+          });
+      } else if (downloadUrl) {
+        this.generateFileDownloadUrl(downloadUrl, name);
       } else {
-        this.generateFileDownloadUrl(downloadUrl, name)
+        const url = window.URL.createObjectURL(file);
+        this.generateFileDownloadUrl(url, name);
       }
       // console.log('onDownloadFile',file);
     },
