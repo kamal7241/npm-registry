@@ -264,6 +264,8 @@ export default {
     value() {
       if(this.value.length) {
         this.loadData();
+      } else {
+        this.selectedFiles = [];
       }
     }
   },
