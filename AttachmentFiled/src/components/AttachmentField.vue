@@ -4,7 +4,7 @@
       <p
         v-if="label"
         class="label"
-        :class="{error}"
+        :class="{err: error}"
       >
         {{ label }}
         <span
@@ -261,11 +261,15 @@ export default {
     },
   },
   watch: {
-    value() {
+    value(newVal, oldVal) {
+      debugger
       if(this.value.length) {
         this.loadData();
       } else {
         this.selectedFiles = [];
+        if(newVal !== oldVal && this.isRequired) {
+          this.dispatchError('fieldIsRequired');
+        }
       }
     }
   },
