@@ -262,7 +262,6 @@ export default {
   },
   watch: {
     value(newVal, oldVal) {
-      debugger
       if(this.value.length) {
         this.loadData();
       } else {
