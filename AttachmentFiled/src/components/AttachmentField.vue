@@ -261,14 +261,11 @@ export default {
     },
   },
   watch: {
-    value(newVal, oldVal) {
+    value() {
       if(this.value.length) {
         this.loadData();
       } else {
         this.selectedFiles = [];
-        if(newVal !== oldVal && this.isRequired) {
-          this.dispatchError('fieldIsRequired');
-        }
       }
     }
   },
