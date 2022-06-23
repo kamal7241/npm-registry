@@ -12,6 +12,16 @@
       @select="onSelectFiles"
       @error="onErrorFound"
     >
+      <!-- <template #label="{data}">
+        <p
+          :class="['label', { err: data.err }]"
+        >
+          أهلاً
+          <span
+            class="star"
+          >*</span>
+        </p>
+      </template> -->
       <!-- <template #errors="{errors}">
         <div class="error-placeholder">
           <p class="text">
