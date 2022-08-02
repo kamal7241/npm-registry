@@ -27,6 +27,18 @@ Highly customizable pkg for managing selecting files
       @select="onSelectFiles"
       @error="onErrorFound"
     >
+
+      <!-- <template #label="{data}">
+        <p
+          :class="['label', { err: data.err }]"
+        >
+          {{ label }}
+          <span
+            class="star"
+          >*</span>
+        </p>
+      </template> -->
+
       <!-- <template #errors="{errors}">
         <div class="error-placeholder">
           <p class="text">

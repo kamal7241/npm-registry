@@ -1,17 +1,22 @@
 <template>
   <div class="attachment-wrapper">
     <div class="label-and-input-wrapper">
-      <p
-        v-if="label"
-        class="label"
-        :class="{error}"
+      <slot
+        name="label"
+        :data="{err: error}"
       >
-        {{ label }}
-        <span
-          v-if="isRequired"
-          class="star"
-        >*</span>
-      </p>
+        <p
+          v-if="label"
+          class="label"
+          :class="{err: error}"
+        >
+          {{ label }}
+          <span
+            v-if="isRequired"
+            class="star"
+          >*</span>
+        </p>
+      </slot>
 
       <div
         v-if="enableFancyPreview && addAttachmentAllowed && !readOnlyMode"
@@ -381,11 +386,15 @@ export default {
       });
     },
     onDeleteFile(index) {
+      const file = this.selectedFiles[index];
       this.selectedFiles.splice(index, 1);
       
-      if(!this.isMultiple && this.isRequired) {
+      if(!this.selectedFiles.length && this.isRequired) {
         this.dispatchError('fieldIsRequired');
       }
+
+      // update total size
+      this.currentTotalSize -= file.size;
 
       // update parent
       this.$emit("select", this.updatedValue);

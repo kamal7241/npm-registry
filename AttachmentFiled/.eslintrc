@@ -21,6 +21,7 @@
               "multiline": {
                 "max": 1
               }
-            }]
+            }],
+            "no-debugger": "warn"
       }
 }
