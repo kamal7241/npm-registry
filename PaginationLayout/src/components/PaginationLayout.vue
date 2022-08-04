@@ -84,9 +84,9 @@
               <v-select
                 v-model="currentPageSize"
                 :items="pageSizeOptions"
-                outline
+                outlined
                 :disabled="isDisabled"
-                append-icon="expand_more"
+                append-icon="mdi-chevron-down"
                 hide-details
                 :menu-props="{ bottom: true, offsetY: true }"
                 @input="onChangePageSize"
