@@ -13,12 +13,14 @@ Vue.use(Vuetify, {
 
 const opts = {
   rtl: true,
-  themes: {
-    light: {
-      primary: '#158E8D',
-      secondary: '#e0cf97',
+  theme: {
+    themes: {
+      light: {
+        primary: '#418c8c',
+        secondary: '#e0cf97',
+      },
     },
-  },
+  }
 }
 
 export default new Vuetify(opts)

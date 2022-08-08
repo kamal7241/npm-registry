@@ -37,6 +37,7 @@
             <v-pagination
               v-if="availablePagesCount"
               v-model="currentPage"
+              class="base-pageIndex-handler"
               :length="availablePagesCount"
               :total-rows="totalCount"
               :per-page="currentPageSize"
@@ -86,6 +87,7 @@
                 :items="pageSizeOptions"
                 outlined
                 :disabled="isDisabled"
+                class="base-pageSize-handler"
                 append-icon="mdi-chevron-down"
                 hide-details
                 :menu-props="{ bottom: true, offsetY: true }"
