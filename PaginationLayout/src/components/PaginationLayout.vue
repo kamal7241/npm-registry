@@ -120,9 +120,14 @@ export default {
   },
 
   props: {
+    value: {
+      type: Array,
+      required: false,
+      default: () => []
+    },    
     endpoint: {
       type: Function,
-      required: true,
+      required: false,
     },
     additionalPayload: {
       type: Object,
@@ -262,9 +267,30 @@ export default {
         }
       },
       deep: true
+    },
+    value: {
+      handler(newValue, oldValue) {
+        if (
+          !this.endpoint
+          &&
+          !this.list.length
+          &&
+          (JSON.stringify(newValue) !== JSON.stringify(oldValue))  
+          &&
+          (newValue && newValue.length)
+        ) {
+          this.list = newValue;
+        }
+      },
+      deep: true
     }
   },
   mounted() {
+    if(this.value && this.value.length && !this.endpoint) {
+      this.list = this.value;
+      this.totalCount = this.value.length
+    }
+
     if(this.fetchOnMount) {
       this.loadResults();
     }
