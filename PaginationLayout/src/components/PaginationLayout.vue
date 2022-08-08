@@ -37,6 +37,7 @@
             <v-pagination
               v-if="availablePagesCount"
               v-model="currentPage"
+              class="base-pageIndex-handler"
               :length="availablePagesCount"
               :total-rows="totalCount"
               :per-page="currentPageSize"
@@ -86,6 +87,7 @@
                 :items="pageSizeOptions"
                 outlined
                 :disabled="isDisabled"
+                class="base-pageSize-handler"
                 append-icon="mdi-chevron-down"
                 hide-details
                 :menu-props="{ bottom: true, offsetY: true }"
@@ -120,9 +122,14 @@ export default {
   },
 
   props: {
+    value: {
+      type: Array,
+      required: false,
+      default: () => []
+    },    
     endpoint: {
       type: Function,
-      required: true,
+      required: false,
     },
     additionalPayload: {
       type: Object,
@@ -262,9 +269,30 @@ export default {
         }
       },
       deep: true
+    },
+    value: {
+      handler(newValue, oldValue) {
+        if (
+          !this.endpoint
+          &&
+          !this.list.length
+          &&
+          (JSON.stringify(newValue) !== JSON.stringify(oldValue))  
+          &&
+          (newValue && newValue.length)
+        ) {
+          this.list = newValue;
+        }
+      },
+      deep: true
     }
   },
   mounted() {
+    if(this.value && this.value.length && !this.endpoint) {
+      this.list = this.value;
+      this.totalCount = this.value.length
+    }
+
     if(this.fetchOnMount) {
       this.loadResults();
     }

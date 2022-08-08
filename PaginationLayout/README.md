@@ -8,7 +8,7 @@ Highly customizable pkg for Server Side Pagination
 - [x] Customization for **Loader**
 - [x] Customization for **Lisr Rendering**
 - [x] Customization for **pagination Actions**
-- [ ] Placeholder for empty data
+- [x] Placeholder for empty data
 - [ ] Support LTR toggle
 
 ## Example
@@ -149,6 +149,7 @@ export default {
 | **isDisabled** | _option to disable the pagination_ | **Boolean** | **_false_** | **false**
 | **totalVisiblePages** | _option to handle the UI Total Number Visible Buttons_ | **Number** | **_7_** | **false**
 | **emptyPlaceholderText** | _option to replace the text of empty list placeholder text_ | **String** | **_لا توجد بيانات لعرضها_** | **false**
+| **value** | _value to be paginated and **see it's explanation ---> veru important**_ | **Array** | **_[]_** | **false**
 
 ## Customizations
 *The available customization are*:
@@ -181,6 +182,10 @@ export default {
     serverSideLink => fetch(`Your Api Here ${serverSideLink}`)
     ```
 3. ***cascadeMode***: *works only with SSP mode*
+4. ***value***: *It doesn't work with fetch or any api call so in order to make it work follow the following rules*
+    - 1. **Don't provide**: _*endpoint prop*_
+    - 2. **fetchOnMount**: _*pass it with **false** *_
+    - 2. **enableServerSidePagination**: _*pass it with **false** *_
 
 ## Project setup
 ```
