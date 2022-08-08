@@ -275,11 +275,9 @@ export default {
         if (
           !this.endpoint
           &&
-          !this.list.length
+          newValue
           &&
           (JSON.stringify(newValue) !== JSON.stringify(oldValue))  
-          &&
-          (newValue && newValue.length)
         ) {
           this.list = newValue;
         }
