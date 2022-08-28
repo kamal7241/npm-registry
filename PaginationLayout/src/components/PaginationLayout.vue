@@ -227,7 +227,7 @@ export default {
   },
   computed: {
     availablePagesCount() {
-      return Math.ceil(this.totalCount / this.currentPageSize) - 1;
+      return Math.ceil(this.totalCount / this.currentPageSize);
     },
     isFirstPageActionDisabled() {
       return this.currentPage === 0;
@@ -391,14 +391,10 @@ export default {
     },  
     onChangePageSize(currentPageSize) {
       this.currentPageSize = currentPageSize;
+      this.currentPage = this.initialPageNumber || 1;
 
-      if(this.generatedList.length) {
-
-        this.currentPage = this.initialPageNumber || 1;
-
-        if(this.enableServerSidePagination) {
-          this.loadResults();
-        }
+      if(this.enableServerSidePagination) {
+        this.loadResults();
       }
     }
   },
