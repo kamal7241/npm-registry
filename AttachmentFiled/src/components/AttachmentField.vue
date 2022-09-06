@@ -285,10 +285,33 @@ export default {
     }
   },
   methods: {
-    loadData() {
-      this.selectedFiles = this.value.map((file) => {
-        file.displayName = this.enhanceFileName(file.name);
-        return file;
+    async loadData() {
+      this.selectedFiles = await this.value.reduce(async (memo, file, index) => {
+        const results = await memo;
+        let generatedFile= {};
+        const isValidIteration = this.maxAttachments >= index + 1
+
+        if(isValidIteration) {
+           generatedFile = await this.base64ToFilesConverter(file);
+        }
+        return isValidIteration ? [...results, generatedFile] : results;
+      }, []);
+     
+    },
+    base64ToFilesConverter(file) {
+      return new Promise((resolve) => {
+          fetch(file.baseFile)
+          .then((res) => res.blob())
+          .then((blob) => {
+            const createdFileExtention = file.baseFile.split(';')[0].split(':')[1];
+            const createdFileName = `${file.name}.${createdFileExtention.split('/')[1]}`;
+            const createdFile = new File([blob], file.name, { type: createdFileExtention });
+
+            createdFile.displayName = this.enhanceFileName(createdFileName);
+
+            resolve(createdFile)
+          })
+
       });
     },
     onSelectFiles(e) {

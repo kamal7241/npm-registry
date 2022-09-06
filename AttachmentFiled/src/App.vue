@@ -7,6 +7,8 @@
       name="association"
       placeholder="قم بسحب وإرفاق ملفاتك في هذه المنطقة"
       isRequired
+      isMultiple
+      :value="value"
       :localizations="localizations"
       activateInternalErrorPreview
       @select="onSelectFiles"
@@ -79,16 +81,47 @@ export default {
   data() {
     return {
       localizations: {
-        placeholder: 'استعراض الملفات'
-      }
+        placeholder: 'استعراض الملفات',
+      },
+      value: [
+        {
+        name: '111111111111111111111111111111111111111',
+        baseFile: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYEAQAAAAa7ikwAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAKqNIzIAAAAJcEhZcwAAAGAAAABgAPBrQs8AAAAHdElNRQfmCBkNHS2jw6LRAAAAf0lEQVRIx+2VMQ6AIAxFvyaEkcTLMXEORjiUtzDxGqxsbHwHYxhcacToHzu83/40LfAJkdayKiUEj5EkyXVl1VoITrJuG6sxQvB9J5flh78TPl1wIISzlBLgHJBz/84FNAOldMv5kYhaVN6LbdBvMrKJ4Lm+TyLwcJqJ4MscXgfd31tu/nsI5wAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMi0wOC0yNVQxMzoyOTo0NSswMDowMNfGwcgAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjItMDgtMjVUMTM6Mjk6NDUrMDA6MDCmm3l0AAAAKHRFWHRkYXRlOnRpbWVzdGFtcAAyMDIyLTA4LTI1VDEzOjI5OjQ1KzAwOjAw8Y5YqwAAAABJRU5ErkJggg=="
+      },     {
+        name: 'tototototototototototototototototototootot',
+        baseFile: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYEAQAAAAa7ikwAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAKqNIzIAAAAJcEhZcwAAAGAAAABgAPBrQs8AAAAHdElNRQfmCBkNHS2jw6LRAAAAf0lEQVRIx+2VMQ6AIAxFvyaEkcTLMXEORjiUtzDxGqxsbHwHYxhcacToHzu83/40LfAJkdayKiUEj5EkyXVl1VoITrJuG6sxQvB9J5flh78TPl1wIISzlBLgHJBz/84FNAOldMv5kYhaVN6LbdBvMrKJ4Lm+TyLwcJqJ4MscXgfd31tu/nsI5wAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMi0wOC0yNVQxMzoyOTo0NSswMDowMNfGwcgAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjItMDgtMjVUMTM6Mjk6NDUrMDA6MDCmm3l0AAAAKHRFWHRkYXRlOnRpbWVzdGFtcAAyMDIyLTA4LTI1VDEzOjI5OjQ1KzAwOjAw8Y5YqwAAAABJRU5ErkJggg=="
+      },     {
+        name: 'kokokokokokokokokokokokokokokokokokokokokokokokok',
+        baseFile: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYEAQAAAAa7ikwAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAKqNIzIAAAAJcEhZcwAAAGAAAABgAPBrQs8AAAAHdElNRQfmCBkNHS2jw6LRAAAAf0lEQVRIx+2VMQ6AIAxFvyaEkcTLMXEORjiUtzDxGqxsbHwHYxhcacToHzu83/40LfAJkdayKiUEj5EkyXVl1VoITrJuG6sxQvB9J5flh78TPl1wIISzlBLgHJBz/84FNAOldMv5kYhaVN6LbdBvMrKJ4Lm+TyLwcJqJ4MscXgfd31tu/nsI5wAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMi0wOC0yNVQxMzoyOTo0NSswMDowMNfGwcgAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjItMDgtMjVUMTM6Mjk6NDUrMDA6MDCmm3l0AAAAKHRFWHRkYXRlOnRpbWVzdGFtcAAyMDIyLTA4LTI1VDEzOjI5OjQ1KzAwOjAw8Y5YqwAAAABJRU5ErkJggg=="
+      },     {
+        name: '44444444444444444444444444444444444444444444',
+        baseFile: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYEAQAAAAa7ikwAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAKqNIzIAAAAJcEhZcwAAAGAAAABgAPBrQs8AAAAHdElNRQfmCBkNHS2jw6LRAAAAf0lEQVRIx+2VMQ6AIAxFvyaEkcTLMXEORjiUtzDxGqxsbHwHYxhcacToHzu83/40LfAJkdayKiUEj5EkyXVl1VoITrJuG6sxQvB9J5flh78TPl1wIISzlBLgHJBz/84FNAOldMv5kYhaVN6LbdBvMrKJ4Lm+TyLwcJqJ4MscXgfd31tu/nsI5wAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMi0wOC0yNVQxMzoyOTo0NSswMDowMNfGwcgAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjItMDgtMjVUMTM6Mjk6NDUrMDA6MDCmm3l0AAAAKHRFWHRkYXRlOnRpbWVzdGFtcAAyMDIyLTA4LTI1VDEzOjI5OjQ1KzAwOjAw8Y5YqwAAAABJRU5ErkJggg=="
+      },     {
+        name: '555555555555555555555555555',
+        baseFile: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYEAQAAAAa7ikwAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAKqNIzIAAAAJcEhZcwAAAGAAAABgAPBrQs8AAAAHdElNRQfmCBkNHS2jw6LRAAAAf0lEQVRIx+2VMQ6AIAxFvyaEkcTLMXEORjiUtzDxGqxsbHwHYxhcacToHzu83/40LfAJkdayKiUEj5EkyXVl1VoITrJuG6sxQvB9J5flh78TPl1wIISzlBLgHJBz/84FNAOldMv5kYhaVN6LbdBvMrKJ4Lm+TyLwcJqJ4MscXgfd31tu/nsI5wAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMi0wOC0yNVQxMzoyOTo0NSswMDowMNfGwcgAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjItMDgtMjVUMTM6Mjk6NDUrMDA6MDCmm3l0AAAAKHRFWHRkYXRlOnRpbWVzdGFtcAAyMDIyLTA4LTI1VDEzOjI5OjQ1KzAwOjAw8Y5YqwAAAABJRU5ErkJggg=="
+      },     {
+        name: '666666666666666666666666666666666',
+        baseFile: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYEAQAAAAa7ikwAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAKqNIzIAAAAJcEhZcwAAAGAAAABgAPBrQs8AAAAHdElNRQfmCBkNHS2jw6LRAAAAf0lEQVRIx+2VMQ6AIAxFvyaEkcTLMXEORjiUtzDxGqxsbHwHYxhcacToHzu83/40LfAJkdayKiUEj5EkyXVl1VoITrJuG6sxQvB9J5flh78TPl1wIISzlBLgHJBz/84FNAOldMv5kYhaVN6LbdBvMrKJ4Lm+TyLwcJqJ4MscXgfd31tu/nsI5wAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMi0wOC0yNVQxMzoyOTo0NSswMDowMNfGwcgAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjItMDgtMjVUMTM6Mjk6NDUrMDA6MDCmm3l0AAAAKHRFWHRkYXRlOnRpbWVzdGFtcAAyMDIyLTA4LTI1VDEzOjI5OjQ1KzAwOjAw8Y5YqwAAAABJRU5ErkJggg=="
+      },
+    ]
     }
   },
   methods: {
-    onSelectFiles(files) {
-      console.log('onSelectFiles', files);
+    async onSelectFiles(file) {
+      console.log('onSelectfile', file);
+      localStorage.setItem('base64', JSON.stringify(await this.getBase64(file.value[0])))
     },    
     onErrorFound(error) {
       console.log('error', error);
+    },
+    getBase64(file) {
+      console.log('file', file)
+      return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = error => reject(error);
+      })
     },
     getAllowedFileTypesText(data) {
       return `نوع الملف يجب أن يكون ${data.allowedExtentions}`; 

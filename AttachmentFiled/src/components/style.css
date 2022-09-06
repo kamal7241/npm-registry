@@ -118,10 +118,10 @@ ul {
   height: 50px;
 }
 
-.input-wrapper .indicator{
+.input-wrapper .indicator {
+  height: 100%;
   padding: 16px 10px;
   outline: none;
-  /* font-size: 16px; */
   color: #fff;
   background-color: #158E8D
 }
