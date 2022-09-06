@@ -49,6 +49,10 @@ ul {
 }
 
 /* For UI Place holders */
+.files-list {
+  margin-top: 10px;
+}
+
 .hints-placeholder,
 .error-placeholder {
   margin-top: 9px;

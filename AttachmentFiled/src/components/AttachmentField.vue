@@ -102,7 +102,10 @@
       :data="{ listData }"
       :onDeleteFile="onDeleteFile"
     >
-      <ul v-if="selectedFiles.length">
+      <ul
+        v-if="selectedFiles.length"
+        class="files-list"
+      >
         <li
           v-for="(file, index) in selectedFiles"
           :key="index"
