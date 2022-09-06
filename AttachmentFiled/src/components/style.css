@@ -49,6 +49,10 @@ ul {
 }
 
 /* For UI Place holders */
+.files-list {
+  margin-top: 10px;
+}
+
 .hints-placeholder,
 .error-placeholder {
   margin-top: 9px;
@@ -118,10 +122,10 @@ ul {
   height: 50px;
 }
 
-.input-wrapper .indicator{
+.input-wrapper .indicator {
+  height: 100%;
   padding: 16px 10px;
   outline: none;
-  /* font-size: 16px; */
   color: #fff;
   background-color: #158E8D
 }

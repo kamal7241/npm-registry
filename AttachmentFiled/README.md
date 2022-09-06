@@ -178,7 +178,7 @@ export default {
 - ***@error*** : *function that exposes error + name as the first param*
 - ***Each file*** : has the same props as in [Docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#getting_information_on_selected_files) in addition to **displayName** prop
 - ***displayName*** : we will count on it for **displaying the name** always **not the name prop**
-- ***value*** : *should consist of **name**, **downloadUrl** and **size in Bytes** *
+- ***value*** : *should consist of **name**, **baseFile** and **You have to provide _baseFile_ the full source** *
 ## Project setup
 ```
 npm install
