@@ -49,7 +49,7 @@
       >
         <div class="input-wrapper">
           <button
-            :disabled="readOnlyMode"
+            :disabled="readOnlyMode || isServerLoading"
             class="indicator pointer"
             @click="$refs.file.click()"
           >
@@ -81,9 +81,9 @@
       >
         <div class="hints-placeholder">
           <p class="text">
-            {{ getAllowedFileTypesText(accept) }}
+            {{ utils.getAllowedFileTypesText(accept) }}
           </p>
-          <p>{{ getAllowedMaxFileSizeText(maxFilesSizeInMega) }}</p>
+          <p>{{ utils.getAllowedMaxFileSizeText(maxFilesSizeInMega) }}</p>
         </div>
       </slot>
 
@@ -91,7 +91,7 @@
         ref="file"
         class=""
         type="file"
-        :multiple="isMultiple"
+        :multiple="isFieldMultiple"
         :accept="accept"
         @change="onSelectFiles"
       >
@@ -100,7 +100,7 @@
     <slot
       name="list"
       :data="{ listData }"
-      :onDeleteFile="onDeleteFile"
+      :onDeleteFile="utils.onDeleteFile"
     >
       <ul
         v-if="selectedFiles.length"
@@ -120,13 +120,13 @@
           </div>
 
           <div class="size-delete-wrapper">
-            <span class="size">{{ getFileSizeInKiloByte(file.size) }}</span>
+            <span class="size">{{ utils.getFileSizeInKiloByte(file.size) }}</span>
 
             <img
               v-if="!readOnlyMode"
               class="img"
               src="../assets/delete.svg"
-              @click="onDeleteFile(index)"
+              @click="utils.onDeleteFile(index)"
             >            
             <img
               v-else
@@ -142,6 +142,8 @@
 </template>
 
 <script>
+import { generateUtils } from './utils';
+
 export default {
   name: 'AttachmentField',
   props: {
@@ -149,7 +151,6 @@ export default {
       type: Number,
       default: 2,
     },
-  
     maxFilesSizeInMega: {          
       type: Number,
       default: 5,
@@ -181,7 +182,7 @@ export default {
     isRequired: {
       type: Boolean,
       default: false
-    },      
+    },  
     enableFullnameDisplay: {
       type: Boolean,
       default: false
@@ -218,13 +219,22 @@ export default {
       type: Object,
       default: () => ({})
     },
-
+    enableServerSide: {
+      type: Boolean,
+      default: false
+    },
+    serverSideProps: {
+      type: Object,
+      required: false,
+      default: () => ({})
+    },
   },
   data() {
     return {
       selectedFiles: [],
       currentTotalSize: 0,
-      error: ''
+      error: '',
+      isServerLoading: false
     }
   },
   computed: {
@@ -267,6 +277,14 @@ export default {
         ...localizations
       };
     },
+    isFieldMultiple() {
+      const { isMultiple, enableServerSide } = this;
+
+      return enableServerSide ? false : isMultiple; 
+    },
+    utils() {
+      return generateUtils(this)
+    }
   },
   watch: {
     value() {
@@ -284,7 +302,14 @@ export default {
     }
 
     if(this.value.length) {
-      this.loadData();
+
+      const {enableServerSide} = this;
+
+      if (enableServerSide) {
+        this.loadServerSideData();
+      } else {
+        this.loadData();
+      }
     }
   },
   methods: {
@@ -292,175 +317,77 @@ export default {
       this.selectedFiles = await this.value.reduce(async (memo, file, index) => {
         const results = await memo;
         let generatedFile= {};
+        // Don't load more than max attachments if fullfilled
         const isValidIteration = this.maxAttachments >= index + 1
 
         if(isValidIteration) {
-           generatedFile = await this.base64ToFilesConverter(file);
+           generatedFile = await this.utils.base64ToFilesConverter(file);
         }
         return isValidIteration ? [...results, generatedFile] : results;
       }, []);
-     
     },
-    base64ToFilesConverter(file) {
-      return new Promise((resolve) => {
-          fetch(file.baseFile)
-          .then((res) => res.blob())
-          .then((blob) => {
-            const createdFileExtention = file.baseFile.split(';')[0].split(':')[1];
-            const createdFileName = `${file.name}.${createdFileExtention.split('/')[1]}`;
-            const createdFile = new File([blob], file.name, { type: createdFileExtention });
-
-            createdFile.displayName = this.enhanceFileName(createdFileName);
-
-            resolve(createdFile)
-          })
-
-      });
+    async loadServerSideData() {
+      this.isServerLoading = true;
+      // Todo: Load from server and block upload button untill done
+      this.isServerLoading = false
     },
-    onSelectFiles(e) {
-      const files = e.target.files;
-      const firstFile = files[0];
+    async onSelectFiles(e) {
+      if(this.enableServerSide) {
+        this.isServerLoading = true;
 
-      if(this.resetErrorOnSelect && this.error) {
-        this.dispatchError();
-      }
-    
-      if(!this.isMultiple && this.isValidFile(firstFile)) {
-        firstFile.displayName = this.enhanceFileName(firstFile.name);
-        this.selectedFiles = [firstFile];
-      }
-
-      if(this.isMultiple) {
-        for(let i = 0; i < files.length; i++) {
-          const file = files[i];
-
-          if(this.addAttachmentAllowed && this.isValidFile(file)) {
-            file.displayName = this.enhanceFileName(file.name);
-            this.selectedFiles.push(file);
-            // update total size
-            this.currentTotalSize += file.size;
-          }
+        const files = e.target.files;
+        const selectedFile = files[0];
+        
+        if(this.resetErrorOnSelect && this.error) {
+          this.dispatchError();
         }
-      }
-      // reset field value
-      this.$refs.file.value = "";
 
-      this.$emit("select", this.updatedValue);
-    },
-    enhanceFileName(fileName) {
-      // animals.sd.png ===> .png
-      const extention = this.getFileExtention(fileName);
-      const name = fileName.split(extention)[0];
-      const displayedName = this.enableFullnameDisplay ? name : name.slice(0, this.maxDisplayNameLength)
-      
-      return `${displayedName}${extention.toLowerCase()}`;
-    },
-    getFileExtention(fileName, enableLowerCase = false) {
-      const extention = fileName.substring(fileName.lastIndexOf('.'));
+        if(this.utils.isValidFile(selectedFile)) {
+          const constructedAttachment = {
+            id: 0,
 
-      return enableLowerCase ? extention.toLowerCase() : extention;
-    },
-    getFileSizeInBytes(size) {
-      return size * 1024 * 1024;
-    },
-    isValidFileSize(fileSize, fileName) {
-      const isValidSizeLimit = fileSize <= this.getFileSizeInBytes(this.maxFileSizeInMega);
+          };
+          selectedFile.displayName = this.utils.enhanceFileName(selectedFile.name);
+          const base64Meta = await this.convertFileToBase64(selectedFile);
+          
+          if('base64' in base64Meta) {
+            const { appName, uploadCallback, systemCode } = this.serverSideProps;
+            const sharepointId = await uploadCallback(base64Meta);
 
-      const isValidCurrentSize = this.validateOnSingleFileSize ? isValidSizeLimit : true;
-      const isValidWithTotalSize = (this.currentTotalSize + fileSize) <= this.getFileSizeInBytes(this.maxFilesSizeInMega);
+            this.selectedFiles = this.isMultiple ? 
+          }
 
-      if(!isValidCurrentSize) {
-        this.dispatchError('maxFileSizeExceeded', fileName);
-      }      
-      
-      if(!isValidWithTotalSize) {
-        this.dispatchError('maxFilesSizeExceeded');
-      }
+          // check if the converted based64 inside the response (To continue uploading)
 
-      return isValidCurrentSize && isValidWithTotalSize;
-    },
-    isValidFile(file) {
-      const enhancedAcceptedExtentions = this.accept.toLowerCase();
-      // .ZIP ==> ZIP
-      const extention = this.getFileExtention(file.name, true).slice(1);
-      const isValidExtention = enhancedAcceptedExtentions.includes(extention);
-      const isValidSize = this.isValidFileSize(file.size, file.name);
+          // contentType: application/pdf,
+          // sharepointId: T4EXn0DS622UlhCxRKeOuYDFIFDDjRxPiGc8nq85CSU4H4GeLwEJHs+Zq54045raW5vvvvaYpyw=,
 
-      if(!isValidExtention) {
-        return this.dispatchError('fileExtention', file.name);
-      } 
+          // this.selectedFiles = [selectedFile];
+        }
 
-      return isValidExtention && isValidSize;
-    },
-    getSelectedError(fileName) {
-      const { maxFileSizeInMega, maxFilesSizeInMega } = this;
-
-      return {
-        fieldIsRequired: 'هذا الحقل مطلوب',
-        maxFileSizeExceeded: ` الملف ${fileName} تجاوز الحد المسموح به  وهو ${maxFileSizeInMega} م.ب`,
-        maxFilesSizeExceeded: ` تم تجاوز الحد المسموح به لجميع الملفات وهو ${maxFilesSizeInMega} م.ب`,
-        fileExtention: `امتداد الملف ${fileName} غير مسموح به`,
-      };
-    },
-    dispatchError(target='', name= '') {
-      const error =  this.getSelectedError(name)[target];
-      this.error = error;
-
-      this.$emit('error', {
-        name: this.name,
-        error
-      });
-    },
-    onDeleteFile(index) {
-      const file = this.selectedFiles[index];
-      this.selectedFiles.splice(index, 1);
-      
-      if(!this.selectedFiles.length && this.isRequired) {
-        this.dispatchError('fieldIsRequired');
-      }
-
-      // update total size
-      this.currentTotalSize -= file.size;
-
-      // update parent
-      this.$emit("select", this.updatedValue);
-    },
-    
-    generateFileDownloadUrl(url, name) {
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = name;
-      a.click();
-    },
-
-    onDownloadFile(file) {
-      const { baseFile, downloadUrl, name } = file;
-      if (baseFile) {
-        fetch(baseFile)
-          .then((res) => res.blob())
-          .then((blob) => {
-            const url = window.URL.createObjectURL(blob);
-            this.generateFileDownloadUrl(url, name);
-          });
-      } else if (downloadUrl) {
-        this.generateFileDownloadUrl(downloadUrl, name);
+        // this.isServerLoading = false;
       } else {
-        const url = window.URL.createObjectURL(file);
-        this.generateFileDownloadUrl(url, name);
+        this.utils.onClientSideSelect(e)
       }
-      // console.log('onDownloadFile',file);
     },
-    // Placeholder for default values
-    getAllowedFileTypesText(allowedExtentions) {
-      return `نوع الملف يجب أن يكون ${allowedExtentions}`; 
-    },
-    getAllowedMaxFileSizeText(maxFilesSizeInMega) {
-      return `كحد أقصى ${maxFilesSizeInMega} م.ب`;
-    },
-    getFileSizeInKiloByte(sizeInBytes) {
-      const sizeInKiloByte = parseFloat(sizeInBytes / 1024).toFixed(2);
+    convertFileToBase64(file) {
 
-      return `${sizeInKiloByte} ك.ب`;
+      return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onload = () => {
+            const source = reader.result;
+            const base64 = source.split(',')[1];
+            const contentType = source.match(/[^:]\w+\/[\w-+\d.]+(?=;|,)/)[0]
+
+            resolve({
+              source,
+              base64,
+              contentType
+            })
+          };
+          reader.onerror = error => reject(error);
+      })
     }
   },
 }
