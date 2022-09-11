@@ -107,7 +107,7 @@
         class="files-list"
       >
         <li
-          v-for="(file, index) in selectedFiles"
+          v-for="(selectedFile, index) in selectedFiles"
           :key="index"
           class="list-item"
         >
@@ -116,11 +116,11 @@
               class="img"
               src="../assets/file.svg"
             >
-            <span class="file-name">{{ file.displayName }}</span>
+            <span class="file-name">{{ enableServerSide ? selectedFile.file.displayName : selectedFile.displayName }}</span>
           </div>
 
           <div class="size-delete-wrapper">
-            <span class="size">{{ utils.getFileSizeInKiloByte(file.size) }}</span>
+            <span class="size">{{ utils.getFileSizeInKiloByte(enableServerSide ? selectedFile.file.size : selectedFile.size) }}</span>
 
             <img
               v-if="!readOnlyMode"
@@ -132,7 +132,7 @@
               v-else
               class="img"
               src="../assets/download.png"
-              @click="onDownloadFile(file)"
+              @click="onDownloadFile(selectedFile)"
             >
           </div>
         </li>
@@ -222,16 +222,36 @@ export default {
     enableServerSide: {
       type: Boolean,
       default: false
+    },    
+    attachmentTypeId: {
+      type: Number,
+      default: 0
     },
-    serverSideProps: {
-      type: Object,
+    uploadCallback: {
+      type: Function,
       required: false,
-      default: () => ({})
+      default: () => {}
+    },    
+    downloadCallback: {
+      type: Function,
+      required: false,
+      default: () => {}
     },
+    updateParentWithFileMeta: {
+      type: Boolean,
+      required: false,
+      default: false
+    }
   },
   data() {
     return {
-      selectedFiles: [],
+      selectedFiles: [{
+        attachmentTypeId:5,
+        contentType:"image/png",
+        id:1,
+        file: {displayName: 'sdfsdf'},
+        sharepointId:"bPHSasdasdasdasdasdasdUiXuzJLHf2Q7V0vLtRYITqvi9wYk1LYMB7vCxJVhchPoNp4uqsjk2E+pqql4B8hlPlIsuvkdtKbkr40lpA=="
+      }],
       currentTotalSize: 0,
       error: '',
       isServerLoading: false
@@ -262,9 +282,24 @@ export default {
     updatedValue() {
       return {
         name: this.name,
-        value: this.selectedFiles,
+        value: this.parentUpdatedData,
         isValid: this.isRequired ?  !!this.selectedFiles.length : true
       }
+    },
+    parentUpdatedData() {
+      const { selectedFiles, enableServerSide, updateParentWithFileMeta } = this;
+
+      if (!enableServerSide || (enableServerSide && updateParentWithFileMeta)) {
+        return selectedFiles;
+      }
+      // Deep clone
+      const mutatedSelectedFiles = JSON.parse(JSON.stringify(selectedFiles));
+      
+      return mutatedSelectedFiles.map(enhancedFile => {
+        delete enhancedFile.file;
+
+        return enhancedFile;
+      })
     },
     strings() {
       const { localizations } = this;
@@ -302,18 +337,20 @@ export default {
     }
 
     if(this.value.length) {
-
+      this.loadData();
+    }
+  },
+  methods: {
+    loadData() {
       const {enableServerSide} = this;
 
       if (enableServerSide) {
         this.loadServerSideData();
       } else {
-        this.loadData();
+        this.loadClientSideData();
       }
-    }
-  },
-  methods: {
-    async loadData() {
+    },
+    async loadClientSideData() {
       this.selectedFiles = await this.value.reduce(async (memo, file, index) => {
         const results = await memo;
         let generatedFile= {};
@@ -321,74 +358,63 @@ export default {
         const isValidIteration = this.maxAttachments >= index + 1
 
         if(isValidIteration) {
-           generatedFile = await this.utils.base64ToFilesConverter(file);
+          const convertedFile = await this.utils.base64ToFilesConverter(file);
+
+          // check if file matches ( size, totalFilesSize)
+          if(this.utils.isValidFile(convertedFile)) {
+            generatedFile = convertedFile;
+            this.currentTotalSize += convertedFile.size;
+          }
         }
+
         return isValidIteration ? [...results, generatedFile] : results;
       }, []);
     },
     async loadServerSideData() {
+      const { selectedFiles, value } = this;
       this.isServerLoading = true;
       // Todo: Load from server and block upload button untill done
-      this.isServerLoading = false
+      const filesNotLoadedYet = selectedFiles.length ? value.filter(providedValue =>  selectedFiles.some(file => file.sharepointId !== providedValue.sharepointId)) : value; 
+
+      const enhancedExtraFiles = await filesNotLoadedYet.reduce(async (memo, file, index) => {
+      const results = await memo;
+
+      // downloadCallback
+      let generatedFile= {};
+        // Don't load more than max attachments if fullfilled
+        const isValidIteration = this.maxAttachments >= index + 1
+
+        if(isValidIteration) {
+          const fileFromSharepointId = await this.downloadCallback({
+            sharepointId: file.sharepointId,
+            encodedSharepointId: btoa(file.sharepointId)
+          });
+          
+          fileFromSharepointId.displayName = this.utils.enhanceFileName(fileFromSharepointId); 
+
+          // check if file matches ( size, totalFilesSize)
+          if(this.utils.isValidFile(fileFromSharepointId)) {
+            generatedFile = {
+              ...file,
+              file: fileFromSharepointId
+            };
+            this.currentTotalSize += fileFromSharepointId.size;
+          }
+        }
+
+        return isValidIteration ? [...results, generatedFile] : results;
+    }, [])
+
+     this.selectedFiles =this.selectedFiles.concat(enhancedExtraFiles);
+      this.isServerLoading = false;
     },
     async onSelectFiles(e) {
       if(this.enableServerSide) {
-        this.isServerLoading = true;
-
-        const files = e.target.files;
-        const selectedFile = files[0];
-        
-        if(this.resetErrorOnSelect && this.error) {
-          this.dispatchError();
-        }
-
-        if(this.utils.isValidFile(selectedFile)) {
-          const constructedAttachment = {
-            id: 0,
-
-          };
-          selectedFile.displayName = this.utils.enhanceFileName(selectedFile.name);
-          const base64Meta = await this.convertFileToBase64(selectedFile);
-          
-          if('base64' in base64Meta) {
-            const { appName, uploadCallback, systemCode } = this.serverSideProps;
-            const sharepointId = await uploadCallback(base64Meta);
-
-            this.selectedFiles = this.isMultiple ? 
-          }
-
-          // check if the converted based64 inside the response (To continue uploading)
-
-          // contentType: application/pdf,
-          // sharepointId: T4EXn0DS622UlhCxRKeOuYDFIFDDjRxPiGc8nq85CSU4H4GeLwEJHs+Zq54045raW5vvvvaYpyw=,
-
-          // this.selectedFiles = [selectedFile];
-        }
-
-        // this.isServerLoading = false;
+        this.utils.onServerSideSelect(e)
       } else {
         this.utils.onClientSideSelect(e)
       }
     },
-    convertFileToBase64(file) {
-
-      return new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.readAsDataURL(file);
-          reader.onload = () => {
-            const source = reader.result;
-            const base64 = source.split(',')[1];
-            const contentType = source.match(/[^:]\w+\/[\w-+\d.]+(?=;|,)/)[0]
-
-            resolve({
-              source,
-              base64,
-              contentType
-            })
-          };
-          reader.onerror = error => reject(error);
-      })
-    }
   },
 }
 </script>
