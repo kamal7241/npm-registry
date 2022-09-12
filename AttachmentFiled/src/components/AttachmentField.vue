@@ -387,8 +387,10 @@ export default {
 
           if(isValidIteration) {
             const fileFromSharepointId = await this.downloadCallback({
+              contentType: file.contentType,
               sharepointId: file.sharepointId,
-              encodedSharepointId: btoa(file.sharepointId)
+              encodedSharepointId: btoa(file.sharepointId),
+              fileGenerator: response => new File([response.data], response.headers.filename, { type: response.headers['content-type'] })
             });
             
             fileFromSharepointId.displayName = this.utils.enhanceFileName(fileFromSharepointId); 
