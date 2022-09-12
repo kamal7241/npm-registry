@@ -92,18 +92,6 @@ export default {
         contentType:"image/png",
         id:0,
         sharepointId:"bPHSUiXuzJLHf2Q7V0vLtRYITqvi9wYk1LYMB7vCxJVhchPoNp4uqsjk2E+pqql4B8hlPlIsuvkdtKbkr40lpA=="
-      },
-      {
-        attachmentTypeId:5,
-        contentType:"image/png",
-        id:1,
-        sharepointId:"bPHSasdasdasdasdasdasdUiXuzJLHf2Q7V0vLtRYITqvi9wYk1LYMB7vCxJVhchPoNp4uqsjk2E+pqql4B8hlPlIsuvkdtKbkr40lpA=="
-      },
-      {
-        attachmentTypeId:5,
-        contentType:"image/png",
-        id:0,
-        sharepointId:"bPHSUiXuzJLHf2Q7V0vLtRYITqvi9wYkssssssssssssssssss1LYMB7vCxJVhchPoNp4uqsjk2E+pqql4B8hlPlIsuvkdtKbkr40lpA=="
       }]
     //   value: [
     //     {
@@ -131,20 +119,20 @@ export default {
   },
   methods: {
     async onSelectFiles(file) {
-      console.log('onSelectfile', file);
+
       this.serverSideValue = file.value;
     },     
     
     async onUploadData(data) {
       console.log('onUploadData', data);
-      return 'bPHSUiXuzJLHf2Q7V0vLtRYITqvi9wYk1LYMB7vCxJVhchPoNp4uqsjk2E+pqql4B8hlPlIsuvkdtKbkr40lpA=='
+      return `totototototo${Math.random()}tototototototototop+pqql4B8hlPlIsuvkdtKbkr40lpA==`
     },      
     async onGenerateFileFromSharepointId(data) {
       console.log('onUploadData', data);
       return new Promise((resolve) => {
         setTimeout(() => resolve(new File(["foo"], "foo.txt", {
   type: "image/png",
-})), 3000)
+})), 1000)
       })
     },    
     onErrorFound(error) {

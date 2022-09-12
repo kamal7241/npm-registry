@@ -79,8 +79,8 @@ const generateUtils = instance => ({
       this.dispatchError('fieldIsRequired');
     }
 
-    // update total size
-    instance.currentTotalSize -= file.size;
+    // update total size and (|| 0 ---> is For to validate that file is not NaN if the provided file is corrupted)
+    instance.currentTotalSize -= (file.size || 0);
     // update parent
     instance.$emit("select", instance.updatedValue);
   },

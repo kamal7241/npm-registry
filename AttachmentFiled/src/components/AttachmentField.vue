@@ -127,12 +127,13 @@
               class="img"
               src="../assets/delete.svg"
               @click="utils.onDeleteFile(index)"
-            >            
+            > 
+
             <img
-              v-else
+              v-if="isDownloadAvailable"
               class="img"
               src="../assets/download.png"
-              @click="onDownloadFile(selectedFile)"
+              @click="utils.onDownloadFile(enableServerSide ? selectedFile.file : selectedFile)"
             >
           </div>
         </li>
@@ -222,6 +223,11 @@ export default {
     enableServerSide: {
       type: Boolean,
       default: false
+    },
+    updateParentWithFileMeta: {
+      type: Boolean,
+      required: false,
+      default: false
     },    
     attachmentTypeId: {
       type: Number,
@@ -237,21 +243,10 @@ export default {
       required: false,
       default: () => {}
     },
-    updateParentWithFileMeta: {
-      type: Boolean,
-      required: false,
-      default: false
-    }
   },
   data() {
     return {
-      selectedFiles: [{
-        attachmentTypeId:5,
-        contentType:"image/png",
-        id:1,
-        file: {displayName: 'sdfsdf'},
-        sharepointId:"bPHSasdasdasdasdasdasdUiXuzJLHf2Q7V0vLtRYITqvi9wYk1LYMB7vCxJVhchPoNp4uqsjk2E+pqql4B8hlPlIsuvkdtKbkr40lpA=="
-      }],
+      selectedFiles: [],
       currentTotalSize: 0,
       error: '',
       isServerLoading: false
@@ -263,6 +258,11 @@ export default {
     },
     addAttachmentAllowed() {
       return this.selectedFiles.length < this.maxAttachments;
+    },    
+    isDownloadAvailable() {
+      const { readOnlyMode, enableServerSide } = this;
+      
+      return readOnlyMode || enableServerSide
     },
     hintsData() {
       return {
@@ -374,38 +374,40 @@ export default {
       const { selectedFiles, value } = this;
       this.isServerLoading = true;
       // Todo: Load from server and block upload button untill done
-      const filesNotLoadedYet = selectedFiles.length ? value.filter(providedValue =>  selectedFiles.some(file => file.sharepointId !== providedValue.sharepointId)) : value; 
+      const filesNotLoadedYet = selectedFiles.length ? value.filter(providedValue =>  selectedFiles.every(file => file.sharepointId !== providedValue.sharepointId)) : value; 
 
-      const enhancedExtraFiles = await filesNotLoadedYet.reduce(async (memo, file, index) => {
-      const results = await memo;
+      if(filesNotLoadedYet.length) {
+        const enhancedExtraFiles = await filesNotLoadedYet.reduce(async (memo, file, index) => {
+        const results = await memo;
 
-      // downloadCallback
-      let generatedFile= {};
-        // Don't load more than max attachments if fullfilled
-        const isValidIteration = this.maxAttachments >= index + 1
+        // downloadCallback
+        let generatedFile= {};
+          // Don't load more than max attachments if fullfilled
+          const isValidIteration = this.maxAttachments >= index + 1
 
-        if(isValidIteration) {
-          const fileFromSharepointId = await this.downloadCallback({
-            sharepointId: file.sharepointId,
-            encodedSharepointId: btoa(file.sharepointId)
-          });
-          
-          fileFromSharepointId.displayName = this.utils.enhanceFileName(fileFromSharepointId); 
+          if(isValidIteration) {
+            const fileFromSharepointId = await this.downloadCallback({
+              sharepointId: file.sharepointId,
+              encodedSharepointId: btoa(file.sharepointId)
+            });
+            
+            fileFromSharepointId.displayName = this.utils.enhanceFileName(fileFromSharepointId); 
 
-          // check if file matches ( size, totalFilesSize)
-          if(this.utils.isValidFile(fileFromSharepointId)) {
-            generatedFile = {
-              ...file,
-              file: fileFromSharepointId
-            };
-            this.currentTotalSize += fileFromSharepointId.size;
+            // check if file matches ( size, totalFilesSize)
+            if(this.utils.isValidFile(fileFromSharepointId)) {
+              generatedFile = {
+                ...file,
+                file: fileFromSharepointId
+              };
+              this.currentTotalSize += fileFromSharepointId.size;
+            }
           }
-        }
 
-        return isValidIteration ? [...results, generatedFile] : results;
-    }, [])
+          return isValidIteration ? [...results, generatedFile] : results;
+      }, [])
 
-     this.selectedFiles =this.selectedFiles.concat(enhancedExtraFiles);
+      this.selectedFiles =this.selectedFiles.concat(enhancedExtraFiles);
+      }
       this.isServerLoading = false;
     },
     async onSelectFiles(e) {
