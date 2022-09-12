@@ -101,7 +101,7 @@ export default {
     //     name: 'tototototototototototototototototototootot',
     //     baseFile: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYEAQAAAAa7ikwAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAKqNIzIAAAAJcEhZcwAAAGAAAABgAPBrQs8AAAAHdElNRQfmCBkNHS2jw6LRAAAAf0lEQVRIx+2VMQ6AIAxFvyaEkcTLMXEORjiUtzDxGqxsbHwHYxhcacToHzu83/40LfAJkdayKiUEj5EkyXVl1VoITrJuG6sxQvB9J5flh78TPl1wIISzlBLgHJBz/84FNAOldMv5kYhaVN6LbdBvMrKJ4Lm+TyLwcJqJ4MscXgfd31tu/nsI5wAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMi0wOC0yNVQxMzoyOTo0NSswMDowMNfGwcgAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjItMDgtMjVUMTM6Mjk6NDUrMDA6MDCmm3l0AAAAKHRFWHRkYXRlOnRpbWVzdGFtcAAyMDIyLTA4LTI1VDEzOjI5OjQ1KzAwOjAw8Y5YqwAAAABJRU5ErkJggg=="
     //   },     {
-    //     name: 'kokokokokokokokokokokokokokokokokokokokokokokokok',
+    //     name: 'testtesttesttesttesttesttesttesttesttesttesttest',
     //     baseFile: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYEAQAAAAa7ikwAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAKqNIzIAAAAJcEhZcwAAAGAAAABgAPBrQs8AAAAHdElNRQfmCBkNHS2jw6LRAAAAf0lEQVRIx+2VMQ6AIAxFvyaEkcTLMXEORjiUtzDxGqxsbHwHYxhcacToHzu83/40LfAJkdayKiUEj5EkyXVl1VoITrJuG6sxQvB9J5flh78TPl1wIISzlBLgHJBz/84FNAOldMv5kYhaVN6LbdBvMrKJ4Lm+TyLwcJqJ4MscXgfd31tu/nsI5wAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMi0wOC0yNVQxMzoyOTo0NSswMDowMNfGwcgAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjItMDgtMjVUMTM6Mjk6NDUrMDA6MDCmm3l0AAAAKHRFWHRkYXRlOnRpbWVzdGFtcAAyMDIyLTA4LTI1VDEzOjI5OjQ1KzAwOjAw8Y5YqwAAAABJRU5ErkJggg=="
     //   },     {
     //     name: '44444444444444444444444444444444444444444444',
@@ -122,10 +122,9 @@ export default {
 
       this.serverSideValue = file.value;
     },     
-    
     async onUploadData(data) {
       console.log('onUploadData', data);
-      return `totototototo${Math.random()}tototototototototop+pqql4B8hlPlIsuvkdtKbkr40lpA==`
+      return `test${Math.random()}test+pqql4B8hlPlIsuvkdtKbkr40lpA==`
     },      
     async onGenerateFileFromSharepointId(data) {
       console.log('onUploadData', data);
