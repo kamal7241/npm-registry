@@ -1,6 +1,6 @@
 {
     "name": "@moj/attachment-field",
-    "version": "1.1.22",
+    "version": "2.0.0",
     "private": false,
     "main": "./src/index.js",
     "module": "dist/AttachmentField.esm.js",
