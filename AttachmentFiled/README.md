@@ -173,7 +173,7 @@ export default {
       1. *filesNotLoadedYet: Filter the value that its sharepointId doesn't exist in internal state*
       2. *If there are filesNotLoadedYet: Load them by calling **downloadCallback***
       3. *Then load it in the internalstate and update the parent*
-        - *You can privide the file either by **manipulating the data from your endpoint and then convert it to file** or **use _fileGenerator_ function provided from _downloadCallback_ and pass the full response to it in case the response of blob***
+        - *You can privide the file either by **manipulating the data from your endpoint and then convert it to file** or **use _fileGenerator_ function provided from _downloadCallback_ and pass the full response to it in case the response of _arraybuffer_ (so you have to ensure that your endpoint return arrayBuffer by using { responseType: 'arraybuffer' } with your request)***
 
 
 ## Available localizations

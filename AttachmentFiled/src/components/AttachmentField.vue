@@ -383,7 +383,7 @@ export default {
         // downloadCallback
         let generatedFile= {};
           // Don't load more than max attachments if fullfilled
-          const isValidIteration = this.maxAttachments >= index + 1
+          const isValidIteration = this.maxAttachments >= index + 1;
 
           if(isValidIteration) {
             const fileFromSharepointId = await this.downloadCallback({
