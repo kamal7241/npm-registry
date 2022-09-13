@@ -7,7 +7,7 @@
       :cropperConfigs="cropperConfigs"
       :selectedImage="imageSrc"
       :fileExtention="fileExtention"
-      @close="onReset"
+      @close="utils.onReset()"
       @save="onSaveCroppedImage"
     />
 
@@ -25,17 +25,17 @@
 
     <slot
       :croppedImage="croppedImage"
-      :onUploadImage="onUploadImage"
-      :onEditSelectedImage="onEditSelectedImage"
-      :onDeleteSelectedImage="onDeleteSelectedImage"
+      :onUploadImage="utils.onUploadImage"
+      :onEditSelectedImage="utils.onEditSelectedImage"
+      :onDeleteSelectedImage="utils.onDeleteSelectedImage"
       name="image-placeholder"
     >
       <div class="input-wrapper">
         <button
-          v-if="!selectedFile"
+          v-if="!previewedSelectedFile"
           :disabled="readOnlyMode"
           class="indicator pointer"
-          @click="onUploadImage"
+          @click="utils.onUploadImage"
         >
           {{ strings.chooseFile }}
         </button>
@@ -49,18 +49,21 @@
         >
 
         <div class="name-placeholder">
-          {{ selectedFile ? selectedFile.displayName : strings.clickHere }}
+          {{ previewedSelectedFile ? previewedSelectedFile.displayName : strings.clickHere }}
         </div>
 
-        <div class="actions">
+        <div
+          v-if="previewedSelectedFile"
+          class="actions"
+        >
           <img
-            v-if="selectedFile && !readOnlyMode"
+            v-if="!readOnlyMode"
             src="../assets/cancel.svg"
             class="action"
             width="30"
             height="30"
             alt="delete"
-            @click="onDeleteSelectedImage"
+            @click="utils.onDeleteSelectedImage()"
           >          
           
           <img
@@ -70,7 +73,7 @@
             width="20"
             height="20"
             alt="download"
-            @click="onDownloadSelectedImage"
+            @click="utils.onDownloadSelectedImage"
           >
         </div>
       </div>
@@ -102,13 +105,14 @@
       type="file"
       accept="image/*"
       :style="{ display: 'none' }"
-      @change="onSelectImage"
+      @change="e => utils.onSelectImage(e)"
     >
   </div>
 </template>
 
 <script>
 import CropperDialog from './CropperDialog.vue';
+import { generateUtils } from './utils';
 
 export default {
   name: 'ImageCropper',
@@ -172,7 +176,30 @@ export default {
     value: {
       type: Object,
       default: () => ({})
-    }
+    },
+    enableServerSide: {
+      type: Boolean,
+      default: false
+    },
+    updateParentWithFileMeta: {
+      type: Boolean,
+      required: false,
+      default: false
+    },    
+    attachmentTypeId: {
+      type: Number,
+      default: 0
+    },
+    uploadCallback: {
+      type: Function,
+      required: false,
+      default: () => {}
+    },    
+    downloadCallback: {
+      type: Function,
+      required: false,
+      default: () => {}
+    },
   },
   data () {
     return {
@@ -182,7 +209,8 @@ export default {
       imageSrc: null,
       fileExtention: null,
       error: this.isRequired ? 'هذا الحقل مطلوب' : '',
-      croppedData: {}
+      croppedData: {},
+      isServerLoading: false
     }
   },
   computed: {
@@ -205,6 +233,12 @@ export default {
       return croppedImage;
     },
     isValidValue() {
+      const { enableServerSide, value } = this;
+
+      if(enableServerSide) {
+        return Boolean(value.sharepointId) || false;
+      }
+      // client side 
       const { name, file } = this.value || {};
 
       if(name && file) {
@@ -214,11 +248,60 @@ export default {
       return false;
     },
     isDownloadAvailable() {
-      if(!this.selectedFile) {
-        return false
+      const { selectedFile, enableDownload, enableServerSide } = this;
+      // To minimize compilation process
+      if (enableServerSide) {
+        return true
       }
 
-      return this.selectedFile.downloadUrl && this.enableDownload; 
+      // To be Enhanced: Should not use downloadUrl ----> the fileSource is enough
+      const isValidClientSideVerification = (selectedFile && selectedFile.downloadUrl) && enableDownload;
+
+      return isValidClientSideVerification; 
+    },
+    updatedValue() {
+      const { croppedData } = this;
+
+      return {
+        name: this.name,
+        value: this.parentUpdatedData,
+        isValid: this.isRequired ? !!Object.keys(croppedData).length : true
+      }
+    },
+    parentUpdatedData() {
+      const { selectedFile, croppedData, enableServerSide, updateParentWithFileMeta } = this;
+      /**
+       * SelectedFile in: 
+       *  - clientSideMode is: instance of File() constructor
+       *  - serverSideMode is: { id, attachmentTypeId, contentType, sharepointId, file }
+       */
+      
+      let mutatedSelectedFile = {};
+
+      if(enableServerSide) {
+        mutatedSelectedFile = selectedFile ? JSON.parse(JSON.stringify(selectedFile)) : {};
+      } else {
+        mutatedSelectedFile = {
+          fileName: selectedFile ? selectedFile.name : '',
+          croppedBlob: croppedData.croppedBlob || null,
+          croppedImage: croppedData.croppedImage || null,
+        }
+      }
+
+      if (updateParentWithFileMeta && selectedFile) {
+        mutatedSelectedFile.file = enableServerSide ? selectedFile.file : selectedFile;
+      }
+
+      return mutatedSelectedFile
+    },
+    previewedSelectedFile() {
+      const { enableServerSide, selectedFile } = this;
+      const serverSideSelectedFile = selectedFile ? selectedFile.file : null;
+
+      return enableServerSide ? serverSideSelectedFile : selectedFile;
+    },
+    utils() {
+      return generateUtils(this);
     }
   },
   watch: {
@@ -231,13 +314,7 @@ export default {
   mounted() {
     // initial notification to the parent
     if(this.exportInitialFieldMeta) {
-      this.$emit('cropImage', {
-        name: this.name,
-        fileName: '',
-        croppedBlob: null,
-        croppedImage: null,
-        isValid: !this.isRequired
-      });
+      this.$emit('cropImage', this.updatedValue);
     }
 
     if(this.isValidValue) {
@@ -246,6 +323,15 @@ export default {
   },
   methods: {
     loadData() {
+      const {enableServerSide} = this;
+
+      if (enableServerSide) {
+        this.loadServerSideData();
+      } else {
+        this.loadClientSideData();
+      }
+    },
+    loadClientSideData() {
       const { name: displayName, file: downloadUrl } = this.value;
 
       this.selectedFile = {
@@ -253,93 +339,40 @@ export default {
         downloadUrl
       }
     },
-    onSelectImage (e) {
-      const files = e.target.files;
-      const file = files[0];
-      const isImageSelected = file && file.type.includes('image');
+    async loadServerSideData() {
+      const { selectedFile, value } = this;
+      this.isServerLoading = true;  
 
-      if (isImageSelected) {
-        const fileReader = new FileReader();
-        file.displayName = this.enhanceFileName(file.name);
-        // update selected file
-        this.selectedFile = file;
+      const filesNotLoadedYet = selectedFile ? [value].filter(providedValue => [selectedFile].every(file => file.sharepointId !== providedValue.sharepointId)) : [value];
+      // because we are using single attachment only 
+      const fileToUpload = filesNotLoadedYet[0];
+      if(fileToUpload) {
+        const fileFromSharepointId = await this.downloadCallback({
+          contentType: fileToUpload.contentType,
+          sharepointId: fileToUpload.sharepointId,
+          encodedSharepointId: btoa(fileToUpload.sharepointId),
+          fileGenerator: response => new File([response.data], response.headers.filename, { type: response.headers['content-type'] })
+        })
 
-        this.fileExtention = file.type;
+        fileFromSharepointId.displayName = this.utils.enhanceFileName(fileFromSharepointId)
 
-        fileReader.readAsDataURL(file);
-
-        fileReader.onload = (event) => {
-          this.imageSrc = event.target.result;
-          // open the modal
-          this.showModal = true;
+        this.selectedFile = {
+          ...fileToUpload,
+          file: fileFromSharepointId
         };
       }
-    },
-    enhanceFileName(fileName) {
-      // animals.sd.png ===> .png
-      const extention = this.getFileExtention(fileName);
-      const name = fileName.split(extention)[0];
-      const displayedName = this.enableFullnameDisplay ? name : name.slice(0, this.maxDisplayNameLength)
-      
-      return `${displayedName}${extention.toLowerCase()}`;
-    },
-    getFileExtention(fileName, enableLowerCase = false) {
-      const extention = fileName.substring(fileName.lastIndexOf('.'));
 
-      return enableLowerCase ? extention.toLowerCase() : extention;
+      this.isServerLoading = false;
     },
-    onEditSelectedImage() {
-      this.showModal = true;
-    },    
-    onDeleteSelectedImage() {
-      this.onReset();
-      this.croppedData = {};
+    onSaveCroppedImage(data) {
+      const {enableServerSide} = this;
 
-      this.error = 'الرجاء التحقق من هذا الحقل',
-      this.$emit('cropImage', {
-        name: this.name,
-        fileName: '',
-        croppedBlob: null,
-        croppedImage: null,
-        isValid: !this.isRequired
-      });
-    }, 
-    onDownloadSelectedImage() {
-      const a = document.createElement("a"); 
-      a.setAttribute('href', this.selectedFile.downloadUrl)
-      a.setAttribute('download', this.selectedFile.displayName)
-
-      a.click();
-    },   
-    onUploadImage() {
-      this.$refs.imageInput.click();
-    },
-    onReset (allowResetSelectedFile = true) {
-      this.showModal = false;
-      this.fileExtention = null;
-      this.error = '';
-
-      if(allowResetSelectedFile) {
-        this.selectedFile = null;
+      if (enableServerSide) {
+        this.utils.onSaveServerModeCroppedImage(data);
+      } else {
+        this.utils.onSaveClientModeCroppedImage(data);
       }
-      // reset the value of the input 
-      this.$refs.imageInput.value = '';
-      this.imageSrc = null;
-    },
-    onSaveCroppedImage (data) {
-      this.onReset(false);
-
-      this.croppedData = data;
-      this.$emit('cropImage', {
-        name: this.name,
-        fileName: this.selectedFile.name,
-        croppedBlob: data.croppedBlob,
-        croppedImage: data.croppedImage,
-        isValid: this.isRequired ? !!Object.keys(data).length : true
-      });
-      // reset the value of the input 
-      this.$refs.imageInput.value = '';
-    },
+    }
   },
 }
 </script>

@@ -383,12 +383,14 @@ export default {
         // downloadCallback
         let generatedFile= {};
           // Don't load more than max attachments if fullfilled
-          const isValidIteration = this.maxAttachments >= index + 1
+          const isValidIteration = this.maxAttachments >= index + 1;
 
           if(isValidIteration) {
             const fileFromSharepointId = await this.downloadCallback({
+              contentType: file.contentType,
               sharepointId: file.sharepointId,
-              encodedSharepointId: btoa(file.sharepointId)
+              encodedSharepointId: btoa(file.sharepointId),
+              fileGenerator: response => new File([response.data], response.headers.filename, { type: response.headers['content-type'] })
             });
             
             fileFromSharepointId.displayName = this.utils.enhanceFileName(fileFromSharepointId); 

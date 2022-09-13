@@ -158,7 +158,7 @@ export default {
 | **updateParentWithFileMeta** | *To send the **original file** with the value recieved via **@select** event* | **Boolean** | ***false*** | **false**
 | **attachmentTypeId** | *To Identify the type sent to the server* | **Number** | ***0*** | **false**
 | **uploadCallback** | *callback that is reponsible for return **sharepointId** and it **receives(base64Meta) which is { source, base64, contentType } *** | **Number** | ***0*** | **false**
-| **downloadCallback** | *callback that is reponsible for return the **originalFile** from setver and it **receives(sharepointMeta) which is { sharepointId => original, encodedSharepointId => base64 } *** | **Number** | ***0*** | **false**
+| **downloadCallback** | *callback that is reponsible for return the **originalFile** from setver and it **receives(sharepointMeta) which is { sharepointId => original, encodedSharepointId => base64, contentType => optional, fileGenerator } *** | **Number** | ***0*** | **false**
 
 ## Behavior
   - ### In server side mode (enableServerSide = true)
@@ -173,6 +173,7 @@ export default {
       1. *filesNotLoadedYet: Filter the value that its sharepointId doesn't exist in internal state*
       2. *If there are filesNotLoadedYet: Load them by calling **downloadCallback***
       3. *Then load it in the internalstate and update the parent*
+        - *You can privide the file either by **manipulating the data from your endpoint and then convert it to file** or **use _fileGenerator_ function provided from _downloadCallback_ and pass the full response to it in case the response of _arraybuffer_ (so you have to ensure that your endpoint return arrayBuffer by using { responseType: 'arraybuffer' } with your request)***
 
 
 ## Available localizations
