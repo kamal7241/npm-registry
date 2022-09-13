@@ -16,7 +16,10 @@ export default {
             compileTemplate: true, // Explicitly convert template to render function
         }),
         buble({
-            objectAssign: 'Object.assign'
+            objectAssign: 'Object.assign',
+            transforms: {
+                asyncAwait: false
+            }
         }), // Transpile to ES5
         image()
     ],
