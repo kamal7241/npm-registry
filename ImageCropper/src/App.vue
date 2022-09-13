@@ -3,10 +3,14 @@
     label="نص تجريبي"
     name="personalInfo"
     isRequired
-    :cropperConfigs="cropperConfigs"
     :value="value"
+    :cropperConfigs="cropperConfigs"
+    :uploadCallback="onUploadData"
+    :downloadCallback="onGenerateFileFromSharepointId"
     hint="hint placeholder"
     enableDownload
+    enableServerSide
+    updateParentWithFileMeta
     @cropImage="onCropImage"
   >
     <!-- <template #image-placeholder="{croppedImage, onEditSelectedImage, onDeleteSelectedImage, onUploadImage}">
@@ -55,15 +59,30 @@ export default {
         aspectRatio: 4/6
       },
       value: {
-        name: 'sdfsdfsdf',
-        file: 'sdfsdfsdfsdf'
+        attachmentTypeId:5,
+        contentType:"image/png",
+        id:0,
+        sharepointId:"bPHSUiXuzJLHf2Q7V0vLtRYITqvi9wYk1LYMB7vCxJVhchPoNp4uqsjk2E+pqql4B8hlPlIsuvkdtKbkr40lpA=="
       }
     };
   },
   methods: {
     onCropImage(data) {
       console.log('onCropImage', data);
-    }
+      this.value = data.value
+    },
+    async onUploadData(data) {
+      console.log('onUploadData', data);
+      return `test${Math.random()}test+pqql4B8hlPlIsuvkdtKbkr40lpA==`
+    },
+    async onGenerateFileFromSharepointId(data) {
+      console.log('onUploadData', data);
+      return new Promise((resolve) => {
+        setTimeout(() => resolve(new File(["foo"], "foo.txt", {
+          type: "image/png",
+        })), 10000)
+      })
+    },
   }
 };
 </script>

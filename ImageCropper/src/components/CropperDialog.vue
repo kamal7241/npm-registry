@@ -103,15 +103,17 @@ export default {
         imageSmoothingQuality: 'high', // low - medium - high 
       });
 
-      const croppedImage = croppedCanvas.toDataURL(this.fileExtention);
-
-      croppedCanvas.toBlob((croppedBlob) => {
-          // update parent
-          this.$emit('save', {
-            croppedBlob,
-            croppedImage
-          });
-        }, this.fileExtention)
+      // Guard from corrupted files
+      if(croppedCanvas) {
+        const croppedImage = croppedCanvas.toDataURL(this.fileExtention);
+  
+        croppedCanvas.toBlob((croppedBlob) => {
+            this.$emit('save', {
+              croppedBlob,
+              croppedImage
+            });
+          }, this.fileExtention)
+      }
     },
     onCancel () {
       this.$emit('close');
