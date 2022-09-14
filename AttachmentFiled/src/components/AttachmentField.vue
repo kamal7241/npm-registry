@@ -68,7 +68,7 @@
           </button>
 
           <div class="name-placeholder">
-            {{ strings.chooseFile }}
+            {{ isServerLoading ? strings.serverLoadingText : strings.chooseFile }}
           </div>
         </div>
       </div>
@@ -320,6 +320,7 @@ export default {
         clickHere: 'اضغط هنا',
         chooseFile: 'اختر ملف',
         actionName: "استعراض الملفات",
+        serverLoadingText: 'جاري تحميل البيانات ...',
         ...localizations
       };
     },

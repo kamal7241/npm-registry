@@ -183,6 +183,7 @@ export default {
 | **actionName** | ***استعراض الملفات*** | *Button Label ( Fancy Mode )* | 
 | **clickHere** | ***اضغط هنا*** | *Button Label ( Normal Mode )* |
 | **chooseFile** | ***اختر ملف*** | *placeholder for input field in ( Normal Mode )* |
+| **serverLoadingText** | ***'جاري تحميل البيانات ...*** | *placeholder for input field in ( serverSideMode Mode )* |
 
 ## Customizations
 *The available customization are*:

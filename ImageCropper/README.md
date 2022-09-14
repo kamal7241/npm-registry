@@ -110,6 +110,7 @@ export default {
 | **modalSaveAction** | ***حفظ*** |
 | **modalCancelAction** | ***إلغاء*** |
 | **chooseFile** | ***اختر ملف*** |
+| **serverLoadingText** | ***'جاري تحميل البيانات ... -> *placeholder for input field in ( serverSideMode Mode )*** |
 
 ## Behavior
   - ### In server side mode (enableServerSide = true)
