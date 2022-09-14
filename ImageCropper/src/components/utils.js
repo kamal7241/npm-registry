@@ -91,7 +91,9 @@ const generateUtils = instance => ({
     this.onReset(false);
     instance.isServerLoading = true;
     instance.croppedData = data;
+
     const base64Meta = this.getBase64Meta(data.croppedImage);
+
     if('base64' in base64Meta) {
       const sharepointId = await instance.uploadCallback(base64Meta);
       
@@ -100,7 +102,8 @@ const generateUtils = instance => ({
         attachmentTypeId: instance.attachmentTypeId,
         contentType: base64Meta.contentType,
         sharepointId,
-        file: selectedFile.file
+        // save the cropped part as file not the entire file
+        file: await this.base64ToFilesConverter(base64Meta.source, selectedFile.file.name)
       };
       
 
@@ -122,6 +125,21 @@ const generateUtils = instance => ({
       base64: splittedBase64,
       contentType
     };
+  },
+  // converters 
+  base64ToFilesConverter(base64= '', name= 'untitled') {
+    return new Promise((resolve) => {
+      fetch(base64)
+      .then((res) => res.blob())
+      .then((blob) => {
+        const createdFileExtention = base64.split(';')[0].split(':')[1];
+        const createdFile = new File([blob], name, { type: createdFileExtention });
+
+        createdFile.displayName = this.enhanceFileName(createdFile);
+
+        resolve(createdFile)
+      })
+    });
   }
 })
 

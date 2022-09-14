@@ -50,14 +50,25 @@
         <div class="input-wrapper">
           <button
             :disabled="readOnlyMode || isServerLoading"
-            class="indicator pointer"
+            :class="['indicator pointer', {selecting: isServerLoading}]"
             @click="$refs.file.click()"
           >
+            <div
+              v-if="isServerLoading"
+              class="loader-placeholder"
+            >
+              <img
+                src="../assets/loader.svg"
+                alt="icon"
+                width="30"
+                height="30"
+              >
+            </div>
             {{ strings.clickHere }}
           </button>
 
           <div class="name-placeholder">
-            {{ strings.chooseFile }}
+            {{ isServerLoading ? strings.serverLoadingText : strings.chooseFile }}
           </div>
         </div>
       </div>
@@ -309,6 +320,7 @@ export default {
         clickHere: 'اضغط هنا',
         chooseFile: 'اختر ملف',
         actionName: "استعراض الملفات",
+        serverLoadingText: 'جاري تحميل البيانات ...',
         ...localizations
       };
     },
