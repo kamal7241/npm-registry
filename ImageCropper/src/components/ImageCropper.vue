@@ -34,9 +34,21 @@
         <button
           v-if="!previewedSelectedFile"
           :disabled="readOnlyMode"
-          class="indicator pointer"
+          :class="['indicator pointer', {selecting: isServerLoading}]"
           @click="utils.onUploadImage"
         >
+          <div
+            v-if="isServerLoading"
+            class="loader-placeholder"
+          >
+            <img
+              src="../assets/loader.svg"
+              alt="icon"
+              width="30"
+              height="30"
+            >
+          </div>
+
           {{ strings.chooseFile }}
         </button>
         <img
@@ -49,7 +61,7 @@
         >
 
         <div class="name-placeholder">
-          {{ previewedSelectedFile ? previewedSelectedFile.displayName : strings.clickHere }}
+          {{ namePlaceholderText }}
         </div>
 
         <div
@@ -224,6 +236,7 @@ export default {
         modalCancelAction: 'إلغاء',
         chooseFile: 'اختر ملف',
         errorText: '',
+        serverLoadingText: 'جاري تحميل البيانات ...',
         ...localizations
       };
     },
@@ -296,9 +309,18 @@ export default {
     },
     previewedSelectedFile() {
       const { enableServerSide, selectedFile } = this;
-      const serverSideSelectedFile = selectedFile ? selectedFile.file : null;
+      const serverSideSelectedFile = selectedFile && selectedFile.sharepointId ? selectedFile.file : null;
 
       return enableServerSide ? serverSideSelectedFile : selectedFile;
+    },
+    namePlaceholderText() {
+      const { previewedSelectedFile, strings, isServerLoading } = this;
+
+      if(isServerLoading) {
+        return strings.serverLoadingText;
+      }
+
+      return previewedSelectedFile ? previewedSelectedFile.displayName : strings.clickHere;
     },
     utils() {
       return generateUtils(this);

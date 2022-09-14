@@ -73,7 +73,10 @@ export default {
     },
     async onUploadData(data) {
       console.log('onUploadData', data);
-      return `test${Math.random()}test+pqql4B8hlPlIsuvkdtKbkr40lpA==`
+
+      return new Promise((resolve) => {
+        setTimeout(() => resolve(`test${Math.random()}test+pqql4B8hlPlIsuvkdtKbkr40lpA==`), 10000)
+      })
     },
     async onGenerateFileFromSharepointId(data) {
       console.log('onUploadData', data);

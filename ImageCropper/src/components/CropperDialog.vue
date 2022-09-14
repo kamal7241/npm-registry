@@ -84,7 +84,7 @@ export default {
   mounted () {
     this.cropper = new Cropper(this.$refs.img, {
       aspectRatio: 4 / 6,
-      viewMode: 3,
+      viewMode: 1,
       dragMode: 'move',
       background: true,
       cropBoxResizable: false,
