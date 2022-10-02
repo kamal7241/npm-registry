@@ -288,7 +288,7 @@ export default {
        *  - clientSideMode is: instance of File() constructor
        *  - serverSideMode is: { id, attachmentTypeId, contentType, sharepointId, file }
        */
-      
+ 
       let mutatedSelectedFile = {};
 
       if(enableServerSide) {
@@ -301,8 +301,12 @@ export default {
         }
       }
 
-      if (updateParentWithFileMeta && selectedFile) {
-        mutatedSelectedFile.file = enableServerSide ? selectedFile.file : selectedFile;
+      if (selectedFile) {
+        if (updateParentWithFileMeta) {
+          mutatedSelectedFile.file = enableServerSide ? selectedFile.file : selectedFile;
+        } else {
+          delete mutatedSelectedFile.file;
+        }
       }
 
       return mutatedSelectedFile

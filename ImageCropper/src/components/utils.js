@@ -6,9 +6,12 @@ const generateUtils = instance => ({
   },
   enhanceFileName(file) {
     // animals.sd.png ===> png
-    const extention = this.getFileExtention(file.type);
-    const extensionWithDot = `.${extention}`;
-    const name = file.name.split(extensionWithDot)[0];
+    // const extention = this.getFileExtention(file.type);
+    // const extensionWithDot = `.${extention}`;
+    // const name = file.name.split(extensionWithDot)[0];
+    const dotLastIndex = file.name.lastIndexOf('.');
+    const name = file.name.slice(0, dotLastIndex);
+    const extensionWithDot = file.name.slice(dotLastIndex);
 
     const displayedName = instance.enableFullnameDisplay ? name : name.slice(0, instance.maxDisplayNameLength)
     
@@ -102,6 +105,7 @@ const generateUtils = instance => ({
         attachmentTypeId: instance.attachmentTypeId,
         contentType: base64Meta.contentType,
         sharepointId,
+        fileName: selectedFile.file.name,
         // save the cropped part as file not the entire file
         file: await this.base64ToFilesConverter(base64Meta.source, selectedFile.file.name)
       };
