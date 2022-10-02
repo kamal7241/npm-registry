@@ -334,10 +334,10 @@ export default {
     }
   },
   watch: {
-    value() {
-      if(this.value.length) {
+    value(newVal, oldVal) {
+      if(this.value.length && JSON.stringify(newVal) !== JSON.stringify(oldVal)) {
         this.loadData();
-      } else {
+      } else if (!this.value.length) {
         this.selectedFiles = [];
       }
     }
@@ -418,9 +418,8 @@ export default {
           }
 
           return isValidIteration ? [...results, generatedFile] : results;
-      }, [])
-
-      this.selectedFiles =this.selectedFiles.concat(enhancedExtraFiles);
+        }, [])
+        this.selectedFiles = this.selectedFiles.concat(enhancedExtraFiles);
       }
       this.isServerLoading = false;
     },

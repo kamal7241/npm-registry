@@ -167,6 +167,7 @@ const generateUtils = instance => ({
           attachmentTypeId: instance.attachmentTypeId,
           contentType: base64Meta.contentType,
           sharepointId,
+          fileName: selectedFile.name,
           file: selectedFile
         };
 
