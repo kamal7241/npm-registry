@@ -12,6 +12,7 @@
       :localizations="localizations"
       activateInternalErrorPreview
       :attachmentTypeId="5"
+      :maxFilesSizeInMega="1"
       :uploadCallback="onUploadData"
       :downloadCallback="onGenerateFileFromSharepointId"
       @select="onSelectFiles"
@@ -86,12 +87,7 @@ export default {
       localizations: {
         placeholder: 'استعراض الملفات',
       },
-      serverSideValue: [{
-        attachmentTypeId:5,
-        contentType:"image/png",
-        id:0,
-        sharepointId:"bPHSUiXuzJLHf2Q7V0vLtRYITqvi9wYk1LYMB7vCxJVhchPoNp4uqsjk2E+pqql4B8hlPlIsuvkdtKbkr40lpA=="
-      }]
+      serverSideValue: []
     //   value: [
     //     {
     //     name: '111111111111111111111111111111111111111',
@@ -119,7 +115,7 @@ export default {
   methods: {
     async onSelectFiles(file) {
 
-      this.serverSideValue = file.value;
+      // this.serverSideValue = file.value;
     },     
     async onUploadData(data) {
       console.log('onUploadData', data);

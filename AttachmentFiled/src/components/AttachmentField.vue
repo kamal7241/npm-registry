@@ -258,6 +258,7 @@ export default {
   data() {
     return {
       selectedFiles: [],
+      currentTotalSize: 0,
       error: '',
       isServerLoading: false
     }
@@ -330,17 +331,6 @@ export default {
     },
     utils() {
       return generateUtils(this)
-    },
-    currentTotalSize() {
-      let totalSize = 0;
-      
-      this.selectedFiles.forEach((selectedFile, index) => {
-        const file = this.enableServerSide ? selectedFile[index].file : selectedFile;
-
-        totalSize += file.size;
-      })
-
-      return totalSize
     }
   },
   watch: {
