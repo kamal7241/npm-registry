@@ -72,15 +72,12 @@ const generateUtils = instance => ({
     };
   },
   onDeleteFile(index) {
-    const file = instance.enableServerSide ? instance.selectedFiles[index].file : instance.selectedFiles[index];
     instance.selectedFiles.splice(index, 1);
     
     if(!instance.selectedFiles.length && instance.isRequired) {
       this.dispatchError('fieldIsRequired');
     }
 
-    // update total size and (|| 0 ---> is For to validate that file is not NaN if the provided file is corrupted)
-    instance.currentTotalSize -= (file.size || 0);
     // update parent
     instance.$emit("select", instance.updatedValue);
   },
@@ -134,8 +131,6 @@ const generateUtils = instance => ({
         if(instance.addAttachmentAllowed && this.isValidFile(file)) {
           file.displayName = this.enhanceFileName(file);
           instance.selectedFiles.push(file);
-          // update total size
-          instance.currentTotalSize += file.size;
         }
       }
     }
@@ -176,8 +171,6 @@ const generateUtils = instance => ({
         } else {
           instance.selectedFiles = [constructedAttachment]
         }
-
-        instance.currentTotalSize += selectedFile.size;
       }
       // reset field value
       instance.$refs.file.value = "";

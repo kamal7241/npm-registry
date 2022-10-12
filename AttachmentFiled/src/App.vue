@@ -11,7 +11,6 @@
       :value="serverSideValue"
       :localizations="localizations"
       activateInternalErrorPreview
-      enableServerSide
       :attachmentTypeId="5"
       :uploadCallback="onUploadData"
       :downloadCallback="onGenerateFileFromSharepointId"
