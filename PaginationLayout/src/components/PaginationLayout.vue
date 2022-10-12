@@ -280,6 +280,7 @@ export default {
           (JSON.stringify(newValue) !== JSON.stringify(oldValue))  
         ) {
           this.list = newValue;
+          this.totalCount = newValue.length
         }
       },
       deep: true

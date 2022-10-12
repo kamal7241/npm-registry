@@ -2,6 +2,13 @@
   <div
     id="app"
   >
+    <button
+      style="background-color: red;"
+      @click="changeValue"
+    >
+      Change
+    </button>
+
     <PaginationLayout
       :value="value"
       serverPageNumberKey="page"
@@ -120,6 +127,18 @@ export default {
         id: '1271c7eb-3734-4106-9894-b19d5261f5cc',
         rank: 'firstRank',
       },
+    ],
+      // endpoint: serverSideLink => fetch(`https://api.instantwebtools.net/v1/passenger${serverSideLink}`)
+      // client
+      // endpoint: serverSideLink => fetch(`http://jsonplaceholder.typicode.com/photos?_limit=100${serverSideLink}`)
+    };
+  },
+  methods: {
+    onSearch(data) {
+      console.log('onSearch', data);
+    },
+    changeValue() {
+      this.value= [
       {
         title: 'إثبات تنازل عن إصابة',
         description: 'خدمة تتيح للمستفيد تقديم طلب لإثبات تنازل عن إصابة لحقت به، ويتم إثبات التنازل لدى المحكمة.',
@@ -456,15 +475,8 @@ export default {
         id: '6f961e87-0b95-484a-9af7-055aeaf121c0',
         rank: 'secondRank',
       },
-    ],
-      // endpoint: serverSideLink => fetch(`https://api.instantwebtools.net/v1/passenger${serverSideLink}`)
-      // client
-      // endpoint: serverSideLink => fetch(`http://jsonplaceholder.typicode.com/photos?_limit=100${serverSideLink}`)
-    };
-  },
-  methods: {
-    onSearch(data) {
-      console.log('onSearch', data);
+
+      ]
     }
   }
 };
