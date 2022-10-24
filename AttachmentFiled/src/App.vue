@@ -10,9 +10,10 @@
       isMultiple
       :value="serverSideValue"
       :localizations="localizations"
+      enableServerSide
       activateInternalErrorPreview
       :attachmentTypeId="5"
-      :maxFilesSizeInMega="1"
+      :maxFilesSizeInMega="10"
       :uploadCallback="onUploadData"
       :downloadCallback="onGenerateFileFromSharepointId"
       @select="onSelectFiles"

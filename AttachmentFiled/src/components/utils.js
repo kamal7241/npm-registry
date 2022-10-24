@@ -50,7 +50,6 @@ const generateUtils = instance => ({
       const url = window.URL.createObjectURL(file);
       this.generateFileDownloadUrl(url, name);
     }
-    // console.log('onDownloadFile',file);
   },
   dispatchError(target='', name= '') {
     const error =  this.getSelectedError(name)[target];
@@ -120,7 +119,7 @@ const generateUtils = instance => ({
     const firstFile = files[0];
 
     if(instance.resetErrorOnSelect && instance.error) {
-      this.dispatchError();
+      instance.error = '';
     }
   
     if(!instance.isMultiple && this.isValidFile(firstFile)) {
@@ -150,9 +149,9 @@ const generateUtils = instance => ({
 
     const files = e.target.files;
     const selectedFile = files[0];
-    
+ 
     if(instance.resetErrorOnSelect && instance.error) {
-      this.dispatchError();
+      instance.error = '';
     }
 
     if(this.isValidFile(selectedFile)) {
