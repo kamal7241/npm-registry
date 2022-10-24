@@ -60,6 +60,8 @@ const generateUtils = instance => ({
       code: target,
       error
     });
+    
+    instance.$refs.file.value = "";
   },
   getSelectedError(fileName) {
     const { maxFileSizeInMega, maxFilesSizeInMega } = instance;
