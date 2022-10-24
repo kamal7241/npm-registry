@@ -58,6 +58,7 @@ const generateUtils = instance => ({
 
     instance.$emit('error', {
       name: this.name,
+      code: target,
       error
     });
   },

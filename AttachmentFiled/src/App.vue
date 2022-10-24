@@ -130,7 +130,7 @@ export default {
       })
     },    
     onErrorFound(error) {
-      // console.log('error', error);
+      console.log('error', error);
     },
     getBase64(file) {
       console.log('file', file)
