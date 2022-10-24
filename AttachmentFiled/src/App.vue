@@ -10,9 +10,10 @@
       isMultiple
       :value="serverSideValue"
       :localizations="localizations"
+      enableServerSide
       activateInternalErrorPreview
       :attachmentTypeId="5"
-      :maxFilesSizeInMega="1"
+      :maxFilesSizeInMega="10"
       :uploadCallback="onUploadData"
       :downloadCallback="onGenerateFileFromSharepointId"
       @select="onSelectFiles"
@@ -130,7 +131,7 @@ export default {
       })
     },    
     onErrorFound(error) {
-      // console.log('error', error);
+      console.log('error', error);
     },
     getBase64(file) {
       console.log('file', file)
