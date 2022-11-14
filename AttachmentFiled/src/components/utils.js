@@ -160,30 +160,33 @@ const generateUtils = instance => ({
       selectedFile.displayName = this.enhanceFileName(selectedFile);
       
       const base64Meta = await this.convertFileToBase64(selectedFile);
-      
+   
       if('base64' in base64Meta) {
         const sharepointId = await instance.uploadCallback(base64Meta);
 
-        const constructedAttachment = {
-          id: 0,
-          attachmentTypeId: instance.attachmentTypeId,
-          contentType: base64Meta.contentType,
-          sharepointId,
-          fileName: selectedFile.name,
-          file: selectedFile
-        };
-
-        if(instance.isMultiple) {
-          instance.selectedFiles.push(constructedAttachment)
-        } else {
-          instance.selectedFiles = [constructedAttachment]
+        if(sharepointId) {
+          const constructedAttachment = {
+            id: 0,
+            attachmentTypeId: instance.attachmentTypeId,
+            contentType: base64Meta.contentType,
+            sharepointId,
+            fileName: selectedFile.name,
+            file: selectedFile
+          };
+  
+          if(instance.isMultiple) {
+            instance.selectedFiles.push(constructedAttachment)
+          } else {
+            instance.selectedFiles = [constructedAttachment]
+          }
+  
+          instance.currentTotalSize += selectedFile.size;
+          instance.$emit("select", instance.updatedValue);
         }
 
-        instance.currentTotalSize += selectedFile.size;
       }
       // reset field value
       instance.$refs.file.value = "";
-      instance.$emit("select", instance.updatedValue);
     }
 
     instance.isServerLoading = false;

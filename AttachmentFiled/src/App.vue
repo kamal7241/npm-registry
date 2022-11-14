@@ -115,7 +115,7 @@ export default {
   },
   methods: {
     async onSelectFiles(file) {
-
+      console.log(file)
       // this.serverSideValue = file.value;
     },     
     async onUploadData(data) {
