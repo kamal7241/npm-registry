@@ -339,6 +339,7 @@ export default {
         this.loadData();
       } else if (!this.value.length) {
         this.selectedFiles = [];
+        this.currentTotalSize = 0;
       }
     }
   },
