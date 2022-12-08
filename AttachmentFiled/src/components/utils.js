@@ -183,7 +183,6 @@ const generateUtils = instance => ({
           instance.currentTotalSize += selectedFile.size;
           instance.$emit("select", instance.updatedValue);
         }
-
       }
       // reset field value
       instance.$refs.file.value = "";

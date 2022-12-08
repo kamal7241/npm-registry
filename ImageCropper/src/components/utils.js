@@ -100,23 +100,23 @@ const generateUtils = instance => ({
     if('base64' in base64Meta) {
       const sharepointId = await instance.uploadCallback(base64Meta);
       
-      const constructedAttachment = {
-        id: 0,
-        attachmentTypeId: instance.attachmentTypeId,
-        contentType: base64Meta.contentType,
-        sharepointId,
-        fileName: selectedFile.file.name,
-        // save the cropped part as file not the entire file
-        file: await this.base64ToFilesConverter(base64Meta.source, selectedFile.file.name)
-      };
-      
-
-      instance.selectedFile = constructedAttachment;
+      if(sharepointId) {
+        const constructedAttachment = {
+          id: 0,
+          attachmentTypeId: instance.attachmentTypeId,
+          contentType: base64Meta.contentType,
+          sharepointId,
+          fileName: selectedFile.file.name,
+          // save the cropped part as file not the entire file
+          file: await this.base64ToFilesConverter(base64Meta.source, selectedFile.file.name)
+        };
+  
+        instance.selectedFile = constructedAttachment;
+        instance.$emit('cropImage', instance.updatedValue);
+      }
     }
 
-    
     instance.$refs.imageInput.value = '';
-    instance.$emit('cropImage', instance.updatedValue);
 
     instance.isServerLoading = false;
   },
