@@ -338,6 +338,7 @@ export default {
     }
   },
   mounted() {
+    this.utils.updatePackageVariables();
     // initial notification to the parent
     if(this.exportInitialFieldMeta) {
       this.$emit('cropImage', this.updatedValue);

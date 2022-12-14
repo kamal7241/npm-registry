@@ -144,7 +144,33 @@ const generateUtils = instance => ({
         resolve(createdFile)
       })
     });
+  },
+  // theming
+  getThemeColor(target, prefix = 'layout') {
+    const color = getComputedStyle(document.documentElement).getPropertyValue(`--${prefix}-${target}-color`);
+
+    return color.trim();
+  },
+  updateAppVariable(appTarget, layoutTarget) {
+    const root = document.documentElement.style;
+
+    const color = this.getThemeColor(layoutTarget) || this.getThemeColor(appTarget, 'app');
+
+    root.setProperty(`--package-${appTarget}-color`, color);
+  },
+  updatePackageVariables() {
+    const variables = [
+      'primary',
+      'dark-primary',
+      'light-primary',
+      'lighter-primary',
+      'secondary',
+      'light-secondary',
+    ];
+
+    variables.forEach((variable) => this.updateAppVariable(variable, variable));
   }
+
 })
 
 
