@@ -109,7 +109,7 @@ ul {
 }
 
 .list-item .size-delete-wrapper .size {
-  color: #067377;
+  color: var(--package-primary-color);
   font-size: 11px;
   margin-left: 10px;
 }
