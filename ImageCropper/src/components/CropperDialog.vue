@@ -9,7 +9,7 @@
       class="modal__title"
     >
       <slot name="title">
-        <p>{{ strings.modalTitle }}</p>
+        <h5>{{ strings.modalTitle }}</h5>
       </slot>
     </span>
 
@@ -175,6 +175,10 @@ export default {
   border-bottom: 1px solid #eee;
 }
 
+.modal__title h5 {
+  font-weight: bold;
+}
+
 .modal__action {
   border-top: 1px solid #eee;
   padding: 10px;
@@ -203,6 +207,7 @@ export default {
   color: #fff;
   background-color: #ae351c;
   padding: 5px;
+  text-align: center;
 }
 
 @media (min-width: 576px) {
