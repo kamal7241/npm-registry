@@ -9,7 +9,7 @@
       class="modal__title"
     >
       <slot name="title">
-        <h5>{{ strings.modalTitle }}</h5>
+        <h5 class="title-text">{{ strings.modalTitle }}</h5>
       </slot>
     </span>
 
@@ -175,7 +175,7 @@ export default {
   border-bottom: 1px solid #eee;
 }
 
-.modal__title h5 {
+.modal__title .title-text {
   font-weight: bold;
 }
 
