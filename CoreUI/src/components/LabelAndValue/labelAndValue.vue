@@ -76,5 +76,5 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-// @import "./labelAndValue.module";
+@import "./labelAndValue.module";
 </style>

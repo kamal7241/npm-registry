@@ -309,5 +309,5 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import "./calendar.module.scss";
+@import "./calendar.module";
 </style>

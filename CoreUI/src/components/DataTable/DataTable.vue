@@ -12,6 +12,7 @@
       >
         <div class="field primary d-flex align-center">
           <label-and-value
+            preview
             :is-loading="isLoading"
             :label="enhancedColumns.primaryColumn.title"
             :value="
@@ -45,6 +46,7 @@
             styles="field"
           >
             <label-and-value
+              preview
               class="field"
               :label="column.title"
               :is-loading="isLoading"
@@ -133,7 +135,8 @@ export default {
         sortedColumns: [],
       };
     },
-
+  },
+  methods: {
     getPrimaryColumnValue(value) {
       const { primaryFieldValueEnhancer } = this;
       const columnValue = primaryFieldValueEnhancer

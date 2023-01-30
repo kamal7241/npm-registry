@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuetify from "vuetify/lib";
 
-import Calendar from "./components/Calendar/Calendar.vue";
+import Calendar from "./components/Calendar/calendar.vue";
 
 Vue.use(Vuetify);
 
