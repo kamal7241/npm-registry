@@ -1,31 +1,27 @@
-import Vue from 'vue';
-import ar from 'vuetify/lib/locale/ar';
+import Vue from "vue";
+import Vuetify from "vuetify/lib";
+import "@mdi/font/css/materialdesignicons.css";
+// Locals
+import ar from "vuetify/src/locale/ar.ts";
+import en from "vuetify/src/locale/en.ts";
 
-import Vuetify, { VDataTable, VApp, VBtn, VTextField, VCard, VCardTitle, VSpacer } from 'vuetify/lib'
-
-Vue.use(Vuetify, {
-  components: { VDataTable, VApp, VBtn, VTextField, VCard, VCardTitle, VSpacer }
-})
+Vue.use(Vuetify);
 
 export default new Vuetify({
   rtl: true,
-  lang: {
-    locales: { ar },
-    current: 'ar'
-  },
   icons: {
-    iconfont: 'mdi',
+    iconfont: "mdi",
+  },
+  lang: {
+    locales: { ar, en },
+    current: "ar",
   },
   theme: {
     themes: {
       light: {
-        primary: '#1976D2',
-        secondary: '#424242',
-        accent: '#82B1FF',
-        error: '#FF5252',
-        info: '#2196F3',
-        success: '#4CAF50',
-      }
+        primary: "#158E8D",
+        secondary: "#e0cf97",
+      },
     },
-  }
+  },
 });

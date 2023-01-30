@@ -1,19 +1,17 @@
-import CoreUI from './components/index.vue';
+import Vue from "vue";
+import Vuetify from "vuetify/lib";
 
-const UploadComponents = {
-	CoreUI
-}
+import Calendar from "./components/Calendar/Calendar.vue";
 
-const UploadComponentsPlugin = {
-	install(Vue) {
-		Object.keys(UploadComponents).forEach((name) => {
-			Vue.component(name, UploadComponents[name])
-		})
-	}
-}
+Vue.use(Vuetify);
 
-export default UploadComponentsPlugin
+const Components = {
+  Calendar,
+};
 
-export {
-	CoreUI
-}
+Vue.component("Calendar", Calendar);
+
+export { Calendar };
+
+// Export the library as a plugin
+export default Components;
