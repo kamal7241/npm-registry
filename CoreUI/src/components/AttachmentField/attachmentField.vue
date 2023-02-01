@@ -31,6 +31,7 @@
       <div v-if="!enableFancyPreview && addAttachmentAllowed && !readOnlyMode">
         <div class="input-wrapper">
           <button
+            :id="chooseFileActionId"
             :disabled="readOnlyMode || isServerLoading"
             :class="['indicator pointer', { selecting: isServerLoading }]"
             @click="$refs.file.click()"
@@ -110,6 +111,7 @@
 
             <img
               v-if="!readOnlyMode"
+              :id="`${deleteActionId}_${index + 1}`"
               class="img"
               src="../../assets/icons/delete.svg"
               @click="utils.onDeleteFile(index)"
@@ -117,6 +119,7 @@
 
             <img
               v-if="isDownloadAvailable"
+              :id="`${downloadActionId}_${index + 1}`"
               class="img"
               src="../../assets/icons/download.png"
               @click="
@@ -138,6 +141,18 @@ import generateUtils from "./utils";
 export default {
   name: "AttachmentField",
   props: {
+    chooseFileActionId: {
+      type: String,
+      default: "",
+    },
+    deleteActionId: {
+      type: String,
+      default: "",
+    },
+    downloadActionId: {
+      type: String,
+      default: "",
+    },
     maxFileSizeInMega: {
       type: Number,
       default: 2,

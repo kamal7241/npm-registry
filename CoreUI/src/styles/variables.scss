@@ -1,20 +1,20 @@
 :root {
-  --app-primary-color: #158E8D;
-  --app-dark-primary-color: #02363D; 
-  --app-light-primary-color: #02ad68; 
-  --app-lighter-primary-color: #36c5ba;
+  --package-primary-color: #158E8D;
+  --package-dark-primary-color: #02363D; 
+  --package-light-primary-color: #02ad68; 
+  --package-lighter-primary-color: #36c5ba;
 
-  --app-secondary-color: #E0CF97; 
-  --app-light-secondary-color: #FAF9F4; 
+  --package-secondary-color: #E0CF97; 
+  --package-light-secondary-color: #FAF9F4; 
 }
 
-$primary-color: var(--app-primary-color); 
-$dark-primary-color: var(--app-dark-primary-color); 
-$light-primary-color: var(--app-light-primary-color); 
-$lighter-primary-color: var(--app-lighter-primary-color); 
+$primary-color: var(--package-primary-color); 
+$dark-primary-color: var(--package-dark-primary-color); 
+$light-primary-color: var(--package-light-primary-color); 
+$lighter-primary-color: var(--package-lighter-primary-color); 
 
-$secondary-color: var(--app-secondary-color); 
-$light-secondary-color: var(--app-light-secondary-color); 
+$secondary-color: var(--package-secondary-color); 
+$light-secondary-color: var(--package-light-secondary-color); 
 
 $base-grey:#5c6f7c;
 $light-grey: #99AEB1;

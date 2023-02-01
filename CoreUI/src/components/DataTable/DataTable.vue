@@ -24,6 +24,7 @@
             <v-spacer />
 
             <v-icon
+              :id="clickPrimaryFieldAction"
               medium
               color="primary"
               class="'arrow bold mr-5"
@@ -68,6 +69,10 @@ export default {
     LabelAndValue,
   },
   props: {
+    clickPrimaryFieldAction: {
+      type: String,
+      default: "",
+    },
     columns: {
       type: Array,
       default: () => [],

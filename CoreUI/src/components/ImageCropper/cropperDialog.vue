@@ -12,15 +12,15 @@
 
     <div class="modal__content">
       <div v-show="selectedImage" class="image-wrapper">
-        <img ref="img" class="image-canvas" :src="selectedImage" />
+        <img ref="img" class="image-canvas" :src="selectedImage" >
       </div>
     </div>
 
     <div class="modal__action">
-      <button class="save" @click="onCropImage">
+      <button :id="cropImageAction" class="save" @click="onCropImage">
         {{ strings.modalSaveAction }}
       </button>
-      <button class="cancel-action" @click="onCancel">
+      <button :id="cancelDialogAction" class="cancel-action" @click="onCancel">
         {{ strings.modalCancelAction }}
       </button>
     </div>
@@ -38,6 +38,14 @@ export default {
     VueFinalModal,
   },
   props: {
+    cropImageAction: {
+      type: String,
+      default: "",
+    },
+    cancelDialogAction: {
+      type: String,
+      default: "",
+    },
     show: {
       type: Boolean,
       default: false,

@@ -26,6 +26,7 @@
       <div class="input-wrapper">
         <button
           v-if="!previewedSelectedFile"
+          :id="chooseFileActionId"
           :disabled="readOnlyMode"
           :class="['indicator pointer', { selecting: isServerLoading }]"
           @click="utils.onUploadImage"
@@ -36,7 +37,7 @@
               alt="icon"
               width="30"
               height="30"
-            >
+            />
           </div>
 
           {{ strings.chooseFile }}
@@ -48,7 +49,7 @@
           alt="icon"
           width="25"
           height="25"
-        >
+        />
 
         <div class="name-placeholder">
           {{ namePlaceholderText }}
@@ -57,23 +58,25 @@
         <div v-if="previewedSelectedFile" class="actions">
           <img
             v-if="!readOnlyMode"
+            :id="deleteActionId"
             src="../../assets/icons/cancel.svg"
             class="action"
             width="30"
             height="30"
             alt="delete"
             @click="utils.onDeleteSelectedImage()"
-          >
+          />
 
           <img
             v-if="isDownloadAvailable"
+            :id="downloadActionId"
             src="../../assets/icons/download.png"
             class="action"
             width="20"
             height="20"
             alt="download"
             @click="utils.onDownloadSelectedImage"
-          >
+          />
         </div>
       </div>
     </slot>
@@ -102,7 +105,7 @@
       accept="image/*"
       :style="{ display: 'none' }"
       @change="(e) => utils.onSelectImage(e)"
-    >
+    />
   </div>
 </template>
 
@@ -116,6 +119,18 @@ export default {
     CropperDialog,
   },
   props: {
+    chooseFileActionId: {
+      type: String,
+      default: "",
+    },
+    deleteActionId: {
+      type: String,
+      default: "",
+    },
+    downloadActionId: {
+      type: String,
+      default: "",
+    },
     label: {
       type: String,
       default: "",

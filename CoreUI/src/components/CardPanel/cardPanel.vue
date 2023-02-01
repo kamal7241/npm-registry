@@ -1,8 +1,20 @@
 <template>
   <section class="box">
-    <h2 class="sectionHeader">{{ title }}</h2>
+    <h2 class="section-header">
+      <div v-if="!isLoading" class="title-wrapper">
+        <span>{{ title }}</span>
+        <slot name="headerAction" />
+      </div>
 
-    <div class="contentWrapper">
+      <v-skeleton-loader
+        v-else
+        loading
+        width="300px"
+        height="20px"
+        type="heading"
+      />
+    </h2>
+    <div class="content-wrapper">
       <slot />
     </div>
   </section>
@@ -14,6 +26,10 @@ export default {
     title: {
       type: String,
       default: "",
+    },
+    isLoading: {
+      type: Boolean,
+      default: false,
     },
   },
 };

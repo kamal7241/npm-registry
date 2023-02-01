@@ -8,7 +8,7 @@
             alt="loading img"
             width="200"
             height="200"
-          />
+          >
         </slot>
       </div>
 
@@ -30,6 +30,7 @@
           >
             <v-pagination
               v-if="availablePagesCount"
+              :id="pagniateActionId"
               v-model="currentPage"
               class="base-pageIndex-handler"
               :length="availablePagesCount"
@@ -41,35 +42,39 @@
             >
               <template #first-text>
                 <img
+                  :id="firstPageActionId"
                   src="../../assets/icons/first-page.svg"
                   alt="fisrt-page"
                   width="10"
                   height="10"
-                >
+                />
               </template>
               <template #prev-text>
                 <img
+                  :id="prevPageActionId"
                   src="../../assets/icons/prev-page.svg"
                   alt="fisrt-page"
                   width="10"
                   height="10"
-                >
+                />
               </template>
               <template #next-text>
                 <img
+                  :id="nextPageActionId"
                   src="../../assets/icons/next-page.svg"
                   alt="fisrt-page"
                   width="10"
                   height="10"
-                >
+                />
               </template>
               <template #last-text>
                 <img
+                  :id="lastPageActionId"
                   src="../../assets/icons/last-page.svg"
                   alt="fisrt-page"
                   width="10"
                   height="10"
-                >
+                />
               </template>
             </v-pagination>
 
@@ -77,6 +82,7 @@
 
             <div class="page-size-wrapper">
               <v-select
+                :id="changePageSizeActionId"
                 v-model="currentPageSize"
                 :items="pageSizeOptions"
                 outlined
@@ -109,6 +115,30 @@ export default {
   name: "PaginationLayout",
 
   props: {
+    pagniateActionId: {
+      type: String,
+      default: "",
+    },
+    firstPageActionId: {
+      type: String,
+      default: "",
+    },
+    prevPageActionId: {
+      type: String,
+      default: "",
+    },
+    nextPageActionId: {
+      type: String,
+      default: "",
+    },
+    lastPageActionId: {
+      type: String,
+      default: "",
+    },
+    changePageSizeActionId: {
+      type: String,
+      default: "",
+    },
     value: {
       type: Array,
       required: false,

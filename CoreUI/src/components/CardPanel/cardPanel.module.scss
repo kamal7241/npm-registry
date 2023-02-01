@@ -1,23 +1,28 @@
-@import 'src/styles/variables.scss';
+@import 'src/styles/variables';
 
 .box {
   border: 1px solid #DBDBDB;
 
-  .sectionHeader {
+  .section-header {
     color: $dark-primary-color;
     font-weight: bold;
-    font-size: 22px;
+    font-size: 26px;
     background-color: $light-secondary-color;
     padding: 15px 50px;
+
+    .title-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
   }
 
-  .contentWrapper {
+  .content-wrapper {
     padding: 35px 50px;
   }
 
   @media (max-width: 450px) {
-    .contentWrapper,
-    .sectionHeader {
+    .content-wrapper {
       padding: 15px
     }
   }

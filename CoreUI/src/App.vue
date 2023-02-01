@@ -14,9 +14,11 @@
       :max-files-size-in-mega="10"
       :upload-callback="onUploadData"
       :download-callback="onGenerateFileFromSharepointId"
+      choose-file-action-id="testId"
       @select="onSelectFiles"
       @error="onErrorFound"
     />
+
     <calendar
       color="primary"
       :label="'تصفية بالتاريخ'"
@@ -30,7 +32,11 @@
       @changeHijri="changeHijriState"
     />
 
-    <card-panel title="تجربة" />
+    <card-panel title="تجربة">
+      <template #headerAction>
+        <v-btn color="red" class="white--text"> الغاء </v-btn>
+      </template>
+    </card-panel>
 
     <data-table
       :rows="rows"

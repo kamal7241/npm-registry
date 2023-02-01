@@ -11,6 +11,7 @@
         </p>
 
         <v-switch
+          :id="switchActionId"
           v-model="isHijri"
           color="primary"
           :ripple="false"
@@ -38,6 +39,7 @@
         <template #activator="{ on, attrs }">
           <v-text-field
             v-bind="attrs"
+            :id="focusActionId"
             :value="previewedDates"
             outlined
             :hide-details="!hint"
@@ -55,25 +57,42 @@
 
         <v-hijri-date-picker
           v-if="isHijri"
+          v-bind="$attrs"
+          :id="changeDateActionId"
           v-model="date"
           no-title
           :range="range"
           :multiple="multiple"
           :weekday-format="dayFormat"
           :month-format="monthFormat"
-          v-bind="$attrs"
         >
-          <div class="actionsWrapper d-flex align-center justify-space-between">
-            <v-btn text color="red" @click="onClearSelection">
+          <div
+            class="actions-wrapper d-flex align-center justify-space-between"
+          >
+            <v-btn
+              :id="resetActionId"
+              text
+              color="red"
+              @click="onClearSelection"
+            >
               {{ texts.reset }}
             </v-btn>
 
             <div>
-              <v-btn text color="primary" @click="onClosePicker">
+              <v-btn
+                :id="cancelActionId"
+                text
+                color="primary"
+                @click="onClosePicker"
+              >
                 {{ texts.cancel }}
               </v-btn>
 
-              <v-btn color="primary" @click="$refs.menu.save(date)">
+              <v-btn
+                :id="confirmActionId"
+                color="primary"
+                @click="$refs.menu.save(date)"
+              >
                 {{ texts.ok }}
               </v-btn>
             </div>
@@ -81,6 +100,7 @@
         </v-hijri-date-picker>
         <v-date-picker
           v-else
+          :id="changeDateActionId"
           v-model="date"
           no-title
           scrollable
@@ -90,17 +110,33 @@
           :month-format="monthFormat"
           v-bind="$attrs"
         >
-          <div class="actionsWrapper d-flex align-center justify-space-between">
-            <v-btn text color="red" @click="onClearSelection">
+          <div
+            class="actions-wrapper d-flex align-center justify-space-between"
+          >
+            <v-btn
+              :id="resetActionId"
+              text
+              color="red"
+              @click="onClearSelection"
+            >
               {{ texts.reset }}
             </v-btn>
 
             <div>
-              <v-btn text color="primary" @click="onClosePicker">
+              <v-btn
+                :id="cancelActionId"
+                text
+                color="primary"
+                @click="onClosePicker"
+              >
                 {{ texts.cancel }}
               </v-btn>
 
-              <v-btn color="primary" @click="$refs.menu.save(date)">
+              <v-btn
+                :id="confirmActionId"
+                color="primary"
+                @click="$refs.menu.save(date)"
+              >
                 {{ texts.ok }}
               </v-btn>
             </div>
@@ -126,6 +162,30 @@ export default {
   },
   inheritAttrs: false,
   props: {
+    switchActionId: {
+      type: String,
+      default: "",
+    },
+    focusActionId: {
+      type: String,
+      default: "",
+    },
+    changeDateActionId: {
+      type: String,
+      default: "",
+    },
+    confirmActionId: {
+      type: String,
+      default: "",
+    },
+    cancelActionId: {
+      type: String,
+      default: "",
+    },
+    resetActionId: {
+      type: String,
+      default: "",
+    },
     value: {
       type: String || Array,
       default: "",
@@ -276,6 +336,7 @@ export default {
 
       return hijriDate.format(hijriFormat, "en");
     },
+
     dayFormat(date) {
       uq.locale("ar");
       const daysFirstLetters = uq.daysShort();
