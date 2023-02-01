@@ -1,9 +1,19 @@
+:root {
+  --package-primary-color: #158E8D;
+  --package-dark-primary-color: #02363D; 
+  --package-light-primary-color: #02ad68; 
+  --package-lighter-primary-color: #36c5ba;
+
+  --package-secondary-color: #E0CF97; 
+  --package-light-secondary-color: #FAF9F4; 
+}
+
 ul {
   padding: 0;
 }
 
 .label-and-input-wrapper .label {
-  color: #02363D;
+  color: var(--package-dark-primary-color);
   font-size: 14px;
   font-family: Almarai, Regular;
   margin-bottom: 10px;
@@ -33,13 +43,13 @@ ul {
 
 .label-and-input-wrapper .file-input-wrapper .placeholder-wrapper {
   margin-top: 10px;
-  color: #02363D;
+  color: var(--package-dark-primary-color);
   opacity: 0.6;
 }
 
 .label-and-input-wrapper .file-input-wrapper .file-chooser-action {
   margin-top: 20px;
-  background-color: #158E8D;
+  background-color: var(--package-primary-color);
   padding: 5px 10px;
   color: #fff;
 }
@@ -93,13 +103,13 @@ ul {
 }
 
 .list-item .icon-name-wrapper .file-name {
-  color: #02363D;
+  color: var(--package-dark-primary-color);
   font-size: 14px;
   margin-right: 23px;
 }
 
 .list-item .size-delete-wrapper .size {
-  color: #067377;
+  color: var(--package-primary-color);
   font-size: 11px;
   margin-left: 10px;
 }
@@ -128,7 +138,7 @@ ul {
   outline: none;
   position: relative;
   color: #fff;
-  background-color: #158E8D
+  background-color: var(--package-primary-color)
 }
 
 .input-wrapper .indicator:disabled {
@@ -154,7 +164,7 @@ ul {
 
 .input-wrapper .name-placeholder{
   padding: 15px 10px;
-  color: #02363D;
+  color: var(--package-dark-primary-color);
   font-size: 14px;
   flex: 1;
 }
