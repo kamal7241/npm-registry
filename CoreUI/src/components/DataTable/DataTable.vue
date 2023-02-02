@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section :class="wrapperClass">
     <div
       v-for="(row, i) in rows"
       :key="i"
@@ -14,22 +14,20 @@
           <label-and-value
             :is-loading="isLoading"
             :label="enhancedColumns.primaryColumn.title"
-            :value="
-              getPrimaryColumnValue(row[enhancedColumns.primaryColumn.field])
-            "
+            :value="getColumnValue(row, enhancedColumns.primaryColumn)"
           />
 
           <template v-if="onClick">
-            <v-spacer />
+            <v-spacer v-if="!noSpacer" />
 
-            <v-icon
-              medium
-              color="primary"
-              class="'arrow bold mr-5"
+            <v-btn
+              :id="clickPrimaryFieldAction"
+              class="arrow mr-5"
+              text
               @click="onClick(row)"
             >
-              mdi-arrow-left
-            </v-icon>
+              <v-icon color="white" medium> mdi-arrow-left </v-icon>
+            </v-btn>
           </template>
         </div>
       </slot>
@@ -42,13 +40,13 @@
           <slot
             :name="column.field"
             :data="{ row, columns, currentIteration }"
-            styles="field"
+            currentClass="field"
           >
             <label-and-value
               class="field"
               :label="column.title"
               :is-loading="isLoading"
-              :value="row[column.field] || '---'"
+              :value="getColumnValue(row, column)"
             />
           </slot>
         </template>
@@ -56,6 +54,7 @@
     </div>
   </section>
 </template>
+
 <script>
 // components
 import LabelAndValue from "../LabelAndValue/labelAndValue.vue";
@@ -66,6 +65,10 @@ export default {
     LabelAndValue,
   },
   props: {
+    clickPrimaryFieldAction: {
+      type: String,
+      default: "",
+    },
     columns: {
       type: Array,
       default: () => [],
@@ -88,12 +91,17 @@ export default {
 
     onClick: {
       type: Function,
-      default: () => {},
+      default: () => ({}),
     },
 
-    primaryFieldValueEnhancer: {
-      type: Function,
-      default: () => {},
+    wrapperClass: {
+      type: String,
+      default: "",
+    },
+
+    noSpacer: {
+      type: Boolean,
+      default: false,
     },
   },
   computed: {
@@ -121,11 +129,6 @@ export default {
             sortedColumns,
           };
         }
-
-        return {
-          primaryColumn,
-          sortedColumns: this.columns,
-        };
       }
 
       return {
@@ -133,14 +136,13 @@ export default {
         sortedColumns: [],
       };
     },
-
-    getPrimaryColumnValue(value) {
-      const { primaryFieldValueEnhancer } = this;
-      const columnValue = primaryFieldValueEnhancer
-        ? primaryFieldValueEnhancer(value)
-        : value;
-
-      return columnValue || "---";
+  },
+  methods: {
+    getColumnValue(row, column) {
+      if (column.formatter) {
+        return column.formatter(row) || "---";
+      }
+      return row[column.field] || "---";
     },
   },
 };

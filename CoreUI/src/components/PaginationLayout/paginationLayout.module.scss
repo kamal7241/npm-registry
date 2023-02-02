@@ -1,0 +1,220 @@
+/* Vuetify */
+.min-h-unset {
+	.application--wrap {
+		min-height: unset;
+	}
+}
+.layout-wrapper {
+	position: relative;
+}
+.loading-wrapper {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	z-index: 2000;
+}
+.data-placeholder.loading {
+	filter: blur(1px);
+}
+.navigation {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 10px;
+	.pagination {
+		margin: 0;
+		.page-item {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			>.page-link {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				padding: 0;
+				width: 36px;
+				height: 36px;
+				box-shadow: 0px 3px 6px #00000029;
+				border-radius: 5px;
+			}
+			&:not([role='separator']).disabled {
+				opacity: .5;
+			}
+			&:not(.active) {
+				&:hover {
+					>.page-link {
+						color: #158E8D;
+					}
+				}
+			}
+			&:not(:first-of-type) {
+				margin: 0 5px;
+			}
+		}
+		.page-item.active {
+			>.page-link {
+				background-color: #158E8D;
+				outline: none;
+				border: none;
+			}
+		}
+	}
+}
+.separator {
+	margin: 0 10px;
+}
+.nav-controller {
+	padding: 5px 15px;
+	margin: 5px;
+	border-radius: 5px;
+	font-size: 13px;
+	box-shadow: 2px 2px 5px #ccc;
+	cursor: pointer;
+	transition: box-shadow .11s ease-in-out;
+	&:active {
+		box-shadow: unset;
+	}
+}
+.page-size-wrapper {
+	width: 100px;
+}
+.base-pageSize-handler.v-text-field--filled {
+	>.v-input__control {
+		>.v-input__slot {
+			min-height: unset;
+			margin-top: 5px;
+		}
+	}
+}
+.base-pageSize-handler.v-text-field--full-width {
+	>.v-input__control {
+		>.v-input__slot {
+			min-height: unset;
+			margin-top: 5px;
+		}
+	}
+}
+.base-pageSize-handler.v-text-field--outlined {
+	>.v-input__control {
+		>.v-input__slot {
+			min-height: unset;
+			margin-top: 5px;
+		}
+	}
+}
+.base-pageSize-handler.v-select.v-text-field--outlined {
+	&:not(.v-text-field--single-line) {
+		.v-select__selections {
+			padding: 2px 0;
+		}
+	}
+}
+.base-pageSize-handler.v-select {
+	.v-input__control {
+		.v-input__slot {
+			.v-select__slot {
+				.v-input__append-inner {
+					margin-top: 6px;
+				}
+			}
+		}
+	}
+}
+.v-pagination {
+	li {
+		.v-pagination__navigation {
+			width: 34px;
+			height: 34px;
+		}
+	}
+}
+.v-pagination__more {
+	-webkit-box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
+	box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
+	border-radius: 4px;
+	height: 34px;
+	margin: 0.3rem;
+	text-decoration: none;
+	-webkit-transition: 0.3s cubic-bezier(0, 0, 0.2, 1);
+	transition: 0.3s cubic-bezier(0, 0, 0.2, 1);
+	background: #fff;
+	color: rgb(2 54 61 / 50%);
+	width: auto;
+	min-width: 34px;
+	padding: 0 5px;
+	font-size: 25px;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+}
+.v-pagination__navigation--disabled {
+	opacity: 1;
+}
+.theme--light.v-pagination {
+	.v-pagination__navigation--disabled {
+		.v-icon {
+			color: rgba(20, 53, 60, 0.5);
+		}
+	}
+}
+.empty-list {
+	text-align: center;
+	padding: 30px;
+	border: 1px solid #dbdbdb;
+	h4 {
+		font-size: 1.7rem;
+	}
+}
+@media (max-width: 600px) {
+	.separator {
+		display: none;
+	}
+	.navigation {
+		flex-direction: column;
+		.pagination {
+			margin-bottom: 10px;
+		}
+	}
+	.page-size-wrapper {
+		width: 90%;
+	}
+	.v-pagination {
+		margin-bottom: 20px;
+	}
+}
+@media (max-width: 500px) {
+	.v-pagination__item {
+		font-size: 0.75rem;
+		height: 30px;
+		min-width: 30px;
+		margin: 4px;
+	}
+	.v-pagination__navigation {
+		font-size: 0.75rem;
+		height: 30px;
+		min-width: 30px;
+		margin: 4px;
+	}
+	.base-pageSize-handler.v-select {
+		.v-input__control {
+			.v-input__slot {
+				.v-select__slot {
+					.v-select__selections {
+						.v-select__selection--comma {
+							font-size: 0.75rem;
+						}
+					}
+				}
+			}
+		}
+	}
+	.v-pagination {
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+}

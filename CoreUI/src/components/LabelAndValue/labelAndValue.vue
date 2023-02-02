@@ -1,5 +1,5 @@
 <template>
-  <div :class="['label-and-value', { 'd-flex align-center': row }]">
+  <div :class="['base-label-and-value', { 'd-flex align-center': row }]">
     <v-skeleton-loader
       v-if="isLoading"
       loading
@@ -9,10 +9,7 @@
       class="mb-1"
     />
     <template v-else>
-      <p
-        v-if="label"
-        :class="[labelClass, { ['preview']: preview }, 'labelText mb-0']"
-      >
+      <p v-if="label" :class="[labelClass, 'preview label-text mb-0']">
         {{ label }}
       </p>
       <slot v-else name="label" />
@@ -28,11 +25,7 @@
     <template v-else>
       <p
         v-if="value"
-        :class="[
-          valueClass,
-          { ['preview']: preview, 'mx-1': row },
-          'valueText mb-0',
-        ]"
+        :class="[valueClass, { 'mx-1': row }, 'value-text mb-0 preview']"
       >
         {{ value }}
       </p>
@@ -44,10 +37,12 @@
 export default {
   name: "LabelAndValue",
   props: {
-    label: {
-      type: String,
-      default: "",
-    },
+    koko: String,
+    label: String,
+    // label: {
+    //   type: String,
+    //   default: "",
+    // },
     value: {
       type: String,
       default: "",
@@ -60,10 +55,6 @@ export default {
       type: String,
       default: "",
     },
-    preview: {
-      type: Boolean,
-      default: false,
-    },
     isLoading: {
       type: Boolean,
       default: false,
@@ -75,6 +66,3 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
-// @import "./labelAndValue.module";
-</style>

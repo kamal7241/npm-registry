@@ -1,17 +1,17 @@
 import Vue from "vue";
 import Vuetify from "vuetify/lib";
 
-import Calendar from "./components/Calendar/Calendar.vue";
+import * as components from "./components";
 
 Vue.use(Vuetify);
 
-const Components = {
-  Calendar,
-};
+Object.entries(components).forEach(([componentName, component]) => {
+  if (componentName !== "default") {
+    Vue.component(componentName, component);
+  }
+});
 
-Vue.component("Calendar", Calendar);
-
-export { Calendar };
+export { components };
 
 // Export the library as a plugin
-export default Components;
+export default components;

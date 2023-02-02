@@ -33,6 +33,7 @@ module.exports = {
         },
       },
     ],
+    camelcase: "off",
   },
   parserOptions: {
     parser: "babel-eslint",
