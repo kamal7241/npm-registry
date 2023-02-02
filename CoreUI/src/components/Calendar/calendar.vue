@@ -1,6 +1,6 @@
 <template>
   <v-input :rules="rules" :value="value" :hide-details="!rules.length">
-    <div :class="['wrapper', { 'd-flex justify-end': row }]">
+    <div :class="['base-calendar-wrapper', { 'd-flex justify-end': row }]">
       <div
         :class="`d-flex align-center ${
           row ? 'justify-center mx-5' : 'justify-end mb-2'
@@ -67,7 +67,7 @@
           :month-format="monthFormat"
         >
           <div
-            class="actions-wrapper d-flex align-center justify-space-between"
+            class="base-calendar-action-wrapper d-flex align-center justify-space-between"
           >
             <v-btn
               :id="resetActionId"
@@ -111,7 +111,7 @@
           v-bind="$attrs"
         >
           <div
-            class="actions-wrapper d-flex align-center justify-space-between"
+            class="base-calendar-action-wrapper d-flex align-center justify-space-between"
           >
             <v-btn
               :id="resetActionId"
@@ -369,6 +369,3 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
-@import "./calendar.module";
-</style>

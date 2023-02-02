@@ -1,20 +1,17 @@
 import Vue from "vue";
 import Vuetify from "vuetify/lib";
 
-import AttachmentField from "./components/AttachmentField/attachmentField.vue";
-import Calendar from "./components/Calendar/calendar.vue";
+import * as components from "./components";
 
 Vue.use(Vuetify);
 
-const Components = {
-  Calendar,
-  AttachmentField,
-};
+Object.entries(components).forEach(([componentName, component]) => {
+  if (componentName !== "default") {
+    Vue.component(componentName, component);
+  }
+});
 
-Vue.component("Calendar", Calendar);
-Vue.component("AttachmentField", AttachmentField);
-
-export { Calendar, AttachmentField };
+export { components };
 
 // Export the library as a plugin
-export default Components;
+export default components;

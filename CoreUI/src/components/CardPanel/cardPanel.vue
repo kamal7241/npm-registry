@@ -1,9 +1,9 @@
 <template>
-  <section class="box">
-    <h2 class="section-header">
+  <section class="card-panel-wrapper">
+    <div class="card-panel-header">
       <div v-if="!isLoading" class="title-wrapper">
-        <span>{{ title }}</span>
-        <slot name="headerAction" />
+        <span class="title">{{ title }}</span>
+        <slot name="header-action" />
       </div>
 
       <v-skeleton-loader
@@ -13,12 +13,13 @@
         height="20px"
         type="heading"
       />
-    </h2>
-    <div class="content-wrapper">
+    </div>
+    <div class="card-panel-content-wrapper">
       <slot />
     </div>
   </section>
 </template>
+
 <script>
 export default {
   name: "CardPanel",
@@ -34,6 +35,3 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
-@import "./cardPanel.module";
-</style>

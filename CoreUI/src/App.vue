@@ -1,131 +1,130 @@
 <template>
   <v-app>
-    <attachment-field
-      label="صورة شخصية "
-      name="association"
-      placeholder="قم بسحب وإرفاق ملفاتك في هذه المنطقة"
-      is-required
-      is-multiple
-      :value="serverSideValue"
-      :localizations="localizations"
-      enable-server-side
-      activate-internal-error-preview
-      :attachment-type-id="5"
-      :max-files-size-in-mega="10"
-      :upload-callback="onUploadData"
-      :download-callback="onGenerateFileFromSharepointId"
-      choose-file-action-id="testId"
-      @select="onSelectFiles"
-      @error="onErrorFound"
-    />
+    <v-container>
+      <attachment-field
+        label="صورة شخصية "
+        name="association"
+        placeholder="قم بسحب وإرفاق ملفاتك في هذه المنطقة"
+        is-required
+        is-multiple
+        :value="serverSideValue"
+        :localizations="localizations"
+        enable-server-side
+        activate-internal-error-preview
+        :attachment-type-id="5"
+        :max-files-size-in-mega="10"
+        :upload-callback="onUploadData"
+        :download-callback="onGenerateFileFromSharepointId"
+        choose-file-action-id="testId"
+        @select="onSelectFiles"
+        @error="onErrorFound"
+      />
 
-    <calendar
-      color="primary"
-      :label="'تصفية بالتاريخ'"
-      :row="true"
-      :range="true"
-      :hijri="isHijri"
-      :value="date"
-      :hint="'يرجى ادخال فترة زمنية'"
-      dense
-      @change="changeDate"
-      @changeHijri="changeHijriState"
-    />
+      <calendar
+        color="primary"
+        label="تصفية بالتاريخ"
+        :row="true"
+        :range="true"
+        :hijri="isHijri"
+        :value="date"
+        hint="يرجى ادخال فترة زمنية"
+        dense
+        @change="changeDate"
+        @changeHijri="changeHijriState"
+      />
 
-    <card-panel title="تجربة">
-      <template #headerAction>
-        <v-btn color="red" class="white--text"> الغاء </v-btn>
-      </template>
-    </card-panel>
+      <card-panel title="تجربة">
+        <template #headerAction>
+          <v-btn color="red" class="white--text"> الغاء </v-btn>
+        </template>
+      </card-panel>
 
-    <data-table
-      :rows="rows"
-      :columns="columns"
-      :on-click="onRowClicked"
-      :primary-field="primaryField"
-    >
-      <template #dateTime="{ data: { row }, currentStyles }">
-        <label-and-value
-          preview
-          :class="['field', currentStyles]"
-          :label="$t('appointmentDateAndTime')"
-          :value="row.dateTime"
-          value-class="label-and-value-value"
-        />
-      </template>
+      <data-table
+        :rows="rows"
+        :columns="columns"
+        :on-click="onRowClicked"
+        :primary-field="primaryField"
+      >
+        <template #dateTime="{ data: { row }, currentClass }">
+          <label-and-value
+            :class="currentClass"
+            :label="$t('appointmentDateAndTime')"
+            :value="row.dateTime"
+            value-class="label-and-value-value"
+          />
+        </template>
 
-      <template #status="{ data: { row }, currentStyles }">
-        <label-and-value
-          preview
-          :class="['field', currentStyles]"
-          :label="$t('appointmentStatus')"
-          :value="row.status"
-          value-class="label-and-value-value"
-        />
-      </template>
+        <template #actions="{ data: { row }, currentClass }">
+          <label-and-value :class="currentClass">
+            <template #value>
+              <v-btn
+                v-if="row.pendingApproval && !row.isCancelled"
+                outlined
+                color="error"
+                @click="openCancelDialog(row)"
+              >
+                {{ $t("cancel") }}
+              </v-btn>
+            </template>
+          </label-and-value>
+        </template>
+      </data-table>
 
-      <template #actions="{ data: { row }, currentStyles }">
-        <label-and-value preview :class="['field', currentStyles]">
-          <template #value>
-            <v-btn
-              v-if="row.pendingApproval && !row.isCancelled"
-              outlined
-              color="error"
-              @click="openCancelDialog(row)"
-            >
-              {{ $t("cancel") }}
-            </v-btn>
-          </template>
-        </label-and-value>
-      </template>
-    </data-table>
+      <empty-placeholder
+        :primary-text="primaryText"
+        :secondary-text="secondaryText"
+        :is-loading="isLoading"
+        icon="mdi-check"
+      >
+        <template #icon>
+          <n-svg name="map" />
+        </template>
+      </empty-placeholder>
 
-    <empty-placeholder :primary-text="emptyPlaceholderText" icon="mdi-check" />
+      <image-cropper
+        label="نص تجريبي"
+        name="personalInfo"
+        is-required
+        :value="ImageValue"
+        :cropper-configs="cropperConfigs"
+        :upload-callback="onUploadData"
+        :download-callback="onGenerateFileFromSharepointId"
+        hint="hint placeholder"
+        enable-download
+        enable-server-side
+        update-parent-with-file-meta
+        @cropImage="onCropImage"
+      />
 
-    <image-cropper
-      label="نص تجريبي"
-      name="personalInfo"
-      is-required
-      :value="ImageValue"
-      :cropper-configs="cropperConfigs"
-      :upload-callback="onUploadData"
-      :download-callback="onGenerateFileFromSharepointId"
-      hint="hint placeholder"
-      enable-download
-      enable-server-side
-      update-parent-with-file-meta
-      @cropImage="onCropImage"
-    />
+      <pagination-layout
+        :value="paginationValue"
+        server-page-number-key="page"
+        server-page-size-key="size"
+        total-count-key="totalPassengers"
+        enable-readable-stream-parse
+        :cascade-mode="false"
+        data-target-key="data"
+        is-direct-data
+        :enable-server-side-pagination="false"
+        :additional-payload="additionalPayload"
+        :page-size-options="[10, 50, 100, 30]"
+        :fetch-on-mount="false"
+        @search="onSearch"
+      >
+        <!-- Customize Loading slot -->
+        <template #loader>
+          <span>Loading ...</span>
+        </template>
 
-    <pagination-layout
-      :value="paginationValue"
-      server-page-number-key="page"
-      server-page-size-key="size"
-      total-count-key="totalPassengers"
-      enable-readable-stream-parse
-      :cascade-mode="false"
-      data-target-key="data"
-      is-direct-data
-      :enable-server-side-pagination="false"
-      :additional-payload="additionalPayload"
-      :page-size-options="[10, 50, 100, 30]"
-      :fetch-on-mount="false"
-      @search="onSearch"
-    >
-      <!-- Customize Loading slot -->
-      <template #loader>
-        <span>Loading ...</span>
-      </template>
+        <!-- Customize list slot -->
+        <template #list="{ data }">
+          <p v-for="(item, i) in data" :key="i">
+            {{ item.title }}
+          </p>
+        </template>
 
-      <!-- Customize list slot -->
-      <template #list="{ data }">
-        <p v-for="(item, i) in data" :key="i">
-          {{ item.title }}
-        </p>
-      </template>
-
-      <!-- Customize pagination slot -->
-      <!-- <template
+        <!-- Customize pagination slot -->
+        <!-- <template
         #pagination="{
           data,
           onChangePageSize,
@@ -167,7 +166,8 @@
           الصفحة الأخيرة
         </button>
       </template> -->
-    </pagination-layout>
+      </pagination-layout>
+    </v-container>
   </v-app>
 </template>
 
@@ -208,7 +208,9 @@ export default {
       ],
       primaryField: "appointmentID",
       // EmptyPlaceholder
-      emptyPlaceholderText: "تجربة نص",
+      primaryText: "تجربة نص",
+      secondaryText: "تجربة نص تجربة نص تجربة نص",
+      isLoading: true,
       // ImageCropper
       cropperConfigs: {
         aspectRatio: 4 / 6,
@@ -279,6 +281,7 @@ export default {
         {
           title: this.$t("appointmentStatus"),
           field: "status",
+          formatter: ({ status }) => (status ? "فعال" : "غير فعال"),
         },
         {
           title: "",
@@ -286,6 +289,11 @@ export default {
         },
       ];
     },
+  },
+  mounted() {
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 3000);
   },
   methods: {
     // AttachmentField

@@ -1,20 +1,22 @@
 <template>
-  <div :class="['emptyPlaceholder', wrapperClass]">
-    <p v-if="isLoading" class="primaryText mb-2">
+  <div :class="['base-empty-placeholder', wrapperClass]">
+    <p v-if="isLoading" class="primary-text mb-2">
       {{ $t("fetchingData") }}
     </p>
     <template v-else>
-      <div class="imgPlaceholder">
-        <v-icon v-if="icon" aria-hidden="false" class="icon" color="primary">
-          {{ icon }}
-        </v-icon>
+      <div class="img-placeholder">
+        <slot name="icon">
+          <v-icon v-if="icon" aria-hidden="false" class="icon" color="primary">
+            {{ icon }}
+          </v-icon>
+        </slot>
       </div>
 
-      <p v-if="primaryText" class="mb-2 primaryText'">
+      <p v-if="primaryText" class="mb-2 primary-text">
         {{ primaryText }}
       </p>
 
-      <p v-if="secondaryText" class="secondaryText mb-0">
+      <p v-if="secondaryText" class="secondary-text mb-0">
         {{ secondaryText }}
       </p>
 
@@ -49,6 +51,3 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
-@import "./emptyPlaceholder.module";
-</style>
