@@ -1,10 +1,8 @@
-// .storybook/main.js
-
 const path = require('path');
 
 // Export a function. Accept the base config as the only param.
 module.exports = {
-  addons: ['@storybook/addon-controls'],
+  addons: ['@storybook/addon-controls', '@storybook/addon-docs'],
   webpackFinal: async (config, { configType }) => {
     // `configType` has a value of 'DEVELOPMENT' or 'PRODUCTION'
     // You can change the configuration based on that.

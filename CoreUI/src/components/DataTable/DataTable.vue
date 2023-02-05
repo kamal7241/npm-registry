@@ -65,6 +65,9 @@ export default {
     LabelAndValue,
   },
   props: {
+    /**
+     * Button contents
+     */
     clickPrimaryFieldAction: {
       type: String,
       default: "",
@@ -76,6 +79,7 @@ export default {
 
     rows: {
       type: Array,
+
       default: () => [],
     },
 

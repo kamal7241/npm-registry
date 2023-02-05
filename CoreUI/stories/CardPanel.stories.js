@@ -8,7 +8,7 @@ export default {
   component: CardPanel,
   argTypes: {
     default: {
-      description: "The default Vue slot",
+      description: "The default slot",
       control: {
         type: "text",
       },
@@ -20,7 +20,7 @@ export default {
       },
     },
     "header-action": {
-      description: "The default Vue slot",
+      description: "The header-action vue slot",
       control: {
         type: "text",
       },
@@ -58,7 +58,7 @@ const Template = (args, { argTypes }) => {
 
         delete filteredProps[defaultSlotName];
         delete filteredProps[headerActionSlotName];
-
+        console.log({ filteredProps });
         return filteredProps;
       },
     },
