@@ -37,12 +37,10 @@
 export default {
   name: "LabelAndValue",
   props: {
-    koko: String,
-    label: String,
-    // label: {
-    //   type: String,
-    //   default: "",
-    // },
+    label: {
+      type: String,
+      default: "",
+    },
     value: {
       type: String,
       default: "",
