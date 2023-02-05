@@ -13,8 +13,10 @@ const Template = (args, { argTypes }) => ({
 
 export const Default = Template.bind({});
 Default.args = {
-  label: "Dummy Label",
+  label: "ناجز",
   value: "Row Value",
+  labelClass: "",
+  valueClass: "",
   row: false,
   isLoading: false,
 };
