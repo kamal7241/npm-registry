@@ -1,6 +1,19 @@
 import DataTable from "../src/components/DataTable/DataTable.vue";
 import { argTypesConfigs } from "./argTypes/data-table";
 
+const rows = [
+  { id: 1, name: "ناجز أفراد", color: "اللون الأخضر" },
+  { id: 2, name: "ناجز أعمال", color: "اللون الأزرق" },
+  { id: 3, name: "ناجز حكومة", color: "اللون البني" },
+  { id: 4, name: "ناجز محامين", color: "اللون الأصفر" },
+];
+
+const columns = [
+  { field: "id", title: "الترتيب" },
+  { field: "color", title: "اللون" },
+  { field: "name", title: "الجهة" },
+];
+
 export default {
   title: "Components/DataTable",
   component: DataTable,
@@ -15,14 +28,20 @@ const Template = (args, { argTypes }) => ({
 
 export const Default = Template.bind({});
 Default.args = {
-  rows: [{ id: 1 }],
-  columns: [],
-  isLoading: false,
-  noSpacer: false,
-  primaryField: "",
-  wrapperClass: "",
-  // Todo: to be categorized as [test automation Ids]
-  clickPrimaryFieldAction: "",
-  // Todo: Actions category
-  onClick: () => {},
+  rows,
+  columns,
+};
+
+export const LoadingState = Template.bind({});
+LoadingState.args = {
+  rows,
+  columns,
+  isLoading: true,
+};
+
+export const primaryField = Template.bind({});
+primaryField.args = {
+  rows,
+  columns,
+  primaryField: "id",
 };

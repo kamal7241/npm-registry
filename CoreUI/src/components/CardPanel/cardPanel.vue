@@ -3,7 +3,7 @@
     <div class="card-panel-header">
       <div v-if="!isLoading" class="title-wrapper">
         <span class="title">{{ title }}</span>
-        <slot name="header-action" />
+        <slot name="headerAction" />
       </div>
 
       <v-skeleton-loader

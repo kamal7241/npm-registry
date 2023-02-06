@@ -1,37 +1,13 @@
 import CardPanel from "../src/components/CardPanel/cardPanel.vue";
+import { argTypesConfigs } from "./argTypes/card-panel";
 
 const defaultSlotName = "default";
-const headerActionSlotName = "header-action";
+const headerActionSlotName = "headerAction";
 
 export default {
   title: "Components/CardPanel",
   component: CardPanel,
-  argTypes: {
-    default: {
-      description: "The default slot",
-      control: {
-        type: "text",
-      },
-      table: {
-        category: "Slots",
-        type: {
-          summary: "html",
-        },
-      },
-    },
-    "header-action": {
-      description: "The header-action vue slot",
-      control: {
-        type: "text",
-      },
-      table: {
-        category: "Slots",
-        type: {
-          summary: "html",
-        },
-      },
-    },
-  },
+  argTypes: argTypesConfigs,
 };
 
 const Template = (args, { argTypes }) => {
@@ -48,7 +24,7 @@ const Template = (args, { argTypes }) => {
           v-if="${headerActionSlotName in args}" 
           #${headerActionSlotName}
         >
-          ${args["header-action"]}
+          ${args[headerActionSlotName]}
         </template>
       </CardPanel>
     `,
@@ -69,38 +45,32 @@ export const Base = Template.bind({});
 Base.args = {
   title: "",
   isLoading: false,
-  [defaultSlotName]: "",
-  [headerActionSlotName]: "",
 };
 
 export const WithTitle = Template.bind({});
 WithTitle.args = {
   title: "Card panel",
   isLoading: false,
-  [defaultSlotName]: "",
-  [headerActionSlotName]: "",
 };
 
 export const LoadingState = Template.bind({});
 LoadingState.args = {
   title: "Card panel",
   isLoading: true,
-  [defaultSlotName]: "",
-  [headerActionSlotName]: "",
 };
 
 export const defaultSlot = Template.bind({});
 defaultSlot.args = {
   title: "Card panel",
   isLoading: false,
+  // ! slots
   [defaultSlotName]: `<strong>This is the default slot</strong>`,
-  [headerActionSlotName]: "",
 };
 
 export const HeaderActionSlot = Template.bind({});
 HeaderActionSlot.args = {
   title: "Card panel",
   isLoading: false,
-  [defaultSlotName]: "",
+  // ! slots
   [headerActionSlotName]: `<v-btn color='primary'>Click Me</v-btn>`,
 };
