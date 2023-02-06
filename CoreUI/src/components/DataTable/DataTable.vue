@@ -93,6 +93,7 @@ export default {
 
     onClick: {
       type: Function,
+      // default: () => ({}),
     },
 
     wrapperClass: {

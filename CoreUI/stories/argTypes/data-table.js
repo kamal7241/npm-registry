@@ -20,6 +20,10 @@ const argTypesConfigs = {
   isLoading: {
     description: "Loading mode, replace columns with loading slots.",
   },
+  noSpacer: {
+    description:
+      "Removes the space between the <b>PrimaryFiels column and the action (arrow)</b>.",
+  },
   primaryField: {
     description: `<pre>
     <b>Should matchs any field from columns array.</b>
@@ -33,9 +37,21 @@ const argTypesConfigs = {
   </pre>
   `,
   },
-  wrapperClass: {},
+  wrapperClass: {
+    description: "Class for list item wrapper.",
+  },
   // ? Events
   onClick: {
+    description: `<pre>
+    Callback is used in when row arrow clicked, <b>it should be used with primaryField</b> <br />
+      - <b>args: => row</b>
+
+      <code>
+        onClick(row) {
+          // Your code here
+        }
+      </code>
+    </pre>`,
     table: {
       category: "Events",
     },
@@ -46,6 +62,28 @@ const argTypesConfigs = {
 
     table: {
       category: "Test Automation Ids",
+    },
+  },
+  // ? slots
+  default: {
+    table: {
+      disable: true,
+    },
+  },
+  "{fieldName}": {
+    description: `<pre>If you want to customize any <b>column</b> just make a slot with <b>of column.filed (revisit columns section)</b><br />
+
+      <code> 
+        <template name="YourColumnFieldHere">
+          // Any Html here
+        </template>
+      </code>
+    </pre>`,
+    table: {
+      category: "Slots",
+      type: {
+        summary: "html",
+      },
     },
   },
 };
