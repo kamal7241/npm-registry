@@ -1,6 +1,11 @@
 import { action } from "@storybook/addon-actions";
 import DataTable from "../src/components/DataTable/DataTable.vue";
 import { argTypesConfigs } from "./argTypes/data-table";
+import {
+  clickEventParams,
+  fieldCutomizationParams,
+  withoutSpacerParams,
+} from "./code/DataTable";
 
 const rows = [
   { id: "1", name: "ناجز أفراد", color: "اللون الأخضر" },
@@ -71,6 +76,7 @@ primaryField.args = {
 };
 
 export const ClickEvent = Template.bind({});
+ClickEvent.parameters = clickEventParams;
 ClickEvent.args = {
   rows,
   columns,
@@ -79,6 +85,7 @@ ClickEvent.args = {
 };
 
 export const WithoutSpacer = Template.bind({});
+WithoutSpacer.parameters = withoutSpacerParams;
 WithoutSpacer.args = {
   rows,
   columns,
@@ -87,11 +94,11 @@ WithoutSpacer.args = {
   onClick: action("onRowClicked"),
 };
 
-export const colorFieldCutomization = Template.bind({});
-colorFieldCutomization.args = {
+export const FieldCutomization = Template.bind({});
+FieldCutomization.parameters = fieldCutomizationParams;
+FieldCutomization.args = {
   rows,
   columns,
-  primaryField: "id",
   id: `
   <div class='pa-10'>
     <v-btn  color="info">Hey first column is customizable now</v-btn>

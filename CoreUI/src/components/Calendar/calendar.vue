@@ -255,6 +255,7 @@ export default {
 
     texts() {
       const { localizations } = this;
+
       return {
         gregorian: this.$t("gregorian"),
         hijri: this.$t("hijri"),

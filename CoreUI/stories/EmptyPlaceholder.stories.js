@@ -1,5 +1,9 @@
 import EmptyPlaceholder from "../src/components/EmptyPlaceholder/emptyPlaceholder.vue";
 import { argTypesConfigs } from "./argTypes/empty-placeholder";
+import {
+  customActionWithActionSlotParams,
+  customIconWithIconSlotParams,
+} from "./code/EmptyPlaceholder";
 
 const actionsSlotName = "actions";
 const iconSlotName = "iconContent";
@@ -66,12 +70,14 @@ Icon.args = {
 };
 
 export const CustomIconWithIconSlot = Template.bind({});
+CustomIconWithIconSlot.parameters = customIconWithIconSlotParams;
 CustomIconWithIconSlot.args = {
-  iconContent:
+  [iconSlotName]:
     "<img src='https://b.thumbs.redditmedia.com/AVBmf4vIlR5Q0ocCwZbSZQpdkpRHfx7GMtaec6bbbxU.jpg'>",
 };
 
 export const CustomActionWithActionSlot = Template.bind({});
+CustomActionWithActionSlot.parameters = customActionWithActionSlotParams;
 CustomActionWithActionSlot.args = {
-  iconContent: "<v-btn color='info'>Click Me !</v-btn>",
+  [actionsSlotName]: "<v-btn color='info'>Click Me !</v-btn>",
 };

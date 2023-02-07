@@ -6,7 +6,7 @@
     <template v-else>
       <slot name="iconContent">
         <div v-if="icon" class="img-placeholder">
-          <v-icon aria-hidden="false" class="icon" color="primary">
+          <v-icon class="icon" color="primary">
             {{ icon }}
           </v-icon>
         </div>
