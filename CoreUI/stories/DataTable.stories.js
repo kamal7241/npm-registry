@@ -15,7 +15,7 @@ const columns = [
   { field: "name", title: "الجهة" },
 ];
 
-const slotsNames = columns.map((column) => column.field);
+const dynamicSlotName = columns[0]?.field;
 
 export default {
   title: "Components/DataTable",
@@ -23,26 +23,32 @@ export default {
   argTypes: argTypesConfigs,
 };
 
-const Template = (args, { argTypes }) => ({
-  components: { DataTable },
-  props: Object.keys(argTypes),
-  template: `<DataTable v-bind="$props"/>`,
-  template: `
-  <DataTable v-bind="$props">
-    <template v-for="${slotName} in ${slotsNames}" v-if="${
-    defaultSlotName in args
-  }" v-slot>
-      ${args.default}
-    </template>
-    <template 
-      v-if="${headerActionSlotName in args}" 
-      #${headerActionSlotName}
-    >
-      ${args[headerActionSlotName]}
-    </template>
-  </DataTable>
-`,
-});
+const Template = (args, { argTypes }) => {
+  console.log({ args, dynamicSlotName });
+  return {
+    components: { DataTable },
+    props: Object.keys(argTypes),
+    template: `
+    <DataTable v-bind="propsWithoutSlots">
+      <template 
+        v-if="${dynamicSlotName in args}" 
+        #${dynamicSlotName}
+      >
+        ${args[dynamicSlotName]}
+      </template>
+    </DataTable>
+  `,
+    computed: {
+      propsWithoutSlots() {
+        const filteredProps = this.$props;
+
+        delete filteredProps[dynamicSlotName];
+
+        return filteredProps;
+      },
+    },
+  };
+};
 
 export const Default = Template.bind({});
 Default.args = {
@@ -79,4 +85,15 @@ WithoutSpacer.args = {
   noSpacer: true,
   primaryField: "id",
   onClick: action("onRowClicked"),
+};
+
+export const colorFieldCutomization = Template.bind({});
+colorFieldCutomization.args = {
+  rows,
+  columns,
+  primaryField: "id",
+  id: `
+  <div class='pa-10'>
+    <v-btn  color="info">Hey first column is customizable now</v-btn>
+  </div>`,
 };

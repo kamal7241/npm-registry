@@ -11,13 +11,15 @@ Vue.use(Vuetify);
 addDecorator(() => ({
   vuetify: new Vuetify({
     rtl: true,
-    lang: {
+    icons: {
       iconfont: "mdi",
-      current: "ar",
     },
+    // lang: {
+    //   current: "ar",
+    // },
   }),
   template:
-    '<v-app style="background-color: white"><v-content><story/></v-content></v-app>',
+    '<v-app style="background-color: white"><v-main><story/></v-main></v-app>',
 }));
 
 // automatically import all files ending in *.stories.js

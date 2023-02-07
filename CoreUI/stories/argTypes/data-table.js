@@ -71,13 +71,23 @@ const argTypesConfigs = {
     },
   },
   "{fieldName}": {
-    description: `<pre>If you want to customize any <b>column</b> just make a slot with <b>of column.filed (revisit columns section)</b><br />
+    description: `<pre>If you want to customize any <b>column</b> just make a <b>scoped</b> slot with <b>of column.filed (revisit columns section)</b><br />
+      - slot props: 
+        <code>
+          <ul>
+            <li> <b>1- currentClass (string)</b>: In case you needed the current styles controlled by the package itself</li>
+            <li> <b>2- data (object => { row, columns, currentIteration })</b></li>
+              - row: the current row.
+              - columns: columns provided from the parent.
+              - currentIteration: column iteration.
+          </ul>
+        </code>
 
-      <code> 
-        <template name="YourColumnFieldHere">
-          // Any Html here
-        </template>
-      </code>
+        <code> 
+          <template name="YourColumnFieldHere">
+            // Any Html here
+          </template>
+        </code>
     </pre>`,
     table: {
       category: "Slots",
