@@ -71,11 +71,13 @@ export default {
     },
     columns: {
       type: Array,
+      required: true,
       default: () => [],
     },
 
     rows: {
       type: Array,
+      required: true,
       default: () => [],
     },
 
@@ -91,7 +93,7 @@ export default {
 
     onClick: {
       type: Function,
-      default: () => ({}),
+      // default: () => ({}),
     },
 
     wrapperClass: {
@@ -129,6 +131,11 @@ export default {
             sortedColumns,
           };
         }
+
+        return {
+          primaryColumn,
+          sortedColumns: this.columns,
+        };
       }
 
       return {

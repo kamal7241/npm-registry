@@ -9,10 +9,11 @@
       class="mb-1"
     />
     <template v-else>
-      <p v-if="label" :class="[labelClass, 'preview label-text mb-0']">
-        {{ label }}
-      </p>
-      <slot v-else name="label" />
+      <div :class="[labelClass, 'preview label-text mb-0']">
+        <slot name="labelContent">
+          {{ label }}
+        </slot>
+      </div>
     </template>
 
     <v-skeleton-loader
@@ -23,13 +24,11 @@
       height="12"
     />
     <template v-else>
-      <p
-        v-if="value"
-        :class="[valueClass, { 'mx-1': row }, 'value-text mb-0 preview']"
-      >
-        {{ value }}
-      </p>
-      <slot v-else name="value" />
+      <div :class="[valueClass, { 'mx-1': row }, 'value-text mb-0 preview']">
+        <slot name="valueContent">
+          {{ value }}
+        </slot>
+      </div>
     </template>
   </div>
 </template>
