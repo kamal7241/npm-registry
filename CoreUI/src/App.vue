@@ -1,37 +1,57 @@
 <template>
   <v-app>
     <v-container>
-      <attachment-field
-        label="صورة شخصية "
-        name="association"
-        placeholder="قم بسحب وإرفاق ملفاتك في هذه المنطقة"
-        is-required
-        is-multiple
-        :value="serverSideValue"
-        :localizations="localizations"
-        enable-server-side
-        activate-internal-error-preview
-        :attachment-type-id="5"
-        :max-files-size-in-mega="10"
-        :upload-callback="onUploadData"
-        :download-callback="onGenerateFileFromSharepointId"
-        choose-file-action-id="testId"
-        @select="onSelectFiles"
-        @error="onErrorFound"
-      />
+      <v-form>
+        <attachment-field
+          label="صورة شخصية "
+          name="association"
+          placeholder="قم بسحب وإرفاق ملفاتك في هذه المنطقة"
+          is-required
+          is-multiple
+          :value="serverSideValue"
+          :localizations="localizations"
+          enable-server-side
+          activate-internal-error-preview
+          :attachment-type-id="5"
+          :max-files-size-in-mega="10"
+          :upload-callback="onUploadData"
+          :download-callback="onGenerateFileFromSharepointId"
+          choose-file-action-id="testId"
+          :rules="formValidators.attachments"
+          @select="onSelectFiles"
+          @error="onErrorFound"
+        />
 
-      <calendar
-        color="primary"
-        label="تصفية بالتاريخ"
-        :row="true"
-        :range="true"
-        :hijri="isHijri"
-        :value="date"
-        hint="يرجى ادخال فترة زمنية"
-        dense
-        @change="changeDate"
-        @changeHijri="changeHijriState"
-      />
+        <calendar
+          color="primary"
+          label="تصفية بالتاريخ"
+          :row="true"
+          :range="true"
+          :hijri="isHijri"
+          :value="date"
+          hint="يرجى ادخال فترة زمنية"
+          dense
+          :rules="formValidators.calendar"
+          @change="changeDate"
+          @changeHijri="changeHijriState"
+        />
+
+        <image-cropper
+          label="نص تجريبي"
+          name="personalInfo"
+          is-required
+          :value="imageValue"
+          :cropper-configs="cropperConfigs"
+          :upload-callback="onUploadData"
+          :download-callback="onGenerateFileFromSharepointId"
+          hint="hint placeholder"
+          enable-download
+          enable-server-side
+          update-parent-with-file-meta
+          :rules="formValidators.imageCropper"
+          @cropImage="onCropImage"
+        />
+      </v-form>
 
       <card-panel title="تجربة">
         <template #headerAction>
@@ -80,21 +100,6 @@
           <n-svg name="map" />
         </template>
       </empty-placeholder>
-
-      <image-cropper
-        label="نص تجريبي"
-        name="personalInfo"
-        is-required
-        :value="ImageValue"
-        :cropper-configs="cropperConfigs"
-        :upload-callback="onUploadData"
-        :download-callback="onGenerateFileFromSharepointId"
-        hint="hint placeholder"
-        enable-download
-        enable-server-side
-        update-parent-with-file-meta
-        @cropImage="onCropImage"
-      />
 
       <pagination-layout
         :value="paginationValue"
@@ -172,6 +177,9 @@
 </template>
 
 <script>
+// Services
+import { isRequiredAttachment } from "./services/formValidators";
+
 export default {
   name: "App",
   components: {
@@ -189,6 +197,12 @@ export default {
   },
   data() {
     return {
+      // Form
+      formValidators: {
+        attachments: [isRequiredAttachment],
+        calendar: [isRequiredAttachment],
+        imageCropper: [isRequiredAttachment],
+      },
       // AttachmentField
       localizations: {
         placeholder: "استعراض الملفات",
@@ -196,7 +210,7 @@ export default {
       serverSideValue: [],
       // Calendar
       isHijri: true,
-      date: [],
+      date: ["1444-07-08", "1444-07-16"],
       // DataTable
       rows: [
         {
@@ -215,7 +229,7 @@ export default {
       cropperConfigs: {
         aspectRatio: 4 / 6,
       },
-      ImageValue: {
+      imageValue: {
         attachmentTypeId: 5,
         contentType: "image/png",
         id: 0,
@@ -299,7 +313,7 @@ export default {
     // AttachmentField
     async onSelectFiles(file) {
       console.log(file);
-      // this.serverSideValue = file.value;
+      this.serverSideValue = file.value;
     },
     async onUploadData(data) {
       console.log("onUploadData", data);
@@ -358,7 +372,7 @@ export default {
     // ImageCropper
     onCropImage(data) {
       console.log("onCropImage", data);
-      this.value = data.value;
+      this.imageValue = data.value;
     },
     // PaginationLayout
     onSearch(data) {

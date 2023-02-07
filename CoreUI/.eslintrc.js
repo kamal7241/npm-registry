@@ -34,6 +34,7 @@ module.exports = {
       },
     ],
     camelcase: "off",
+    "vue/html-self-closing": "off",
   },
   parserOptions: {
     parser: "babel-eslint",

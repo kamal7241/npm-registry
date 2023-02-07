@@ -266,32 +266,26 @@ export default {
     },
   },
   watch: {
+    value: {
+      handler() {
+        const { value, date, isHijri, isSingleMode } = this;
+        const { gregorian, hijri } = this.getValueDates(value);
+        const dateClone = JSON.parse(JSON.stringify(date));
+        const shouldUpdate =
+          JSON.stringify(isHijri ? hijri : gregorian) !==
+          JSON.stringify(isSingleMode ? dateClone : dateClone.sort());
+
+        if (shouldUpdate) {
+          this.date = isHijri ? hijri : gregorian;
+        }
+      },
+      deep: true,
+    },
     date() {
-      const {
-        date,
-        isHijri,
-        isSingleMode,
-        convertToHijri,
-        convertToGregorian,
-      } = this;
+      const { date } = this;
 
-      if (isSingleMode) {
-        return this.$emit("change", {
-          hijri: isHijri ? date : convertToHijri(date),
-          gregorian: isHijri ? convertToGregorian(date) : date,
-        });
-      }
-
-      const sortedDate = [...date].sort();
       // 'Invalid date'
-      return this.$emit("change", {
-        hijri: isHijri
-          ? sortedDate
-          : sortedDate.map((selectedDate) => convertToHijri(selectedDate)),
-        gregorian: isHijri
-          ? sortedDate.map((selectedDate) => convertToGregorian(selectedDate))
-          : sortedDate,
-      });
+      return this.$emit("change", this.getHijriGregorianDates(date));
     },
   },
   mounted() {
@@ -299,6 +293,55 @@ export default {
     this.isHijri = this.hijri;
   },
   methods: {
+    getHijriGregorianDates(date) {
+      const {
+        isHijri,
+        isSingleMode,
+        convertToHijri,
+        convertToGregorian,
+      } = this;
+
+      let hijri = "";
+      let gregorian = "";
+
+      if (isSingleMode) {
+        hijri = isHijri ? date : convertToHijri(date);
+        gregorian = isHijri ? convertToGregorian(date) : date;
+      } else {
+        const sortedDate = [...date].sort();
+
+        hijri = isHijri
+          ? sortedDate
+          : sortedDate.map((selectedDate) => convertToHijri(selectedDate));
+        gregorian = isHijri
+          ? sortedDate.map((selectedDate) => convertToGregorian(selectedDate))
+          : sortedDate;
+      }
+
+      return {
+        hijri,
+        gregorian,
+      };
+    },
+
+    getValueDates(gregorian) {
+      const { isSingleMode, convertToHijri } = this;
+
+      let hijri = "";
+
+      if (isSingleMode) {
+        hijri = convertToHijri(gregorian);
+      } else {
+        const sortedDate = [...gregorian].sort();
+
+        hijri = sortedDate.map((selectedDate) => convertToHijri(selectedDate));
+      }
+
+      return {
+        hijri,
+        gregorian,
+      };
+    },
     formatDate() {
       this.$emit("changeHijri", !this.isHijri);
 

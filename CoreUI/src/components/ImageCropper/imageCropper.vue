@@ -1,112 +1,120 @@
 <template>
-  <div class="canvas-wrapper">
-    <CropperDialog
-      v-if="showModal"
-      :show="showModal"
-      :strings="strings"
-      :cropper-configs="cropperConfigs"
-      :selected-image="imageSrc"
-      :file-extention="fileExtention"
-      @close="utils.onReset()"
-      @save="onSaveCroppedImage"
-    />
+  <v-input :rules="rules" :value="value">
+    <div class="base-cropper-wrapper">
+      <CropperDialog
+        v-if="showModal"
+        :show="showModal"
+        :strings="strings"
+        :cropper-configs="cropperConfigs"
+        :selected-image="imageSrc"
+        :file-extention="fileExtention"
+        @close="utils.onReset()"
+        @save="onSaveCroppedImage"
+      />
 
-    <p v-if="label" class="label" :class="labelClassName">
-      {{ label }}
-      <span v-if="isRequired" class="star">*</span>
-    </p>
+      <p v-if="label" class="label mb-2" :class="labelClassName">
+        {{ label }}
+        <span v-if="isRequired" class="star">*</span>
+      </p>
 
-    <slot
-      :croppedImage="croppedImage"
-      :onUploadImage="utils.onUploadImage"
-      :onEditSelectedImage="utils.onEditSelectedImage"
-      :onDeleteSelectedImage="utils.onDeleteSelectedImage"
-      name="image-placeholder"
-    >
-      <div class="input-wrapper">
-        <button
-          v-if="!previewedSelectedFile"
-          :id="chooseFileActionId"
-          :disabled="readOnlyMode"
-          :class="['indicator pointer', { selecting: isServerLoading }]"
-          @click="utils.onUploadImage"
-        >
-          <div v-if="isServerLoading" class="loader-placeholder">
-            <img
-              src="../../assets/icons/loader.svg"
-              alt="icon"
-              width="30"
-              height="30"
-            />
+      <slot
+        :croppedImage="croppedImage"
+        :onUploadImage="utils.onUploadImage"
+        :onEditSelectedImage="utils.onEditSelectedImage"
+        :onDeleteSelectedImage="utils.onDeleteSelectedImage"
+        name="image-placeholder"
+      >
+        <div class="input-wrapper d-flex align-items-center">
+          <button
+            v-if="!previewedSelectedFile"
+            :id="chooseFileActionId"
+            :disabled="readOnlyMode"
+            :class="[
+              'indicator pointer py-4 px-3 white--text',
+              { selecting: isServerLoading },
+            ]"
+            @click.prevent="utils.onUploadImage"
+          >
+            <div
+              v-if="isServerLoading"
+              class="loader-placeholder d-flex align-items-center justify-center"
+            >
+              <img
+                src="../../assets/icons/loader.svg"
+                alt="icon"
+                width="30"
+                height="30"
+              />
+            </div>
+
+            {{ strings.chooseFile }}
+          </button>
+          <img
+            v-else
+            class="image-button-placeholder ms-3 d-inline-block"
+            src="../../assets/icons/file.svg"
+            alt="icon"
+            width="25"
+            height="25"
+          />
+
+          <div class="name-placeholder py-4 px-3">
+            {{ namePlaceholderText }}
           </div>
 
-          {{ strings.chooseFile }}
-        </button>
-        <img
-          v-else
-          class="image-button-placeholder"
-          src="../../assets/icons/file.svg"
-          alt="icon"
-          width="25"
-          height="25"
-        />
+          <div v-if="previewedSelectedFile" class="actions pa-2 mx-1">
+            <img
+              v-if="!readOnlyMode"
+              :id="deleteActionId"
+              src="../../assets/icons/cancel.svg"
+              class="action"
+              width="30"
+              height="30"
+              alt="delete"
+              @click="utils.onDeleteSelectedImage()"
+            />
 
-        <div class="name-placeholder">
-          {{ namePlaceholderText }}
+            <img
+              v-if="isDownloadAvailable"
+              :id="downloadActionId"
+              src="../../assets/icons/download.png"
+              class="action"
+              width="20"
+              height="20"
+              alt="download"
+              @click="utils.onDownloadSelectedImage"
+            />
+          </div>
         </div>
+      </slot>
 
-        <div v-if="previewedSelectedFile" class="actions">
-          <img
-            v-if="!readOnlyMode"
-            :id="deleteActionId"
-            src="../../assets/icons/cancel.svg"
-            class="action"
-            width="30"
-            height="30"
-            alt="delete"
-            @click="utils.onDeleteSelectedImage()"
-          />
-
-          <img
-            v-if="isDownloadAvailable"
-            :id="downloadActionId"
-            src="../../assets/icons/download.png"
-            class="action"
-            width="20"
-            height="20"
-            alt="download"
-            @click="utils.onDownloadSelectedImage"
-          />
+      <slot
+        v-if="error && activateInternalErrorPreview"
+        name="errors"
+        :errors="error"
+      >
+        <div class="error-placeholder mt-2">
+          <p class="text">
+            {{ strings.errorText || error }}
+          </p>
         </div>
-      </div>
-    </slot>
+      </slot>
 
-    <slot
-      v-if="error && activateInternalErrorPreview"
-      name="errors"
-      :errors="error"
-    >
-      <div class="error-placeholder">
-        <p class="text">
-          {{ strings.errorText || error }}
-        </p>
-      </div>
-    </slot>
+      <slot v-if="hint" name="hints">
+        <div class="hints-placeholder mt-2">
+          {{ hint }}
+        </div>
+      </slot>
 
-    <slot v-if="hint" name="hints">
-      <div class="hints-placeholder">
-        {{ hint }}
-      </div>
-    </slot>
-
-    <input
-      ref="imageInput"
-      type="file"
-      accept="image/*"
-      :style="{ display: 'none' }"
-      @change="(e) => utils.onSelectImage(e)"
-    />
-  </div>
+      <input
+        ref="imageInput"
+        type="file"
+        accept="image/*"
+        :style="{ display: 'none' }"
+        @change="(e) => utils.onSelectImage(e)"
+      />
+    </div>
+  </v-input>
 </template>
 
 <script>
@@ -183,6 +191,10 @@ export default {
     localizations: {
       type: Object,
       default: () => ({}),
+    },
+    rules: {
+      type: Array,
+      default: () => [],
     },
     value: {
       type: Object,
@@ -425,7 +437,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-@import "./imageCropper.module";
-</style>

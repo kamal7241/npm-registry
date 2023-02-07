@@ -1,62 +1,78 @@
 <template>
-  <div class="attachment-wrapper">
-    <div class="label-and-input-wrapper">
-      <slot name="label" :data="{ err: error }">
-        <p v-if="label" class="label" :class="{ err: error }">
-          {{ label }}
-          <span v-if="isRequired" class="star">*</span>
-        </p>
-      </slot>
+  <v-input :rules="rules" :value="value">
+    <div class="base-attachment-wrapper">
+      <div class="label-and-input-wrapper">
+        <slot name="label" :data="{ err: error }">
+          <label
+            v-if="label"
+            class="d-block label mb-2"
+            :class="{ err: error }"
+          >
+            {{ label }}
+            <span v-if="isRequired" class="mx-1 star">*</span>
+          </label>
+        </slot>
 
-      <div
-        v-if="enableFancyPreview && addAttachmentAllowed && !readOnlyMode"
-        class="file-input-wrapper"
-      >
-        <img
-          src="../../assets/icons/folder.svg"
-          alt="icon"
-          width="25"
-          height="25"
+        <div
+          v-if="enableFancyPreview && addAttachmentAllowed && !readOnlyMode"
+          class="file-input-wrapper d-flex justify-center align-items-center flex-column"
         >
+          <img
+            src="../../assets/icons/folder.svg"
+            alt="icon"
+            width="25"
+            height="25"
+          />
 
-        <span v-if="strings.placeholder" class="placeholder-wrapper">
-          {{ strings.placeholder }}
-        </span>
+          <span v-if="strings.placeholder" class="placeholder-wrapper mt-3">
+            {{ strings.placeholder }}
+          </span>
 
-        <button class="file-chooser-action" @click="$refs.file.click()">
-          {{ strings.actionName }}
-        </button>
-      </div>
-
-      <div v-if="!enableFancyPreview && addAttachmentAllowed && !readOnlyMode">
-        <div class="input-wrapper">
           <button
-            :id="chooseFileActionId"
-            :disabled="readOnlyMode || isServerLoading"
-            :class="['indicator pointer', { selecting: isServerLoading }]"
+            class="file-chooser-action mt-5 px-2 py-1"
             @click="$refs.file.click()"
           >
-            <div v-if="isServerLoading" class="loader-placeholder">
-              <img
-                src="../../assets/icons/loader.svg"
-                alt="icon"
-                width="30"
-                height="30"
-              >
-            </div>
-            {{ strings.clickHere }}
+            {{ strings.actionName }}
           </button>
+        </div>
 
-          <div class="name-placeholder">
-            {{
-              isServerLoading ? strings.serverLoadingText : strings.chooseFile
-            }}
+        <div
+          v-if="!enableFancyPreview && addAttachmentAllowed && !readOnlyMode"
+        >
+          <div class="input-wrapper d-flex align-items-center">
+            <button
+              :id="chooseFileActionId"
+              :disabled="readOnlyMode || isServerLoading"
+              :class="[
+                'indicator pointer white--text py-4 px-3',
+                { selecting: isServerLoading },
+              ]"
+              @click.prevent="$refs.file.click()"
+            >
+              <div
+                v-if="isServerLoading"
+                class="loader-placeholder d-flex align-items-center justify-center"
+              >
+                <img
+                  src="../../assets/icons/loader.svg"
+                  alt="icon"
+                  width="30"
+                  height="30"
+                />
+              </div>
+              {{ strings.clickHere }}
+            </button>
+
+            <div class="name-placeholder py-4 px-3">
+              {{
+                isServerLoading ? strings.serverLoadingText : strings.chooseFile
+              }}
+            </div>
           </div>
         </div>
       </div>
-
       <slot v-if="isErrorSlotAvailable" name="errors" :errors="error">
-        <div class="error-placeholder">
+        <div class="error-placeholder mt-2">
           <p class="text">
             {{ error }}
           </p>
@@ -68,8 +84,8 @@
         name="hints"
         :data="{ hintsData }"
       >
-        <div class="hints-placeholder">
-          <p class="text">
+        <div class="hints-placeholder mt-2">
+          <p class="mb-0">
             {{ utils.getAllowedFileTypesText(accept) }}
           </p>
           <p>{{ utils.getAllowedMaxFileSizeText(maxFilesSizeInMega) }}</p>
@@ -78,61 +94,61 @@
 
       <input
         ref="file"
-        class=""
+        class="d-none"
         type="file"
         :multiple="isFieldMultiple"
         :accept="accept"
         @change="onSelectFiles"
-      >
-    </div>
+      />
 
-    <slot name="list" :data="{ listData }" :onDeleteFile="utils.onDeleteFile">
-      <ul v-if="selectedFiles.length" class="files-list">
-        <li
-          v-for="(selectedFile, index) in selectedFiles"
-          :key="index"
-          class="list-item"
-        >
-          <div class="icon-name-wrapper">
-            <img class="img" src="../../assets/icons/file.svg" >
-            <span class="file-name">{{
-              enableServerSide
-                ? selectedFile.file.displayName
-                : selectedFile.displayName
-            }}</span>
-          </div>
+      <slot name="list" :data="{ listData }" :onDeleteFile="utils.onDeleteFile">
+        <ul v-if="selectedFiles.length" class="mt-3 pa-0">
+          <li
+            v-for="(selectedFile, index) in selectedFiles"
+            :key="index"
+            class="align-items-center d-flex justify-space-between list-item mb-4 px-3 py-2"
+          >
+            <div class="icon-name-wrapper d-flex align-items-center">
+              <img class="img" src="../../assets/icons/file.svg" />
+              <span class="file-name ms-6">{{
+                enableServerSide
+                  ? selectedFile.file.displayName
+                  : selectedFile.displayName
+              }}</span>
+            </div>
 
-          <div class="size-delete-wrapper">
-            <span class="size">{{
-              utils.getFileSizeInKiloByte(
-                enableServerSide ? selectedFile.file.size : selectedFile.size
-              )
-            }}</span>
-
-            <img
-              v-if="!readOnlyMode"
-              :id="`${deleteActionId}_${index + 1}`"
-              class="img"
-              src="../../assets/icons/delete.svg"
-              @click="utils.onDeleteFile(index)"
-            >
-
-            <img
-              v-if="isDownloadAvailable"
-              :id="`${downloadActionId}_${index + 1}`"
-              class="img"
-              src="../../assets/icons/download.png"
-              @click="
-                utils.onDownloadFile(
-                  enableServerSide ? selectedFile.file : selectedFile
+            <div class="size-delete-wrapper d-flex align-items-center">
+              <span class="size me-3">{{
+                utils.getFileSizeInKiloByte(
+                  enableServerSide ? selectedFile.file.size : selectedFile.size
                 )
-              "
-            />
-          </div>
-        </li>
-      </ul>
-    </slot>
-  </div>
+              }}</span>
+
+              <img
+                v-if="!readOnlyMode"
+                :id="`${deleteActionId}_${index + 1}`"
+                class="img"
+                src="../../assets/icons/delete.svg"
+                @click="utils.onDeleteFile(index)"
+              />
+
+              <img
+                v-if="isDownloadAvailable"
+                :id="`${downloadActionId}_${index + 1}`"
+                class="img"
+                src="../../assets/icons/download.png"
+                @click="
+                  utils.onDownloadFile(
+                    enableServerSide ? selectedFile.file : selectedFile
+                  )
+                "
+              />
+            </div>
+          </li>
+        </ul>
+      </slot>
+    </div>
+  </v-input>
 </template>
 
 <script>
@@ -141,6 +157,10 @@ import generateUtils from "./utils";
 export default {
   name: "AttachmentField",
   props: {
+    rules: {
+      type: Array,
+      default: () => [],
+    },
     chooseFileActionId: {
       type: String,
       default: "",
@@ -344,6 +364,7 @@ export default {
       } else if (!this.value.length) {
         this.selectedFiles = [];
         this.currentTotalSize = 0;
+        this.$emit("select", this.updatedValue);
       }
     },
   },
@@ -455,7 +476,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-@import "./AttachmentField.module";
-</style>

@@ -12,15 +12,19 @@
 
     <div class="modal__content">
       <div v-show="selectedImage" class="image-wrapper">
-        <img ref="img" class="image-canvas" :src="selectedImage" >
+        <img ref="img" class="image-canvas" :src="selectedImage" />
       </div>
     </div>
 
     <div class="modal__action">
-      <button :id="cropImageAction" class="save" @click="onCropImage">
+      <button :id="cropImageAction" class="save" @click.prevent="onCropImage">
         {{ strings.modalSaveAction }}
       </button>
-      <button :id="cancelDialogAction" class="cancel-action" @click="onCancel">
+      <button
+        :id="cancelDialogAction"
+        class="cancel-action"
+        @click.prevent="onCancel"
+      >
         {{ strings.modalCancelAction }}
       </button>
     </div>

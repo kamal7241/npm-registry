@@ -1,111 +1,112 @@
 <template>
-  <v-app class="min-h-unset">
-    <div class="layout-wrapper">
-      <div v-if="isLoading && showLoader" class="loading-wrapper">
-        <slot name="loader">
-          <img
-            src="../../assets/icons/loading.gif"
-            alt="loading img"
-            width="200"
-            height="200"
-          >
-        </slot>
-      </div>
+  <div class="base-layout-wrapper">
+    <div
+      v-if="isLoading && showLoader"
+      class="loading-wrapper d-flex align-items-center justify-center"
+    >
+      <slot name="loader">
+        <img
+          src="../../assets/icons/loading.gif"
+          alt="loading img"
+          width="200"
+          height="200"
+        >
+      </slot>
+    </div>
 
-      <div
-        v-if="generatedList.length"
-        class="data-placeholder"
-        :class="{ loading: isLoading }"
-      >
-        <slot name="list" :data="generatedList" />
-        <div class="navigation">
-          <slot
-            name="pagination"
-            :data="paginationProps"
-            :onChangePageSize="onChangePageSize"
-            :onFirstPageActionClicked="onFirstPageActionClicked"
-            :onPreviousPageActionClicked="onPreviousPageActionClicked"
-            :onNextPageActionClicked="onNextPageActionClicked"
-            :onLastPageActionClicked="onLastPageActionClicked"
+    <div
+      v-if="generatedList.length"
+      class="data-placeholder"
+      :class="{ loading: isLoading }"
+    >
+      <slot name="list" :data="generatedList" />
+      <div class="navigation pa-3 d-flex align-items-center justify-center">
+        <slot
+          name="pagination"
+          :data="paginationProps"
+          :onChangePageSize="onChangePageSize"
+          :onFirstPageActionClicked="onFirstPageActionClicked"
+          :onPreviousPageActionClicked="onPreviousPageActionClicked"
+          :onNextPageActionClicked="onNextPageActionClicked"
+          :onLastPageActionClicked="onLastPageActionClicked"
+        >
+          <v-pagination
+            v-if="availablePagesCount"
+            :id="pagniateActionId"
+            v-model="currentPage"
+            class="base-pageIndex-handler"
+            :length="availablePagesCount"
+            :total-rows="totalCount"
+            :per-page="currentPageSize"
+            :total-visible="totalVisiblePages"
+            :disabled="isDisabled"
+            @input="onChangePageIndex"
           >
-            <v-pagination
-              v-if="availablePagesCount"
-              :id="pagniateActionId"
-              v-model="currentPage"
-              class="base-pageIndex-handler"
-              :length="availablePagesCount"
-              :total-rows="totalCount"
-              :per-page="currentPageSize"
-              :total-visible="totalVisiblePages"
+            <template #first-text>
+              <img
+                :id="firstPageActionId"
+                src="../../assets/icons/first-page.svg"
+                alt="fisrt-page"
+                width="10"
+                height="10"
+              >
+            </template>
+            <template #prev-text>
+              <img
+                :id="prevPageActionId"
+                src="../../assets/icons/prev-page.svg"
+                alt="fisrt-page"
+                width="10"
+                height="10"
+              >
+            </template>
+            <template #next-text>
+              <img
+                :id="nextPageActionId"
+                src="../../assets/icons/next-page.svg"
+                alt="fisrt-page"
+                width="10"
+                height="10"
+              >
+            </template>
+            <template #last-text>
+              <img
+                :id="lastPageActionId"
+                src="../../assets/icons/last-page.svg"
+                alt="fisrt-page"
+                width="10"
+                height="10"
+              >
+            </template>
+          </v-pagination>
+
+          <span class="separator mx-3" />
+
+          <div class="page-size-wrapper">
+            <v-select
+              :id="changePageSizeActionId"
+              v-model="currentPageSize"
+              :items="pageSizeOptions"
+              outlined
               :disabled="isDisabled"
-              @input="onChangePageIndex"
-            >
-              <template #first-text>
-                <img
-                  :id="firstPageActionId"
-                  src="../../assets/icons/first-page.svg"
-                  alt="fisrt-page"
-                  width="10"
-                  height="10"
-                />
-              </template>
-              <template #prev-text>
-                <img
-                  :id="prevPageActionId"
-                  src="../../assets/icons/prev-page.svg"
-                  alt="fisrt-page"
-                  width="10"
-                  height="10"
-                />
-              </template>
-              <template #next-text>
-                <img
-                  :id="nextPageActionId"
-                  src="../../assets/icons/next-page.svg"
-                  alt="fisrt-page"
-                  width="10"
-                  height="10"
-                />
-              </template>
-              <template #last-text>
-                <img
-                  :id="lastPageActionId"
-                  src="../../assets/icons/last-page.svg"
-                  alt="fisrt-page"
-                  width="10"
-                  height="10"
-                />
-              </template>
-            </v-pagination>
-
-            <span class="separator" />
-
-            <div class="page-size-wrapper">
-              <v-select
-                :id="changePageSizeActionId"
-                v-model="currentPageSize"
-                :items="pageSizeOptions"
-                outlined
-                :disabled="isDisabled"
-                class="base-pageSize-handler"
-                append-icon="mdi-chevron-down"
-                hide-details
-                :menu-props="{ bottom: true, offsetY: true }"
-                @input="onChangePageSize"
-              />
-            </div>
-          </slot>
-        </div>
-      </div>
-      <div v-else>
-        <slot name="empty-placeholder">
-          <div class="empty-list">
-            <h4>{{ emptyPlaceholderText }}</h4>
+              class="base-pageSize-handler"
+              append-icon="mdi-chevron-down"
+              hide-details
+              :menu-props="{ bottom: true, offsetY: true }"
+              @input="onChangePageSize"
+            />
           </div>
         </slot>
       </div>
     </div>
-  </v-app>
+    <div v-else>
+      <slot name="empty-placeholder">
+        <div class="empty-list ma-8">
+          <h4>{{ emptyPlaceholderText }}</h4>
+        </div>
+      </slot>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -433,6 +434,3 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
-@import "./paginationLayout.module";
-</style>

@@ -1,12 +1,30 @@
-import AttachmentField from "./AttachmentField/attachmentField.vue";
-import Calendar from "./Calendar/calendar.vue";
-import CardPanel from "./CardPanel/cardPanel.vue";
-import DataTable from "./DataTable/dataTable.vue";
-import EmptyPlaceholder from "./EmptyPlaceholder/emptyPlaceholder.vue";
-import ImageCropper from "./ImageCropper/imageCropper.vue";
-import LabelAndValue from "./LabelAndValue/labelAndValue.vue";
-import PaginationLayout from "./PaginationLayout/paginationLayout.vue";
-import Svgs from "./Svgs/nSvg.vue";
+const AttachmentField = () =>
+  import(
+    "./AttachmentField/attachmentField.vue" /** webpackChunkName: AttachmentField */
+  );
+const Calendar = () =>
+  import("./Calendar/calendar.vue" /** webpackChunkName: Calendar */);
+const CardPanel = () =>
+  import("./CardPanel/cardPanel.vue" /** webpackChunkName: CardPanel */);
+const DataTable = () =>
+  import("./DataTable/dataTable.vue" /** webpackChunkName: DataTable */);
+const EmptyPlaceholder = () =>
+  import(
+    "./EmptyPlaceholder/emptyPlaceholder.vue" /** webpackChunkName: EmptyPlaceholder */
+  );
+const ImageCropper = () =>
+  import(
+    "./ImageCropper/imageCropper.vue" /** webpackChunkName: ImageCropper */
+  );
+const LabelAndValue = () =>
+  import(
+    "./LabelAndValue/labelAndValue.vue" /** webpackChunkName: LabelAndValue */
+  );
+const PaginationLayout = () =>
+  import(
+    "./PaginationLayout/paginationLayout.vue" /** webpackChunkName: PaginationLayout */
+  );
+const Svgs = () => import("./Svgs/nSvg.vue" /** webpackChunkName: Svgs */);
 
 export {
   AttachmentField,
