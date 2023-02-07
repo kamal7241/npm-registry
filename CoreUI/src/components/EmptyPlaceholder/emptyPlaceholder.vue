@@ -4,13 +4,13 @@
       {{ $t("fetchingData") }}
     </p>
     <template v-else>
-      <div class="img-placeholder">
-        <slot name="icon">
-          <v-icon v-if="icon" aria-hidden="false" class="icon" color="primary">
+      <slot name="iconContent">
+        <div v-if="icon" class="img-placeholder">
+          <v-icon aria-hidden="false" class="icon" color="primary">
             {{ icon }}
           </v-icon>
-        </slot>
-      </div>
+        </div>
+      </slot>
 
       <p v-if="primaryText" class="mb-2 primary-text">
         {{ primaryText }}

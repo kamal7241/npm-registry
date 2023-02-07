@@ -3,20 +3,23 @@ import "!style-loader!css-loader!sass-loader!./scss-loader.scss";
 import "vuetify/dist/vuetify.css";
 import "@mdi/font/css/materialdesignicons.css";
 
+import i18n from '../src/plugins/i18n';
 import Vue from "vue";
 import Vuetify from "vuetify";
 
 Vue.use(Vuetify);
 
+Vue.prototype.$t = function(...args){
+  return i18n.t(...args);
+}
+
 addDecorator(() => ({
+  i18n,
   vuetify: new Vuetify({
     rtl: true,
     icons: {
       iconfont: "mdi",
-    },
-    // lang: {
-    //   current: "ar",
-    // },
+    }
   }),
   template:
     '<v-app style="background-color: white"><v-main><story/></v-main></v-app>',
