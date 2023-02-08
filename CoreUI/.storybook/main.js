@@ -2,7 +2,12 @@ const path = require('path');
 
 // Export a function. Accept the base config as the only param.
 module.exports = {
-  addons: ['@storybook/addon-controls', '@storybook/addon-docs', '@storybook/addon-actions'],
+  addons: [
+    '@storybook/addon-controls', 
+    '@storybook/addon-docs', 
+    '@storybook/addon-actions',
+    '@storybook/preset-scss',
+  ],
   webpackFinal: async (config, { configType }) => {
     // `configType` has a value of 'DEVELOPMENT' or 'PRODUCTION'
     // You can change the configuration based on that.
@@ -13,6 +18,16 @@ module.exports = {
       test: /\.scss$/,
       use: ['style-loader', 'css-loader', 'sass-loader'],
       include: path.resolve(__dirname, '../'),
+    });
+
+    config.module.rules.push({
+      resolve: {
+        alias: {
+          '@': path.resolve(__dirname, '../src'),
+          vue: 'vue/dist/vue.js',
+          'vue$': 'vue/dist/vue.esm.js',          
+        },
+      },
     });
 
     // Return the altered config
