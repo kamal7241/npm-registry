@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-container>
-      <v-form>
+      <v-form ref="defaultForm" lazy-validation @submit.prevent>
         <attachment-field
           label="صورة شخصية "
           name="association"
@@ -28,7 +28,7 @@
           :row="true"
           :range="true"
           :hijri="isHijri"
-          :value="date"
+          :value="calendarDate"
           hint="يرجى ادخال فترة زمنية"
           dense
           :rules="formValidators.calendar"
@@ -36,7 +36,7 @@
           @changeHijri="changeHijriState"
         />
 
-        <image-cropper
+        <!-- <image-cropper
           label="نص تجريبي"
           name="personalInfo"
           is-required
@@ -99,9 +99,9 @@
         <template #icon>
           <n-svg name="map" />
         </template>
-      </empty-placeholder>
+      </empty-placeholder> -->
 
-      <pagination-layout
+        <!-- <pagination-layout
         :value="paginationValue"
         server-page-number-key="page"
         server-page-size-key="size"
@@ -115,18 +115,18 @@
         :page-size-options="[10, 50, 100, 30]"
         :fetch-on-mount="false"
         @search="onSearch"
-      >
+      > -->
         <!-- Customize Loading slot -->
-        <template #loader>
+        <!-- <template #loader>
           <span>Loading ...</span>
-        </template>
+        </template> -->
 
         <!-- Customize list slot -->
-        <template #list="{ data }">
+        <!-- <template #list="{ data }">
           <p v-for="(item, i) in data" :key="i">
             {{ item.title }}
           </p>
-        </template>
+        </template> -->
 
         <!-- Customize pagination slot -->
         <!-- <template
@@ -171,7 +171,12 @@
           الصفحة الأخيرة
         </button>
       </template> -->
-      </pagination-layout>
+        <!-- </pagination-layout>
+    </v-container> -->
+        <v-btn type="submit" color="primary" @click="testValidation">
+          تجربة
+        </v-btn>
+      </v-form>
     </v-container>
   </v-app>
 </template>
@@ -186,14 +191,14 @@ export default {
     AttachmentField: () =>
       import("./components/AttachmentField/attachmentField.vue"),
     Calendar: () => import("./components/Calendar/calendar.vue"),
-    CardPanel: () => import("./components/CardPanel/cardPanel.vue"),
-    DataTable: () => import("./components/DataTable/dataTable.vue"),
-    LabelAndValue: () => import("./components/LabelAndValue/labelAndValue.vue"),
-    EmptyPlaceholder: () =>
-      import("./components/EmptyPlaceholder/emptyPlaceholder.vue"),
-    ImageCropper: () => import("./components/ImageCropper/imageCropper.vue"),
-    PaginationLayout: () =>
-      import("./components/PaginationLayout/paginationLayout.vue"),
+    // CardPanel: () => import("./components/CardPanel/cardPanel.vue"),
+    // DataTable: () => import("./components/DataTable/dataTable.vue"),
+    // LabelAndValue: () => import("./components/LabelAndValue/labelAndValue.vue"),
+    // EmptyPlaceholder: () =>
+    //   import("./components/EmptyPlaceholder/emptyPlaceholder.vue"),
+    // ImageCropper: () => import("./components/ImageCropper/imageCropper.vue"),
+    // PaginationLayout: () =>
+    //   import("./components/PaginationLayout/paginationLayout.vue"),
   },
   data() {
     return {
@@ -209,8 +214,8 @@ export default {
       },
       serverSideValue: [],
       // Calendar
-      isHijri: true,
-      date: ["1444-07-08", "1444-07-16"],
+      isHijri: false,
+      calendarDate: [],
       // DataTable
       rows: [
         {
@@ -310,6 +315,9 @@ export default {
     }, 3000);
   },
   methods: {
+    testValidation() {
+      this.$refs.defaultForm.validate();
+    },
     // AttachmentField
     async onSelectFiles(file) {
       console.log(file);
@@ -352,13 +360,7 @@ export default {
     },
     // Calendar
     changeDate(newDate) {
-      if (newDate.gregorian.length === 2) {
-        this.date = this.isHijri ? newDate.hijri : newDate.gregorian;
-        this.filterDate = newDate.gregorian;
-      } else {
-        this.date = [];
-        this.filterDate = [];
-      }
+      this.calendarDate = newDate.gregorian;
     },
 
     changeHijriState() {

@@ -1,5 +1,10 @@
 <template>
-  <v-input :rules="rules" :value="value" :hide-details="!rules.length">
+  <v-input
+    :rules="rules"
+    :value="value"
+    validate-on-blur
+    :hide-details="!rules.length"
+  >
     <div :class="['base-calendar-wrapper', { 'd-flex justify-end': row }]">
       <div
         :class="`d-flex align-center ${
@@ -13,6 +18,7 @@
         <v-switch
           :id="switchActionId"
           v-model="isHijri"
+          :dense="dense"
           color="primary"
           :ripple="false"
           class="my-0 mx-2"
@@ -268,14 +274,14 @@ export default {
   },
   watch: {
     value: {
-      handler() {
+      handler(newValu, oldVal) {
         const { value, date, isHijri, isSingleMode } = this;
         const { gregorian, hijri } = this.getValueDates(value);
         const dateClone = JSON.parse(JSON.stringify(date));
         const shouldUpdate =
           JSON.stringify(isHijri ? hijri : gregorian) !==
           JSON.stringify(isSingleMode ? dateClone : dateClone.sort());
-
+        console.log({ newValu, oldVal });
         if (shouldUpdate) {
           this.date = isHijri ? hijri : gregorian;
         }
@@ -290,7 +296,7 @@ export default {
     },
   },
   mounted() {
-    this.date = this.initialDateValue;
+    this.date = this.value || this.initialDateValue;
     this.isHijri = this.hijri;
   },
   methods: {
@@ -343,6 +349,7 @@ export default {
         gregorian,
       };
     },
+
     formatDate() {
       this.$emit("changeHijri", !this.isHijri);
 

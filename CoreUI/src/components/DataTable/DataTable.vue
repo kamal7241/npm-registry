@@ -69,6 +69,7 @@ export default {
       type: String,
       default: "",
     },
+
     columns: {
       type: Array,
       required: true,
@@ -93,7 +94,6 @@ export default {
 
     onClick: {
       type: Function,
-      // default: () => ({}),
     },
 
     wrapperClass: {
