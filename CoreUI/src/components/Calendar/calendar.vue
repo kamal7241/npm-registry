@@ -45,7 +45,7 @@
         <template #activator="{ on, attrs }">
           <v-text-field
             v-bind="attrs"
-            :id="focusActionId"
+            :id="textFieldActionId"
             :value="previewedDates"
             outlined
             :hide-details="!hint"
@@ -64,7 +64,7 @@
         <v-hijri-date-picker
           v-if="isHijri"
           v-bind="$attrs"
-          :id="changeDateActionId"
+          :id="pickerWrapperId"
           v-model="date"
           no-title
           :range="range"
@@ -106,7 +106,7 @@
         </v-hijri-date-picker>
         <v-date-picker
           v-else
-          :id="changeDateActionId"
+          :id="pickerWrapperId"
           v-model="date"
           no-title
           scrollable
@@ -172,11 +172,11 @@ export default {
       type: String,
       default: "",
     },
-    focusActionId: {
+    textFieldActionId: {
       type: String,
       default: "",
     },
-    changeDateActionId: {
+    pickerWrapperId: {
       type: String,
       default: "",
     },
