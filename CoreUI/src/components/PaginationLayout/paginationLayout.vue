@@ -10,7 +10,7 @@
           alt="loading img"
           width="200"
           height="200"
-        >
+        />
       </slot>
     </div>
 
@@ -49,7 +49,7 @@
                 alt="fisrt-page"
                 width="10"
                 height="10"
-              >
+              />
             </template>
             <template #prev-text>
               <img
@@ -58,7 +58,7 @@
                 alt="fisrt-page"
                 width="10"
                 height="10"
-              >
+              />
             </template>
             <template #next-text>
               <img
@@ -67,7 +67,7 @@
                 alt="fisrt-page"
                 width="10"
                 height="10"
-              >
+              />
             </template>
             <template #last-text>
               <img
@@ -76,7 +76,7 @@
                 alt="fisrt-page"
                 width="10"
                 height="10"
-              >
+              />
             </template>
           </v-pagination>
 

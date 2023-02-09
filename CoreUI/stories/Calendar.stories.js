@@ -1,5 +1,6 @@
 import Calendar from "../src/components/Calendar/calendar.vue";
 import { argTypesConfigs } from "./argTypes/calendar";
+import { RulesParams } from "./code/Calendar";
 
 export default {
   title: "Components/Calendar",
@@ -13,7 +14,11 @@ const Template = (args, { argTypes }) => {
   return {
     components: { Calendar },
     props: Object.keys(argTypes),
-    template: `<Calendar v-bind="$props" />`,
+    template: `
+    <div class='storybook-calendar-wrapper'>
+      <Calendar v-bind="$props" />
+    </div>
+    `,
   };
 };
 
@@ -51,6 +56,7 @@ HijriAndGregorianDates.args = {
 };
 
 export const Rules = Template.bind({});
+Rules.parameters = RulesParams;
 Rules.args = {
   rules: [(value) => !!value || "Required."],
   value: "",
