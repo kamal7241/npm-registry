@@ -1,9 +1,6 @@
 import Vue from "vue";
 import Vuetify from "vuetify/lib";
 import "@mdi/font/css/materialdesignicons.css";
-// Locals
-import ar from "vuetify/src/locale/ar.ts";
-import en from "vuetify/src/locale/en.ts";
 // utils
 import getThemeColor from "../utils/theming";
 
@@ -24,7 +21,6 @@ export default new Vuetify({
     iconfont: "mdi",
   },
   lang: {
-    locales: { ar, en },
     current: "ar",
   },
   theme,

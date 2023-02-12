@@ -4,6 +4,15 @@ const testAutomationConfigs = {
   },
 };
 
+const slotsConfigs = {
+  table: {
+    category: "Slots",
+    type: {
+      summary: "html",
+    },
+  },
+};
+
 const testAutomationIds = {
   changePageSizeActionId: {
     ...testAutomationConfigs,
@@ -28,6 +37,54 @@ const testAutomationIds = {
   pagniateActionId: {
     ...testAutomationConfigs,
     description: "Id for pagination actions wrapper",
+  },
+};
+
+const slots = {
+  loader: {
+    ...slotsConfigs,
+    description: "Loader Cutomization slot",
+  },
+  emptyPlaceholder: {
+    ...slotsConfigs,
+    description: "Placeholder Cutomization slot",
+  },
+  list: {
+    ...slotsConfigs,
+    description: `List vue slot. and it takes <b>data</b> as a argument <br />
+    <pre>
+      <code>
+        < template #list={data}>Your list here</template>
+      </code>  
+    <pre>
+    `,
+  },
+  pagination: {
+    ...slotsConfigs,
+    description: `<pre>
+    List vue slot. and it will receive the ***data object  and 5 methods *** as an argument. <br />
+    <pre>
+    ***data object*** contains of:
+      - **isLoading**: to check if the request is loading or not.
+      - **totalCount**: total records count
+      - **totalPages**: available total pages
+      - **currentPageSize**: selected current page size from the dropdown
+      - **isLastPageActionDisabled**: **true** if ***currentPage === totalPages*** to disable **first and previous Actions**
+      - **isFirstPageActionDisabled**: **true** if ***currentPage === 0*** to disable **last and next Actions**
+    - **Methods**: 
+      - ***onChangePageSize***: to change the page size and it takes the number as the first param 'onChangePageSize(20)'
+      - ***onFirstPageActionClicked***: triger first page action click
+      - ***onPreviousPageActionClicked***: triger previous page action click
+      - ***onNextPageActionClicked***: triger next page action click
+      - ***onLastPageActionClicked***: triger last page action click
+
+      <pre>
+        <code>
+          < template #list="{data}">Your list here</template>
+        </code>  
+      </pre>
+    </pre>
+    `,
   },
 };
 
@@ -122,11 +179,9 @@ const argTypesConfigs = {
   value: {
     description: `_value to be paginated and_ ***It doesn't work with fetch or any api call*** (**Server side**) so in order to make it work follow the following rules*
     <pre>
-    <code>
-    - 1. **Don't provide**: _*endpoint prop*_
-    - 2. **fetchOnMount**: _pass it with **false**_
-    - 3. **enableServerSidePagination**: _pass it with **false**_
-    </code>  
+      <code>
+        - 1. **enableServerSidePagination**: _pass it with **false**_
+      </code>  
     <pre>
     `,
   },
@@ -140,6 +195,8 @@ const argTypesConfigs = {
       category: "Events",
     },
   },
+  // ? Slots
+  ...slots,
 };
 
 export { argTypesConfigs };

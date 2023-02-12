@@ -7,11 +7,12 @@ import i18n from '../src/plugins/i18n';
 import Vue from "vue";
 import Vuetify from "vuetify";
 
-Vue.use(Vuetify);
 
 Vue.prototype.$t = function(...args){
   return i18n.t(...args);
 }
+
+Vue.use(Vuetify);
 
 addDecorator(() => ({
   i18n,
