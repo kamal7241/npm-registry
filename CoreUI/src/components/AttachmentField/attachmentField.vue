@@ -2,7 +2,7 @@
   <v-input :rules="rules" :value="value">
     <div class="base-attachment-wrapper">
       <div class="label-and-input-wrapper">
-        <slot name="label" :data="{ err: error }">
+        <slot name="labelContent" :data="{ err: error }">
           <label
             v-if="label"
             class="d-block label mb-2"
@@ -93,6 +93,7 @@
       </slot>
 
       <input
+        :id="fileInputId"
         ref="file"
         class="d-none"
         type="file"
@@ -160,6 +161,10 @@ export default {
     rules: {
       type: Array,
       default: () => [],
+    },
+    fileInputId: {
+      type: String,
+      default: "file-input",
     },
     chooseFileActionId: {
       type: String,

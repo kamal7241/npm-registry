@@ -197,7 +197,7 @@ export default {
 ***data object*** contains of: **listData** which includes:
   - **files**: selected files to loop through them
   - And
-  - **onDeleteFile**: method to handle delete file
+- **onDeleteFile**: method to handle delete file
   
 3. **Error section**: to render custom error `and it will not be available if activateInternalErrorPreview=false` so in order to customize it you will have to ***scoped slot*** with the name ***errors*** and it will receive the **errors** as an argument `which is a string`.
 
