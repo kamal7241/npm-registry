@@ -1,18 +1,25 @@
 import AttachmentField from "../src/components/AttachmentField/attachmentField.vue";
 import { argTypesConfigs } from "./argTypes/attachment-field";
 import {
-  AdditionalPayloadParams,
-  CascadeModeParams,
+  AcceptParams,
   ClientSideValueParams,
-  CustomEmptyPlaceholderParams,
-  CustomPaginationParams,
-  DisabledModeParams,
-  EmptyPlaceholderTextParams,
-  InitialPageNumberParams,
-  PageSizeOptionsParams,
-  PageSizeParams,
-  renderedListParams,
-  TotalVisiblePagesParams,
+  CustomLabelParams,
+  CustomListParams,
+  DisabledParams,
+  DownloadIconParams,
+  EnableFullnameDisplayParams,
+  LabelParams,
+  LocalizationsParams,
+  MaxAttachmentsParams,
+  MaxDisplayNameLengthParams,
+  MaxFileSizeInMegaParams,
+  MaxFilesSizeInMegaParams,
+  MultipleParams,
+  PhancyPreviewParams,
+  RequiredParams,
+  ServerSideParams,
+  ServerSideValueParams,
+  ValidateOnSingleFileSizeParams,
 } from "./code/AttachmentField";
 import {
   defaultArgs,
@@ -20,6 +27,8 @@ import {
   errorsSlotName,
   hintsSlotName,
   listSlotName,
+  onUploadData,
+  onGenerateFileFromSharepointId,
 } from "./utils/attachment-field";
 
 export default {
@@ -32,181 +41,231 @@ const Template = (args, { argTypes }) => ({
   components: { AttachmentField },
   props: Object.keys(argTypes),
   template: `
-  <AttachmentField v-bind="propsWithoutSlots">
+  <AttachmentField 
+    @select="log"
+    v-bind="propsWithoutSlots"
+  >
     <template 
-      v-if="${loaderSlotName in args}" 
-      #${loaderSlotName}
+      v-if="${labelSlotName in args}" 
+      #${labelSlotName}
     >
-      ${args[loaderSlotName]}
-    </template>
+      ${args[labelSlotName] || args.label}
+    </template> 
 
-    <template 
-      #${listSlotName}="{ data }"
+    <template
+      v-if="${listSlotName in args}"
+      #${listSlotName}="{ data, onDeleteFile }"
     >
-      ${
-        args[listSlotName] ||
-        `<p
-          v-for="(item, i) in data"
-          :key="i"
+      <v-list
+        subheader
+        two-line
+      >
+        <v-subheader inset v-if="data.listData.files.length">المرفقات</v-subheader>
+
+        <v-list-item
+          v-for="(file, index) in data.listData.files"
+          :key="index"
         >
-          {{ item.name }}
-        </p>
-      `
-      }
+          <v-list-item-avatar small>
+            <v-icon class="primary lighten-1">
+              mdi-file
+            </v-icon>
+          </v-list-item-avatar>
+
+          <v-list-item-content>
+            <v-list-item-title v-text="file.displayName" />
+
+            <v-list-item-subtitle v-text="file.size" />
+          </v-list-item-content>
+
+          <v-list-item-action>
+            <v-btn icon @click="onDeleteFile">
+              <v-icon color="error">mdi-delete</v-icon>
+            </v-btn>
+          </v-list-item-action>
+        </v-list-item>
+      </v-list>
     </template>
-
-    <template 
-      v-if="${emptyPlaceholderSlotName in args}" 
-      #${emptyPlaceholderSlotName}
-    >
-      ${args[emptyPlaceholderSlotName]}
-    </template>
-
-    <template 
-      v-if="${paginationSlotName in args}" 
-      #${paginationSlotName}="{ 
-        data, 
-        onFirstPageActionClicked, 
-        onPreviousPageActionClicked, 
-        onNextPageActionClicked, 
-        onLastPageActionClicked 
-      }"
-    >
-      <v-btn
-        class="nav-controller"
-        :disabled="data.isFirstPageActionDisabled"
-        @click="onFirstPageActionClicked"
-      >
-        الصفحة الأولى
-      </v-btn>   
-      
-      <v-btn
-        class="nav-controller"
-        :disabled="data.isFirstPageActionDisabled"
-        @click="onPreviousPageActionClicked"
-      >
-        السابق
-      </v-btn>   
-      
-      <v-btn
-        class="nav-controller"
-        :disabled="data.isLastPageActionDisabled"
-        @click="onNextPageActionClicked"
-      >
-        التالي
-      </v-btn>
-
-      <v-btn
-        class="nav-controller"
-        :disabled="data.isLastPageActionDisabled"
-        @click="onLastPageActionClicked"
-      >
-        الصفحة الأخيرة
-      </v-btn>
-  </template>    
-</AttachmentField>
+  </AttachmentField>
 `,
+  methods: {
+    log: (files) => console.log(files),
+  },
   computed: {
     propsWithoutSlots() {
       const filteredProps = this.$props;
 
       delete filteredProps[listSlotName];
-      delete filteredProps[loaderSlotName];
-      delete filteredProps[paginationSlotName];
-      delete filteredProps[emptyPlaceholderSlotName];
+      delete filteredProps[labelSlotName];
+      delete filteredProps[hintsSlotName];
+      delete filteredProps[errorsSlotName];
 
       return filteredProps;
     },
   },
 });
 
-export const RenderedList = Template.bind({});
-RenderedList.parameters = renderedListParams;
-RenderedList.args = {
+export const Default = Template.bind({});
+// Default.parameters = DefaultParams;
+Default.args = {
   ...defaultArgs,
 };
 
-// export const PageSizeOptions = Template.bind({});
-// PageSizeOptions.parameters = PageSizeOptionsParams;
-// PageSizeOptions.args = {
-//   ...defaultArgs,
-//   pageSize: 5,
-//   pageSizeOptions: [5, 100, 300],
-// };
+export const Label = Template.bind({});
+Label.parameters = LabelParams;
+Label.args = {
+  label: "الشهادة العلمية",
+};
 
-// export const InitialPageNumber = Template.bind({});
-// InitialPageNumber.parameters = InitialPageNumberParams;
-// InitialPageNumber.args = {
-//   ...defaultArgs,
-//   initialPageNumber: 5,
-// };
+export const Required = Template.bind({});
+Required.parameters = RequiredParams;
+Required.args = {
+  isRequired: true,
+  label: "الشهادة العلمية",
+};
 
-// export const PageSize = Template.bind({});
-// PageSize.parameters = PageSizeParams;
-// PageSize.args = {
-//   ...defaultArgs,
-//   pageSize: 30,
-// };
+export const DifferentFileTypes = Template.bind({});
+DifferentFileTypes.parameters = AcceptParams;
+DifferentFileTypes.args = {
+  accept: ".docx, .pdf",
+};
 
-// export const TotalVisiblePages = Template.bind({});
-// TotalVisiblePages.parameters = TotalVisiblePagesParams;
-// TotalVisiblePages.args = {
-//   ...defaultArgs,
-//   totalVisiblePages: 4,
-// };
+export const Disabled = Template.bind({});
+Disabled.parameters = DisabledParams;
+Disabled.args = {
+  disabled: true,
+};
 
-// export const CascadeMode = Template.bind({});
-// CascadeMode.parameters = CascadeModeParams;
-// CascadeMode.args = {
-//   ...defaultArgs,
-//   cascadeMode: true,
-// };
+export const Multiple = Template.bind({});
+Multiple.parameters = MultipleParams;
+Multiple.args = {
+  isMultiple: true,
+};
 
-// export const DisabledMode = Template.bind({});
-// DisabledMode.parameters = DisabledModeParams;
-// DisabledMode.args = {
-//   ...defaultArgs,
-//   isDisabled: true,
-// };
+export const MaxFileSizeInMega = Template.bind({});
+MaxFileSizeInMega.parameters = MaxFileSizeInMegaParams;
+MaxFileSizeInMega.args = {
+  maxFileSizeInMega: 0.01,
+  validateOnSingleFileSize: true,
+};
 
-// export const AdditionalPayload = Template.bind({});
-// AdditionalPayload.parameters = AdditionalPayloadParams;
-// AdditionalPayload.args = {
-//   ...defaultArgs,
-//   additionalPayload: {
-//     trips: 50,
-//   },
-// };
+export const MaxFilesSizeInMega = Template.bind({});
+MaxFilesSizeInMega.parameters = MaxFilesSizeInMegaParams;
+MaxFilesSizeInMega.args = {
+  isMultiple: true,
+  maxFilesSizeInMega: 0.1,
+};
 
-// export const ClientSideValue = Template.bind({});
-// ClientSideValue.parameters = ClientSideValueParams;
-// ClientSideValue.args = {
-//   ...defaultArgs,
-//   value: clientSideValue,
-//   enableServerSidePagination: false,
-// };
+export const MaxDisplayNameLength = Template.bind({});
+MaxDisplayNameLength.parameters = MaxDisplayNameLengthParams;
+MaxDisplayNameLength.args = {
+  maxDisplayNameLength: 10,
+};
 
-// export const EmptyPlaceholderText = Template.bind({});
-// EmptyPlaceholderText.parameters = EmptyPlaceholderTextParams;
-// EmptyPlaceholderText.args = {
-//   ...defaultArgs,
-//   value: [],
-//   enableServerSidePagination: false,
-//   emptyPlaceholderText: "الرجاء المحاولة مرة اخرى ",
-// };
+export const MaxAttachments = Template.bind({});
+MaxAttachments.parameters = MaxAttachmentsParams;
+MaxAttachments.args = {
+  isMultiple: true,
+  maxAttachments: 2,
+};
 
-// export const CustomEmptyPlaceholder = Template.bind({});
-// CustomEmptyPlaceholder.parameters = CustomEmptyPlaceholderParams;
-// CustomEmptyPlaceholder.args = {
-//   ...defaultArgs,
-//   value: [],
-//   enableServerSidePagination: false,
-//   [emptyPlaceholderSlotName]: `
-//     <v-card>
-//       <v-card-title class='primary--text'>الرجاء المحاولة لاحقاً</v-card-title>
-//     </v-card>
-//   `,
-// };
+export const DisplayFullname = Template.bind({});
+DisplayFullname.parameters = EnableFullnameDisplayParams;
+DisplayFullname.args = {
+  enableFullnameDisplay: true,
+};
+
+export const ValidateOnSingleFileSize = Template.bind({});
+ValidateOnSingleFileSize.parameters = ValidateOnSingleFileSizeParams;
+ValidateOnSingleFileSize.args = {
+  maxFileSizeInMega: 0.01,
+  validateOnSingleFileSize: true,
+};
+
+export const PhancyPreview = Template.bind({});
+PhancyPreview.parameters = PhancyPreviewParams;
+PhancyPreview.args = {
+  enableFancyPreview: true,
+};
+
+export const DownloadIcon = Template.bind({});
+DownloadIcon.parameters = DownloadIconParams;
+DownloadIcon.args = {
+  enableDownload: true,
+};
+
+export const Localizations = Template.bind({});
+Localizations.parameters = LocalizationsParams;
+Localizations.args = {
+  localizations: {
+    clickHere: "الرجاء اختيار ملف",
+  },
+};
+
+export const ClientSideValue = Template.bind({});
+ClientSideValue.parameters = ClientSideValueParams;
+ClientSideValue.args = {
+  isMultiple: true,
+  value: [
+    {
+      name: "first file",
+      baseFile:
+        "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYEAQAAAAa7ikwAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAKqNIzIAAAAJcEhZcwAAAGAAAABgAPBrQs8AAAAHdElNRQfmCBkNHS2jw6LRAAAAf0lEQVRIx+2VMQ6AIAxFvyaEkcTLMXEORjiUtzDxGqxsbHwHYxhcacToHzu83/40LfAJkdayKiUEj5EkyXVl1VoITrJuG6sxQvB9J5flh78TPl1wIISzlBLgHJBz/84FNAOldMv5kYhaVN6LbdBvMrKJ4Lm+TyLwcJqJ4MscXgfd31tu/nsI5wAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMi0wOC0yNVQxMzoyOTo0NSswMDowMNfGwcgAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjItMDgtMjVUMTM6Mjk6NDUrMDA6MDCmm3l0AAAAKHRFWHRkYXRlOnRpbWVzdGFtcAAyMDIyLTA4LTI1VDEzOjI5OjQ1KzAwOjAw8Y5YqwAAAABJRU5ErkJggg==",
+    },
+    {
+      name: "second file",
+      baseFile:
+        "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYEAQAAAAa7ikwAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAKqNIzIAAAAJcEhZcwAAAGAAAABgAPBrQs8AAAAHdElNRQfmCBkNHS2jw6LRAAAAf0lEQVRIx+2VMQ6AIAxFvyaEkcTLMXEORjiUtzDxGqxsbHwHYxhcacToHzu83/40LfAJkdayKiUEj5EkyXVl1VoITrJuG6sxQvB9J5flh78TPl1wIISzlBLgHJBz/84FNAOldMv5kYhaVN6LbdBvMrKJ4Lm+TyLwcJqJ4MscXgfd31tu/nsI5wAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMi0wOC0yNVQxMzoyOTo0NSswMDowMNfGwcgAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjItMDgtMjVUMTM6Mjk6NDUrMDA6MDCmm3l0AAAAKHRFWHRkYXRlOnRpbWVzdGFtcAAyMDIyLTA4LTI1VDEzOjI5OjQ1KzAwOjAw8Y5YqwAAAABJRU5ErkJggg==",
+    },
+  ],
+};
+
+export const ServerSide = Template.bind({});
+ServerSide.parameters = ServerSideParams;
+ServerSide.args = {
+  isMultiple: true,
+  value: [],
+  enableServerSide: true,
+  attachmentTypeId: 5,
+  maxFilesSizeInMega: 10,
+  uploadCallback: onUploadData,
+};
+
+export const ServerSideValue = Template.bind({});
+ServerSideValue.parameters = ServerSideValueParams;
+ServerSideValue.args = {
+  isMultiple: true,
+  value: [
+    {
+      id: 0,
+      attachmentTypeId: 5,
+      contentType: "image/png",
+      sharepointId: "test0.41862898112024816test+pqql4B8hlPlIsuvkdtKbkr40lpA==",
+      fileName: "test - Copy (1).png",
+    },
+    {
+      id: 0,
+      attachmentTypeId: 6,
+      contentType: "image/png",
+      sharepointId: "test0.41338112024816test+pqql4B8hlPlIsuvkdtKbkr40lpA==",
+      fileName: "founding-day - Copy (2).png",
+    },
+  ],
+  enableServerSide: true,
+  downloadCallback: onGenerateFileFromSharepointId,
+};
+
+export const CustomLabel = Template.bind({});
+CustomLabel.parameters = CustomLabelParams;
+CustomLabel.args = {
+  [labelSlotName]: `<v-badge content="المؤهل العلمي" color="info" />`,
+};
+
+export const CustomList = Template.bind({});
+CustomList.parameters = CustomListParams;
+CustomList.args = {
+  [listSlotName]: true,
+};
 
 // export const CustomPagination = Template.bind({});
 // CustomPagination.parameters = CustomPaginationParams;
