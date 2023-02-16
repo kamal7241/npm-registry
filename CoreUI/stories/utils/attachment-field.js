@@ -22,7 +22,7 @@ export async function onUploadData(data) {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve(`test${Math.random()}test+pqql4B8hlPlIsuvkdtKbkr40lpA==`);
-    }, 60000);
+    }, 1000);
   });
 }
 
