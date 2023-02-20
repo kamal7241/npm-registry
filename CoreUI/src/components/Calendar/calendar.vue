@@ -159,7 +159,7 @@ import VHijriDatePicker from "@moj/vuetify-umalqura";
 // utils
 import moment from "moment-hijri";
 import uq from "@umalqura/core";
-import GregorianMonths from "../../services/monthsLookups";
+import { GregorianMonths } from "../../services/monthsLookups";
 
 export default {
   name: "Calendar",

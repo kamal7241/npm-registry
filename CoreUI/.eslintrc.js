@@ -24,6 +24,7 @@ module.exports = {
     "vue/html-closing-bracket-spacing": "off",
     "vue/no-mutating-props": "warn",
     "import/prefer-default-export": "off",
+    "vue/no-side-effects-in-computed-properties": "off",
     "vue/max-attributes-per-line": [
       "error",
       {

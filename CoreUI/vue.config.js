@@ -11,4 +11,10 @@ module.exports = {
   devServer: {
     port: 8080,
   },
+  chainWebpack: (config) => {
+    config.optimization.splitChunks({
+      ...config.optimization.get("splitChunks"),
+      automaticNameDelimiter: "-",
+    });
+  },
 };
