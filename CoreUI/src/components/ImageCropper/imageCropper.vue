@@ -12,23 +12,25 @@
         @save="onSaveCroppedImage"
       />
 
-      <p v-if="label" class="label mb-2" :class="labelClassName">
-        {{ label }}
-        <span v-if="isRequired" class="star">*</span>
-      </p>
+      <slot name="labelContent">
+        <p v-if="label" class="label mb-2" :class="labelClassName">
+          {{ label }}
+          <span v-if="isRequired" class="star">*</span>
+        </p>
+      </slot>
 
       <slot
         :croppedImage="croppedImage"
         :onUploadImage="utils.onUploadImage"
-        :onEditSelectedImage="utils.onEditSelectedImage"
-        :onDeleteSelectedImage="utils.onDeleteSelectedImage"
-        name="image-placeholder"
+        :onDownloadImage="utils.onDownloadSelectedImage"
+        :onDeleteSelectedImage="utils.onDeleteSelectedImage.bind(utils)"
+        name="imagePlaceholder"
       >
         <div class="input-wrapper d-flex align-items-center">
           <button
             v-if="!previewedSelectedFile"
             :id="chooseFileActionId"
-            :disabled="readOnlyMode"
+            :disabled="disabled"
             :class="[
               'indicator pointer py-4 px-3 white--text',
               { selecting: isServerLoading },
@@ -64,7 +66,7 @@
 
           <div v-if="previewedSelectedFile" class="actions pa-2 mx-1">
             <img
-              v-if="!readOnlyMode"
+              v-if="!disabled"
               :id="deleteActionId"
               src="../../assets/icons/cancel.svg"
               class="action"
@@ -90,8 +92,8 @@
 
       <slot
         v-if="error && activateInternalErrorPreview"
-        name="errors"
-        :errors="error"
+        name="error"
+        :error="error"
       >
         <div class="error-placeholder mt-2">
           <p class="text">
@@ -100,8 +102,8 @@
         </div>
       </slot>
 
-      <slot v-if="hint" name="hints">
-        <div class="hints-placeholder mt-2">
+      <slot name="hints">
+        <div v-if="hint" class="hints-placeholder mt-2">
           {{ hint }}
         </div>
       </slot>
@@ -109,6 +111,8 @@
       <input
         ref="imageInput"
         type="file"
+        :disabled="disabled"
+        :fileInputId="fileInputId"
         accept="image/*"
         :style="{ display: 'none' }"
         @change="(e) => utils.onSelectImage(e)"
@@ -128,6 +132,10 @@ export default {
   },
   props: {
     chooseFileActionId: {
+      type: String,
+      default: "",
+    },
+    fileInputId: {
       type: String,
       default: "",
     },
@@ -172,7 +180,7 @@ export default {
       type: Boolean,
       default: false,
     },
-    readOnlyMode: {
+    disabled: {
       type: Boolean,
       default: false,
     },

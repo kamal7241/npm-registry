@@ -10,12 +10,12 @@
           alt="loading img"
           width="200"
           height="200"
-        >
+        />
       </slot>
     </div>
 
     <div
-      v-if="generatedList.length"
+      v-if="generatedList.length || totalCount"
       class="data-placeholder"
       :class="{ loading: isLoading }"
     >
@@ -49,7 +49,7 @@
                 alt="fisrt-page"
                 width="10"
                 height="10"
-              >
+              />
             </template>
             <template #prev-text>
               <img
@@ -58,7 +58,7 @@
                 alt="fisrt-page"
                 width="10"
                 height="10"
-              >
+              />
             </template>
             <template #next-text>
               <img
@@ -67,7 +67,7 @@
                 alt="fisrt-page"
                 width="10"
                 height="10"
-              >
+              />
             </template>
             <template #last-text>
               <img
@@ -76,7 +76,7 @@
                 alt="fisrt-page"
                 width="10"
                 height="10"
-              >
+              />
             </template>
           </v-pagination>
 
@@ -100,7 +100,7 @@
       </div>
     </div>
     <div v-else>
-      <slot name="empty-placeholder">
+      <slot name="emptyPlaceholder">
         <div class="empty-list ma-8">
           <h4>{{ emptyPlaceholderText }}</h4>
         </div>
@@ -248,7 +248,7 @@ export default {
       return Math.ceil(this.totalCount / this.currentPageSize);
     },
     isFirstPageActionDisabled() {
-      return this.currentPage === 0;
+      return this.currentPage === this.initialPageNumber;
     },
     isLastPageActionDisabled() {
       return this.currentPage === this.availablePagesCount;
@@ -311,13 +311,13 @@ export default {
     },
   },
   mounted() {
-    if (this.value && this.value.length && !this.endpoint) {
+    if (this.enableServerSidePagination) {
+      if (this.fetchOnMount) {
+        this.loadResults();
+      }
+    } else if (this.value) {
       this.list = this.value;
       this.totalCount = this.value.length;
-    }
-
-    if (this.fetchOnMount) {
-      this.loadResults();
     }
   },
   methods: {

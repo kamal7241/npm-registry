@@ -17,8 +17,8 @@ Highly customizable pkg for cropping Images
     @cropImage="onCropImage"
     hint="hint placeholder"
   >
-    <template #image-placeholder="{croppedImage, onEditSelectedImage, onDeleteSelectedImage, onUploadImage}">
-      <div class="cropped-image-placeholder">
+    <template #imagePlaceholder="{croppedImage, onEditSelectedImage, onDeleteSelectedImage, onUploadImage}">
+      <div class="cropped-imagePlaceholder">
         <img
           :src="croppedImage"
           class="cropped-image"
@@ -129,15 +129,15 @@ export default {
 
 ## Customizations
 *The available customization are*:
-1. **Image Placeholder**: in order to customize it you will have to ***scoped slot*** with the name ***image-placeholder*** and it will receive:
+1. **Image Placeholder**: in order to customize it you will have to ***scoped slot*** with the name ***imagePlaceholder*** and it will receive:
   - **croppedImage**: *Image src after cropping process to use it in UI or as a condition to hide/show the empty placeholder if needed*
   - **onUploadImage**: *To trigger the file chooser*
-  - **onEditSelectedImage**: *method to open the cropper mode with the current selected file*
-  - **onDeleteSelectedImage**: *method to reset all chosed files and `export null for the cropImage` *
+  - **onDownloadImage**: *Download the cropped Image*
+  - **onDeleteSelectedImage**: *method to reset all chosed files and `export null for the cropImage*
 
 2. **Error section**: to render custom error `and it will not be available if activateInternalErrorPreview=false` so in order to customize it you will have to ***scoped slot*** with the name ***errors*** 
 
-3. **Hints section**: to render custom Hint `and it will not be available if hint=''` so in order to customize it you will have to ***scoped slot*** with the name ***hints***.
+3. **Hints section**: to render custom Hint so in order to customize it you will have to ***scoped slot*** with the name ***hints***.
 
 ## Notes: 
 - ***@cropImage*** : *function that exposes all the cropped files as the first param as*

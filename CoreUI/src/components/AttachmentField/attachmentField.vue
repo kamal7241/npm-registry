@@ -2,7 +2,7 @@
   <v-input :rules="rules" :value="value">
     <div class="base-attachment-wrapper">
       <div class="label-and-input-wrapper">
-        <slot name="label" :data="{ err: error }">
+        <slot name="labelContent" :data="{ err: error }">
           <label
             v-if="label"
             class="d-block label mb-2"
@@ -14,7 +14,7 @@
         </slot>
 
         <div
-          v-if="enableFancyPreview && addAttachmentAllowed && !readOnlyMode"
+          v-if="enableFancyPreview"
           class="file-input-wrapper d-flex justify-center align-items-center flex-column"
         >
           <img
@@ -30,19 +30,18 @@
 
           <button
             class="file-chooser-action mt-5 px-2 py-1"
+            :disabled="disabled || !addAttachmentAllowed || isServerLoading"
             @click="$refs.file.click()"
           >
             {{ strings.actionName }}
           </button>
         </div>
 
-        <div
-          v-if="!enableFancyPreview && addAttachmentAllowed && !readOnlyMode"
-        >
+        <div v-if="!enableFancyPreview">
           <div class="input-wrapper d-flex align-items-center">
             <button
               :id="chooseFileActionId"
-              :disabled="readOnlyMode || isServerLoading"
+              :disabled="disabled || !addAttachmentAllowed || isServerLoading"
               :class="[
                 'indicator pointer white--text py-4 px-3',
                 { selecting: isServerLoading },
@@ -80,7 +79,7 @@
       </slot>
 
       <slot
-        v-if="addAttachmentAllowed && !readOnlyMode"
+        v-if="addAttachmentAllowed && !disabled"
         name="hints"
         :data="{ hintsData }"
       >
@@ -93,9 +92,11 @@
       </slot>
 
       <input
+        :id="fileInputId"
         ref="file"
         class="d-none"
         type="file"
+        :disabled="disabled || !addAttachmentAllowed"
         :multiple="isFieldMultiple"
         :accept="accept"
         @change="onSelectFiles"
@@ -125,7 +126,7 @@
               }}</span>
 
               <img
-                v-if="!readOnlyMode"
+                v-if="!disabled"
                 :id="`${deleteActionId}_${index + 1}`"
                 class="img"
                 src="../../assets/icons/delete.svg"
@@ -160,6 +161,10 @@ export default {
     rules: {
       type: Array,
       default: () => [],
+    },
+    fileInputId: {
+      type: String,
+      default: "file-input",
     },
     chooseFileActionId: {
       type: String,
@@ -209,6 +214,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    enableDownload: {
+      type: Boolean,
+      default: false,
+    },
     enableFullnameDisplay: {
       type: Boolean,
       default: false,
@@ -217,7 +226,7 @@ export default {
       type: Boolean,
       default: false,
     },
-    readOnlyMode: {
+    disabled: {
       type: Boolean,
       default: false,
     },
@@ -235,7 +244,7 @@ export default {
     },
     accept: {
       type: String,
-      default: "jpg,pdf,png,jpeg",
+      default: ".jpg,.pdf,.png,.jpeg",
     },
     value: {
       type: Array,
@@ -279,17 +288,15 @@ export default {
   },
   computed: {
     isErrorSlotAvailable() {
-      return (
-        !this.readOnlyMode && this.error && this.activateInternalErrorPreview
-      );
+      return !this.disabled && this.error && this.activateInternalErrorPreview;
     },
     addAttachmentAllowed() {
       return this.selectedFiles.length < this.maxAttachments;
     },
     isDownloadAvailable() {
-      const { readOnlyMode, enableServerSide } = this;
+      const { disabled, enableServerSide, enableDownload } = this;
 
-      return readOnlyMode || enableServerSide;
+      return enableDownload || disabled || enableServerSide;
     },
     hintsData() {
       return {

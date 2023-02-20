@@ -26,6 +26,7 @@ const generateUtils = (instance) => {
       newInstance.showModal = true;
     },
     onDeleteSelectedImage() {
+      console.log({ _this: this, newInstance });
       this.onReset();
       newInstance.croppedData = {};
 
@@ -40,6 +41,7 @@ const generateUtils = (instance) => {
       const href = enableServerSide
         ? window.URL.createObjectURL(selectedFile.file)
         : selectedFile.downloadUrl;
+
       const fileName = enableServerSide
         ? selectedFile.file.displayName
         : selectedFile.displayName;

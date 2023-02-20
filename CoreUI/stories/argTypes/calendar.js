@@ -61,57 +61,26 @@ const argTypesConfigs = {
     description:
       "Accepts a mixed array of types `function`, `boolean` and `string`. Functions pass an input value as an argument and must return either `true` / `false` or a string containing an error message. The input field will enter an error state if a function returns (or any value in the array contains) `false` or is a `string`",
   },
+  localizations: {
+    description:
+      "localization for available strings, available strings are `gregorian`, `hijri`, `cancel`, `reset` and `ok` ",
+  },
   // ? TestAutomation Ids
   ...testAutomationIds,
 
   // ? Events
-  onClick: {
-    description: `<pre>
-    Callback is used in when row arrow clicked, <b>it should be used with primaryField</b> <br />
-      - <b>args: => row</b>
-
-      <code>
-        onClick(row) {
-          // Your code here
-        }
-      </code>
-    </pre>`,
+  change: {
+    description:
+      "Fires when <b>`When the value is changed`</b>, and exports `object as a parameter => { hijri, gregorian }`, <br /> `@change='da => console.log({ isHijri })'` ",
     table: {
       category: "Events",
     },
   },
-
-  // ? slots
-  default: {
+  changeHijri: {
+    description:
+      "Fires when <b>`When the switch button is clicked`</b>, and exports `boolean as a parameter`, <br /> `@changeHijri='isHijri => console.log({ isHijri })'` ",
     table: {
-      disable: true,
-    },
-  },
-
-  "{fieldName}": {
-    description: `<pre>If you want to customize any <b>column</b> just make a <b>scoped</b> slot with <b>of column.filed (revisit columns section)</b><br />
-      - slot props: 
-        <code>
-          <ul>
-            <li> <b>1- currentClass (string)</b>: In case you needed the current styles controlled by the package itself</li>
-            <li> <b>2- data (object => { row, columns, currentIteration })</b></li>
-              - row: the current row.
-              - columns: columns provided from the parent.
-              - currentIteration: column iteration.
-          </ul>
-        </code>
-
-        <code> 
-          <template name="YourColumnFieldHere">
-            // Any Html here
-          </template>
-        </code>
-    </pre>`,
-    table: {
-      category: "Slots",
-      type: {
-        summary: "html",
-      },
+      category: "Events",
     },
   },
 };

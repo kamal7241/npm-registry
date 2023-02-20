@@ -17,7 +17,6 @@ module.exports = {
     "no-undef": "warn",
     "no-unused-vars": "warn",
     "no-underscore-dangle": "warn",
-    "prettier/prettier": "warn",
     "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off",
     "vue/singleline-html-element-content-newline": "off",
     "vue/require-default-prop": "off",
@@ -25,6 +24,12 @@ module.exports = {
     "vue/no-mutating-props": "warn",
     "import/prefer-default-export": "off",
     "vue/no-side-effects-in-computed-properties": "off",
+    "prettier/prettier": [
+      "error",
+      {
+        endOfLine: "auto",
+      },
+    ],
     "vue/max-attributes-per-line": [
       "error",
       {

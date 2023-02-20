@@ -155,10 +155,9 @@ export default {
 *The available customization are*:
 1. **Loader section**: to render ***custom loader*** so in order to customize it you will have to use ***scoped slot*** with the name ***loader***.
 
-2. **List section**: to render ***custom list*** so in order to customize it you will have to use ***scoped slot*** with the name ***list*** and it will receive the **data** as an argument and ***onDeleteFile***.
-***data array*** to loop through.
+2. **List section**: to render ***custom list*** so in order to customize it you will have to use ***scoped slot*** with the name ***list*** and it will receive the **data** as an argument.
 
-3. **Empty List placholder section**: to render **_custom Empty list placeholder template_** so in order to customize it you will have to use **_scoped slot_** with the name **_empty-placeholder_**.
+3. **Empty List placholder section**: to render **_custom Empty list placeholder template_** so in order to customize it you will have to use **_scoped slot_** with the name **_emptyPlaceholder_**.
 
 4. **Pagination section**: to render ***custom pagination section*** so in order to customize it you will have to use ***scoped slot*** with the name ***pagination*** and it will receive the ***data object  and 5 methods *** as an argument.
 ***data object*** contains of:
@@ -168,7 +167,7 @@ export default {
   - **currentPageSize**: selected current page size from the dropdown
   - **isLastPageActionDisabled**: **true** if ***currentPage === totalPages*** to disable **first and previous Actions**
   - **isFirstPageActionDisabled**: **true** if ***currentPage === 0*** to disable **last and next Actions**
-  - Methods: 
+- **Methods**: 
   - ***onChangePageSize***: to change the page size and it takes the number as the first param `onChangePageSize(20)`
   - ***onFirstPageActionClicked***: triger first page action click
   - ***onPreviousPageActionClicked***: triger previous page action click
