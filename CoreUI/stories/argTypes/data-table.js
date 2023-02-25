@@ -70,6 +70,16 @@ const argTypesConfigs = {
       disable: true,
     },
   },
+  "enhancedColumns.primaryColumn.field": {
+    table: {
+      disable: true,
+    },
+  },
+  "column.field": {
+    table: {
+      disable: true,
+    },
+  },
   "{fieldName}": {
     description: `<pre>If you want to customize any <b>column</b> just make a <b>scoped</b> slot with <b>of column.filed (revisit columns section)</b><br />
       - slot props: 

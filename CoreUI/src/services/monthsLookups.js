@@ -42,4 +42,5 @@ export const HijriMonthsLookup = {
   9: i18n.t("months.hijri.ramadan"),
   10: i18n.t("months.hijri.shawwal"),
   11: i18n.t("months.hijri.dhuAlQidah"),
+  12: i18n.t("months.hijri.dhuAlHijjah"),
 };
