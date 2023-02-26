@@ -36,7 +36,16 @@
           @changeHijri="changeHijriState"
         /> -->
 
-        <DatePicker :initial-is-hijri="true" value="1415/3/15" />
+        <DatePicker
+          value="1415/3/15"
+          format="MMM, YYYY/DD"
+          :export-as-hijri="false"
+          switch-action-id="switch-action-Id"
+          days-dropdown-id="days-dropdown-id"
+          months-dropdown-id="months-dropdown-id"
+          years-dropdown-id="years-dropdown-id"
+          @change="onChangeDatePicker"
+        />
 
         <!-- <image-cropper
           label="نص تجريبي"
@@ -196,8 +205,8 @@ export default {
     // CardPanel: () => import("./components/CardPanel/cardPanel.vue"),
     // DataTable: () => import("./components/DataTable/dataTable.vue"),
     // LabelAndValue: () => import("./components/LabelAndValue/labelAndValue.vue"),
-    EmptyPlaceholder: () =>
-      import("./components/EmptyPlaceholder/emptyPlaceholder.vue"),
+    // EmptyPlaceholder: () =>
+    //   import("./components/EmptyPlaceholder/emptyPlaceholder.vue"),
     // ImageCropper: () => import("./components/ImageCropper/imageCropper.vue"),
     // PaginationLayout: () =>
     //   import("./components/PaginationLayout/paginationLayout.vue"),
@@ -778,6 +787,9 @@ export default {
           rank: "secondRank",
         },
       ];
+    },
+    onChangeDatePicker(value) {
+      console.log(value);
     },
   },
 };

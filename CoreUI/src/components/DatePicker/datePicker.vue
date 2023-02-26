@@ -21,6 +21,7 @@
           </p>
 
           <v-switch
+            :id="switchActionId"
             v-model="isHijri"
             :dense="dense"
             color="primary"
@@ -40,6 +41,7 @@
 
       <div class="list-wrapper d-flex align-center justify-space-between mb-2">
         <v-autocomplete
+          :id="yearsDropdownId"
           v-model="dateModel.year"
           outlined
           :dense="dense"
@@ -55,6 +57,7 @@
         />
 
         <v-autocomplete
+          :id="monthsDropdownId"
           v-model="dateModel.month"
           outlined
           :dense="dense"
@@ -70,6 +73,7 @@
         />
 
         <v-autocomplete
+          :id="daysDropdownId"
           v-model="dateModel.day"
           outlined
           :dense="dense"
@@ -104,6 +108,22 @@ export default {
       default: () => [],
     },
     label: {
+      type: String,
+      default: "",
+    },
+    switchActionId: {
+      type: String,
+      default: "",
+    },
+    yearsDropdownId: {
+      type: String,
+      default: "",
+    },
+    monthsDropdownId: {
+      type: String,
+      default: "",
+    },
+    daysDropdownId: {
       type: String,
       default: "",
     },
@@ -244,7 +264,7 @@ export default {
       const { minimumGregorianYear, maxPreviewedYears } = this;
       const currentYear = moment().year();
 
-      return maxPreviewedYears || currentYear - minimumGregorianYear;
+      return Math.abs(maxPreviewedYears) || currentYear - minimumGregorianYear;
     },
     days() {
       const { isHijri, dateModel, selectedMonthInstance } = this;
