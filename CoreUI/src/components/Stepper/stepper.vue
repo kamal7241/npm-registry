@@ -24,11 +24,14 @@
       <v-stepper-items>
         <v-stepper-content
           v-for="(step, index) in steps"
-          v-if="index + 1 === currentStep"
           :key="`content-${index + 1}`"
           :step="index + 1"
         >
-          <slot :name="step.slotName" :actions-props="actionsProps" />
+          <slot
+            v-if="index + 1 === currentStep"
+            :name="step.slotName"
+            :actions-props="actionsProps"
+          />
         </v-stepper-content>
       </v-stepper-items>
     </template>
@@ -48,6 +51,7 @@
     </template>
   </v-stepper>
 </template>
+
 <script>
 export default {
   name: "Stepper",
@@ -101,3 +105,5 @@ export default {
   },
 };
 </script>
+
+<style lang="sass" scoped></style>

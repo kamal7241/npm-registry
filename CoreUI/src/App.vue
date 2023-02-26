@@ -184,7 +184,8 @@
       </template> -->
         <!-- </pagination-layout>
     </v-container> -->
-        <v-btn type="submit" color="primary" @click="testValidation">
+        <NSvg name="map" />
+        <v-btn type="submit" color="secondary" @click="testValidation">
           تجربة
         </v-btn>
       </v-form>
@@ -211,6 +212,7 @@ export default {
     // PaginationLayout: () =>
     //   import("./components/PaginationLayout/paginationLayout.vue"),
     DatePicker: () => import("./components/DatePicker/datePicker.vue"),
+    NSvg: () => import("./components/Svgs/nSvg.vue"),
   },
   data() {
     return {
