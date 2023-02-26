@@ -1,17 +1,8 @@
 <template>
   <v-app>
-    <v-container>
-      <empty-placeholder
-        :primary-text="'fdhsfhsfjfsyjsfjfj'"
-        :secondary-text="secondaryText"
-        :is-loading="false"
-      >
-        <template #iconContent>
-          <n-svg name="judge-gavel" />
-        </template>
-      </empty-placeholder>
+    <v-container class="pt-10">
       <v-form ref="defaultForm" lazy-validation @submit.prevent>
-        <attachment-field
+        <!-- <attachment-field
           label="صورة شخصية "
           name="association"
           placeholder="قم بسحب وإرفاق ملفاتك في هذه المنطقة"
@@ -43,7 +34,9 @@
           :rules="formValidators.calendar"
           @change="changeDate"
           @changeHijri="changeHijriState"
-        />
+        /> -->
+
+        <DatePicker :initial-is-hijri="true" value="1415/3/15" />
 
         <!-- <image-cropper
           label="نص تجريبي"
@@ -197,9 +190,9 @@ import { isRequiredAttachment } from "./services/formValidators";
 export default {
   name: "App",
   components: {
-    AttachmentField: () =>
-      import("./components/AttachmentField/attachmentField.vue"),
-    Calendar: () => import("./components/Calendar/calendar.vue"),
+    // AttachmentField: () =>
+    //   import("./components/AttachmentField/attachmentField.vue"),
+    // Calendar: () => import("./components/Calendar/calendar.vue"),
     // CardPanel: () => import("./components/CardPanel/cardPanel.vue"),
     // DataTable: () => import("./components/DataTable/dataTable.vue"),
     // LabelAndValue: () => import("./components/LabelAndValue/labelAndValue.vue"),
@@ -208,6 +201,7 @@ export default {
     // ImageCropper: () => import("./components/ImageCropper/imageCropper.vue"),
     // PaginationLayout: () =>
     //   import("./components/PaginationLayout/paginationLayout.vue"),
+    DatePicker: () => import("./components/DatePicker/datePicker.vue"),
   },
   data() {
     return {

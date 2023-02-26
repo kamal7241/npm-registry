@@ -39,6 +39,12 @@ const en = {
   rejected: "Rejected",
   active: "Active",
 
+  theYear: "Year",
+  theMonth: "Month",
+  theDay: "Day",
+
+  noDataText: "No data found",
+
   congratulations: "Congratulations!",
   successfullyAdded:
     "Your request has been received to book a new appointment to visit the judicial facilities. You will be notified by text message if your request is accepted or rejected, knowing that the earliest available appointment will be booked upon approval of your request",
@@ -122,6 +128,20 @@ const en = {
       october: "October",
       november: "November",
       december: "December",
+    },
+    hijri: {
+      muharram: "Muḥarram",
+      safar: "Ṣafar",
+      rabiAlAwwal: "Rabī‘ al-awwal",
+      rabiAlThani: "Rabī‘ ath-thānī",
+      jumadaAlUla: "Jumādá al-ūlá",
+      jumadaAlAkhira: "Jumādá al-ākhirah",
+      rajab: "Rajab",
+      shaban: "Sha‘bān",
+      ramadan: "Ramaḍān",
+      shawwal: "Shawwāl",
+      dhuAlQidah: "Dhū al-Qa‘dah",
+      dhuAlHijjah: "Dhū al-Ḥijjah",
     },
   },
 

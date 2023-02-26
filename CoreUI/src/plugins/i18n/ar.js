@@ -40,6 +40,12 @@ const ar = {
   rejected: "مرفوض",
   active: "قائم",
 
+  theYear: "السنة",
+  theMonth: "الشهر",
+  theDay: "اليوم",
+
+  noDataText: "لا توجد بيانات",
+
   congratulations: "تهانينا!",
   successfullyAdded:
     "لقد تم استقبال طلبكم لحجز موعد جديد لزيارة المرافق العدلية سيتم إشعاركم عن طريق رسالة نصية في حال قبول أو رفض طلبكم علماً بأنه سيتم حجز أقرب موعد متاح عند الموافقة على طلبكم",
@@ -122,6 +128,20 @@ const ar = {
       october: "أكتوبر",
       november: "نوفمبر",
       december: "ديسمبر",
+    },
+    hijri: {
+      muharram: "المحرم",
+      safar: "صفر",
+      rabiAlAwwal: "ربيع الأول",
+      rabiAlThani: "ربيع الآخر",
+      jumadaAlUla: "جمادى الأولى",
+      jumadaAlAkhira: "جمادى الآخرة",
+      rajab: "رجب",
+      shaban: "شعبان",
+      ramadan: "رمضان",
+      shawwal: "شوال",
+      dhuAlQidah: "ذو القعدة",
+      dhuAlHijjah: "ذو الحجة",
     },
   },
 

@@ -47,7 +47,7 @@
           item-value="value"
           :label="$t('theYear')"
           :items="years"
-          :class="styles.list"
+          class="list"
           hide-details
           :disabled="disabled"
           :menu-props="{ bottom: true, offsetY: true }"
@@ -62,7 +62,7 @@
           item-value="value"
           :label="$t('theMonth')"
           :items="months"
-          :class="styles.list"
+          class="list"
           hide-details
           :disabled="disabled"
           :menu-props="{ bottom: true, offsetY: true }"
@@ -77,7 +77,7 @@
           item-value="value"
           :label="$t('theDay')"
           :items="days"
-          :class="styles.list"
+          class="list"
           hide-details
           :disabled="disabled"
           :menu-props="{ bottom: true, offsetY: true }"
@@ -87,6 +87,7 @@
     </div>
   </v-input>
 </template>
+
 <script>
 import moment from "moment-hijri";
 import { generateRange } from "../../utils/calendar";
@@ -186,7 +187,6 @@ export default {
 
       return todayDate === daysInCurrentMonth;
     },
-
     daysRangeStartNumber() {
       const {
         isHijri,
@@ -218,7 +218,6 @@ export default {
 
       return 1;
     },
-
     monthsRangeStartNumber() {
       const {
         isHijri,
@@ -241,14 +240,12 @@ export default {
 
       return 1;
     },
-
     initialMaxPreviewedYears() {
       const { minimumGregorianYear, maxPreviewedYears } = this;
       const currentYear = moment().year();
 
       return maxPreviewedYears || currentYear - minimumGregorianYear;
     },
-
     days() {
       const { isHijri, dateModel, selectedMonthInstance } = this;
       const { day: selectedDay } = dateModel;
@@ -256,6 +253,7 @@ export default {
       const daysInCurrentSelectedMonth = isHijri
         ? selectedMonthInstance.iDaysInMonth()
         : selectedMonthInstance.daysInMonth();
+
       const shouldResetDate =
         Number(selectedDay) > daysInCurrentSelectedMonth ||
         Number(selectedDay) < this.daysRangeStartNumber;
@@ -271,7 +269,6 @@ export default {
         end: daysInCurrentSelectedMonth,
       });
     },
-
     months() {
       const { isHijri, selectedMonthInstance, dateModel } = this;
       const { month } = dateModel;
@@ -294,7 +291,6 @@ export default {
         isHijri,
       });
     },
-
     years() {
       const { isHijri, futureOnly, initialMaxPreviewedYears } = this;
       const currentYear = isHijri ? moment().iYear() : moment().year();
@@ -319,7 +315,6 @@ export default {
 
       return `${year}/${month}/${day}`;
     },
-
     isValidSelectedDate() {
       const { day, month, year } = this.dateModel;
 
@@ -328,14 +323,7 @@ export default {
   },
   watch: {
     value() {
-      if (!this.value) {
-        this.dateModel = { ...this.initialDateModel };
-      } else {
-        this.dateModel = this.isHijri
-          ? this.getDateModel(this.value)
-          : this.convertToGregorian(this.value);
-      }
-      this.onChange();
+      this.updateFieldWithValue();
     },
   },
   created() {
@@ -374,6 +362,19 @@ export default {
       } else {
         this.$emit("change", "");
       }
+    },
+
+    updateFieldWithValue() {
+      if (!this.value) {
+        this.dateModel = { ...this.initialDateModel };
+      } else {
+        this.dateModel = this.getDateModel(this.value);
+        // this.dateModel = this.isHijri
+        //   ? this.getDateModel(this.value)
+        //   : this.convertToGregorian(this.value);
+      }
+
+      this.onChange();
     },
 
     convertToHijri(date) {
@@ -416,3 +417,48 @@ export default {
   },
 };
 </script>
+
+<style scoped lang="scss">
+.label-and-field-wrapper {
+  position: relative;
+  width: 100%;
+
+  .label-wrapper {
+    width: 100%;
+    position: absolute;
+    top: -38px;
+  }
+
+  .list-wrapper {
+    width: 100%;
+    .list {
+      &:not(:first-of-type, :last-of-type) {
+        margin: 0 10px;
+      }
+    }
+  }
+
+  @media (max-width: 500px) {
+    .list-wrapper {
+      flex-direction: column;
+
+      .list {
+        width: 100%;
+
+        &:not(:first-of-type, :last-of-type) {
+          margin: 10px 0;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 300px) {
+    .label-wrapper {
+      .fieldLabel,
+      .dateTypeToggler {
+        font-size: 14px;
+      }
+    }
+  }
+}
+</style>
