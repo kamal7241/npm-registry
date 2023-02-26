@@ -1,9 +1,13 @@
 import DatePicker from "../src/components/DatePicker/datePicker.vue";
 import { argTypesConfigs } from "./argTypes/date-picker";
-import { defaultSlotParams, headerActionSlotParams } from "./code/DatePicker";
-
-const defaultSlotName = "default";
-const headerActionSlotName = "headerAction";
+import {
+  FutureModeParams,
+  GregorianModeParams,
+  HijriValueParams,
+  IncludeTodayInFutureModeParams,
+  MaxPreviewedYearsParams,
+  MinimumGregorianYearParams,
+} from "./code/DatePicker";
 
 export default {
   title: "Components/DatePicker",
@@ -15,62 +19,55 @@ const Template = (args, { argTypes }) => ({
   components: { DatePicker },
   props: Object.keys(argTypes),
   template: `
-    <DatePicker v-bind="propsWithoutSlots">
-      <template v-if="${defaultSlotName in args}" v-slot>
-        ${args.default}
-      </template>
-      <template 
-        v-if="${headerActionSlotName in args}" 
-        #${headerActionSlotName}
-      >
-        ${args[headerActionSlotName]}
-      </template>
-    </DatePicker>
+    <div class='storybook-calendar-wrapper'>
+      <DatePicker v-bind="$props" />
+    </div>
   `,
-  computed: {
-    propsWithoutSlots() {
-      const filteredProps = this.$props;
-
-      delete filteredProps[defaultSlotName];
-      delete filteredProps[headerActionSlotName];
-
-      return filteredProps;
-    },
-  },
 });
 
-export const Base = Template.bind({});
-Base.args = {
-  title: "",
-  isLoading: false,
+export const Default = Template.bind({});
+Default.args = {};
+
+export const FutureMode = Template.bind({});
+FutureMode.parameters = FutureModeParams;
+FutureMode.args = {
+  futureOnly: true,
 };
 
-export const WithTitle = Template.bind({});
-WithTitle.args = {
-  title: "Card panel",
-  isLoading: false,
+export const IncludeTodayInFutureMode = Template.bind({});
+IncludeTodayInFutureMode.parameters = IncludeTodayInFutureModeParams;
+IncludeTodayInFutureMode.args = {
+  futureOnly: true,
+  skipTodayInFutureMode: false,
 };
 
-export const LoadingState = Template.bind({});
-LoadingState.args = {
-  title: "Card panel",
-  isLoading: true,
+export const GregorianMode = Template.bind({});
+GregorianMode.parameters = GregorianModeParams;
+GregorianMode.args = {
+  initialIsHijri: false,
 };
 
-export const defaultSlot = Template.bind({});
-defaultSlot.parameters = defaultSlotParams;
-defaultSlot.args = {
-  title: "Card panel",
-  isLoading: false,
-  // ! slots
-  [defaultSlotName]: `<strong>This is the default slot</strong>`,
+export const MinimumGregorianYear = Template.bind({});
+MinimumGregorianYear.parameters = MinimumGregorianYearParams;
+MinimumGregorianYear.args = {
+  minimumGregorianYear: 2015,
 };
 
-export const HeaderActionSlot = Template.bind({});
-HeaderActionSlot.parameters = headerActionSlotParams;
-HeaderActionSlot.args = {
-  title: "Card panel",
-  isLoading: false,
-  // ! slots
-  [headerActionSlotName]: `<v-btn color='primary'>Click Me</v-btn>`,
+export const MaxPreviewedYears = Template.bind({});
+MaxPreviewedYears.parameters = MaxPreviewedYearsParams;
+MaxPreviewedYears.args = {
+  maxPreviewedYears: 3,
+};
+
+export const HijriValue = Template.bind({});
+HijriValue.parameters = HijriValueParams;
+HijriValue.args = {
+  value: "1443/02/15",
+};
+
+export const GregorianValueParams = Template.bind({});
+GregorianValueParams.parameters = GregorianValueParams;
+GregorianValueParams.args = {
+  initialIsHijri: false,
+  value: "2010/02/15",
 };

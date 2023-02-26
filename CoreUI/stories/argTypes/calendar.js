@@ -71,14 +71,14 @@ const argTypesConfigs = {
   // ? Events
   change: {
     description:
-      "Fires when <b>`When the value is changed`</b>, and exports `object as a parameter => { hijri, gregorian }`, <br /> `@change='da => console.log({ isHijri })'` ",
+      "Fires <b>`When the value is changed`</b>, and exports `object as a parameter => { hijri, gregorian }`, <br /> `@change='date => console.log({ isHijri })'` ",
     table: {
       category: "Events",
     },
   },
   changeHijri: {
     description:
-      "Fires when <b>`When the switch button is clicked`</b>, and exports `boolean as a parameter`, <br /> `@changeHijri='isHijri => console.log({ isHijri })'` ",
+      "Fires <b>`When the switch button is clicked`</b>, and exports `boolean as a parameter`, <br /> `@changeHijri='isHijri => console.log({ isHijri })'` ",
     table: {
       category: "Events",
     },

@@ -3,34 +3,84 @@ const defaultSourceConfigs = {
   type: "auto",
 };
 
-const defaultSlotParams = {
+const FutureModeParams = {
+  docs: {
+    source: {
+      ...defaultSourceConfigs,
+      code: "<DatePicker futureOnly />",
+    },
+  },
+};
+
+const IncludeTodayInFutureModeParams = {
   docs: {
     source: {
       ...defaultSourceConfigs,
       code: `
-<CardPanel>
-  <template #default>
-    <strong>This is the default slot</strong>
-  </template>
-</CardPanel>
+<DatePicker 
+  futureOnly
+  skipTodayInFutureMode="false" 
+/>
+        `,
+    },
+  },
+};
+
+const GregorianModeParams = {
+  docs: {
+    source: {
+      ...defaultSourceConfigs,
+      code: "<DatePicker :initialIsHijri='false' />",
+    },
+  },
+};
+
+const MinimumGregorianYearParams = {
+  docs: {
+    source: {
+      ...defaultSourceConfigs,
+      code: "<DatePicker :minimumGregorianYear='2015' />",
+    },
+  },
+};
+
+const MaxPreviewedYearsParams = {
+  docs: {
+    source: {
+      ...defaultSourceConfigs,
+      code: "<DatePicker :maxPreviewedYears='3' />",
+    },
+  },
+};
+
+const HijriValueParams = {
+  docs: {
+    source: {
+      ...defaultSourceConfigs,
+      code: "<DatePicker value='1443/02/15' />",
+    },
+  },
+};
+const GregorianValueParams = {
+  docs: {
+    source: {
+      ...defaultSourceConfigs,
+      code: `
+<DatePicker 
+  :initialIsHijri="false"
+  value='2010/02/15' 
+/>
       `,
     },
   },
 };
 
-const headerActionSlotParams = {
-  docs: {
-    source: {
-      ...defaultSourceConfigs,
-      code: `
-<CardPanel>
-  <template #headerAction>
-    <v-btn color='primary'>Click Me</v-btn>
-  </template>
-</CardPanel>
-      `,
-    },
-  },
+export {
+  FutureModeParams,
+  GregorianModeParams,
+  HijriValueParams,
+  MaxPreviewedYearsParams,
+  MinimumGregorianYearParams,
+  GregorianValueParams,
+  IncludeTodayInFutureModeParams,
 };
-
-export { defaultSlotParams, headerActionSlotParams };
