@@ -1,6 +1,15 @@
 <template>
   <v-app>
     <v-container>
+      <empty-placeholder
+        :primary-text="'fdhsfhsfjfsyjsfjfj'"
+        :secondary-text="secondaryText"
+        :is-loading="false"
+      >
+        <template #iconContent>
+          <n-svg name="judge-gavel" />
+        </template>
+      </empty-placeholder>
       <v-form ref="defaultForm" lazy-validation @submit.prevent>
         <attachment-field
           label="صورة شخصية "
@@ -194,8 +203,8 @@ export default {
     // CardPanel: () => import("./components/CardPanel/cardPanel.vue"),
     // DataTable: () => import("./components/DataTable/dataTable.vue"),
     // LabelAndValue: () => import("./components/LabelAndValue/labelAndValue.vue"),
-    // EmptyPlaceholder: () =>
-    //   import("./components/EmptyPlaceholder/emptyPlaceholder.vue"),
+    EmptyPlaceholder: () =>
+      import("./components/EmptyPlaceholder/emptyPlaceholder.vue"),
     // ImageCropper: () => import("./components/ImageCropper/imageCropper.vue"),
     // PaginationLayout: () =>
     //   import("./components/PaginationLayout/paginationLayout.vue"),

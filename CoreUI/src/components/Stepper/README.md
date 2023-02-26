@@ -50,7 +50,7 @@ Customizable pkg for Stepper extends vuetify stepper
 </template>
 
 <script>
-import PaginationLayout from "./components/PaginationLayout.vue";
+import Stepper from "./components/Stepper.vue";
 export default {
   name: "App",
   components: { 
@@ -64,10 +64,42 @@ export default {
       endpoint: serverSideLink => fetch(`http://jsonplaceholder.typicode.com/photos?_limit=100${serverSideLink}`)
     };
   },
-  methods: {
-    onSearch(data) {
-      console.log('onSearch', data);
-    }
+  computed: {
+    showStepperHeader() {
+      return this.isNewRequest || this.isEditMode;
+    },
+    steps() {
+      const previewStep = {
+        title: this.$t('requestReview'),
+        slotName: 'requestReview',
+        component: RequestReview,
+        props: {
+          userInfo: this.user,
+          requestPayload: this.requestPayload,
+          isLoading: this.isSubmitting,
+          readOnlyMode: false,
+        },
+      };
+
+      if (this.isPreviewMode) {
+        previewStep.props.readOnlyMode = true;
+
+        return [previewStep];
+      }
+
+      return [
+        {
+          component: PersonalInfo,
+          slotName: 'applicantPersonalInfo',
+          title: this.$t('applicantPersonalInfo'),
+          props: {
+            userInfo: this.user,
+            requestPayload: this.requestPayload,
+          },
+        },
+        previewStep,
+      ];
+    };
   }
 };
 </script>

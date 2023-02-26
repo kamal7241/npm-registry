@@ -1,8 +1,8 @@
 <template>
   <svg
-    width="80"
-    height="80"
-    viewBox="0 0 80 80"
+    :width="width"
+    :height="height"
+    :viewBox="`0 0 ${width} ${height}`"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
@@ -16,3 +16,19 @@
     />
   </svg>
 </template>
+<script>
+export default {
+  props: {
+    width: {
+      required: false,
+      type: String,
+      default: "25",
+    },
+    height: {
+      required: false,
+      type: String,
+      default: "25",
+    },
+  },
+};
+</script>
