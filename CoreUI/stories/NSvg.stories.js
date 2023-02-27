@@ -1,5 +1,5 @@
 import NSvg from "../src/components/Svgs/nSvg.vue";
-import { argTypesConfigs } from "./argTypes/label-and-value";
+import { argTypesConfigs } from "./argTypes/n-svg";
 
 export default {
   title: "Components/NSvg",
@@ -10,14 +10,11 @@ export default {
 const Template = (args, { argTypes }) => ({
   components: { NSvg },
   props: Object.keys(argTypes),
-  template: `
-  <div>
-  <NSvg v-bind='$props' />
-  </div>`,
+  template: "<NSvg v-bind='$props' />",
 });
 
 export const Default = Template.bind({});
 Default.args = {
-  label: "ناجز",
-  value: "Value",
+  width: 50,
+  height: 50,
 };
