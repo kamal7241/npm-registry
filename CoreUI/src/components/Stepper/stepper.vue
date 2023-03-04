@@ -4,7 +4,6 @@
     v-model="currentStep"
     v-bind="$attrs"
     :vertical="isMobile"
-    :class="styles.rootStepper"
   >
     <template v-if="!isMobile">
       <slot name="header" :currentStep="currentStep">
@@ -105,5 +104,3 @@ export default {
   },
 };
 </script>
-
-<style lang="sass" scoped></style>
