@@ -17,4 +17,5 @@ export const Default = Template.bind({});
 Default.args = {
   width: 50,
   height: 50,
+  name: "add-users",
 };

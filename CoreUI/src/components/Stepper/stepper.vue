@@ -55,6 +55,10 @@
 export default {
   name: "Stepper",
   props: {
+    scrollTopOnNavigation: {
+      type: Boolean,
+      default: true,
+    },
     steps: {
       type: Array,
       default: () => [],
@@ -84,7 +88,7 @@ export default {
       if (this.steps.length && this.currentStep < this.steps.length) {
         this.currentStep += 1;
 
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        this.onScrollTop();
       }
     },
 
@@ -92,14 +96,20 @@ export default {
       if (this.steps.length && this.currentStep > 1) {
         this.currentStep -= 1;
 
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        this.onScrollTop();
       }
     },
 
     goTo(step) {
       this.currentStep = step;
 
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      this.onScrollTop();
+    },
+
+    onScrollTop() {
+      if (this.scrollTopOnNavigation) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
     },
   },
 };
