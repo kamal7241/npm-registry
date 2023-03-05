@@ -2,7 +2,7 @@
   <v-app>
     <v-container class="pt-10">
       <v-form ref="defaultForm" lazy-validation @submit.prevent>
-        <!-- <attachment-field
+        <attachment-field
           label="صورة شخصية "
           name="association"
           placeholder="قم بسحب وإرفاق ملفاتك في هذه المنطقة"
@@ -21,7 +21,7 @@
           @select="onSelectFiles"
           @error="onErrorFound"
         />
-
+        <!--
         <calendar
           color="primary"
           label="تصفية بالتاريخ"
@@ -112,35 +112,35 @@
         </template>
       </empty-placeholder> -->
 
-        <!-- <pagination-layout
-        :value="paginationValue"
-        server-page-number-key="page"
-        server-page-size-key="size"
-        total-count-key="totalPassengers"
-        enable-readable-stream-parse
-        :cascade-mode="false"
-        data-target-key="data"
-        is-direct-data
-        :enable-server-side-pagination="false"
-        :additional-payload="additionalPayload"
-        :page-size-options="[10, 50, 100, 30]"
-        :fetch-on-mount="false"
-        @search="onSearch"
-      > -->
-        <!-- Customize Loading slot -->
-        <!-- <template #loader>
+        <pagination-layout
+          :value="paginationValue"
+          server-page-number-key="page"
+          server-page-size-key="size"
+          total-count-key="totalPassengers"
+          enable-readable-stream-parse
+          :cascade-mode="false"
+          data-target-key="data"
+          accept=".rar"
+          is-direct-data
+          :additional-payload="additionalPayload"
+          :page-size-options="[10, 50, 100, 30]"
+          :endpoint="endpoint"
+          @search="onSearch"
+        >
+          <!-- Customize Loading slot -->
+          <!-- <template #loader>
           <span>Loading ...</span>
         </template> -->
 
-        <!-- Customize list slot -->
-        <!-- <template #list="{ data }">
+          <!-- Customize list slot -->
+          <!-- <template #list="{ data }">
           <p v-for="(item, i) in data" :key="i">
             {{ item.title }}
           </p>
         </template> -->
 
-        <!-- Customize pagination slot -->
-        <!-- <template
+          <!-- Customize pagination slot -->
+          <!-- <template
         #pagination="{
           data,
           onChangePageSize,
@@ -182,8 +182,9 @@
           الصفحة الأخيرة
         </button>
       </template> -->
-        <!-- </pagination-layout>
-    </v-container> -->
+        </pagination-layout>
+        <!-- </v-form> -->
+        <!-- </v-container> -->
         <NSvg name="map" />
         <v-btn type="submit" color="secondary" @click="testValidation">
           تجربة
@@ -200,8 +201,8 @@ import { isRequiredAttachment } from "./services/formValidators";
 export default {
   name: "App",
   components: {
-    // AttachmentField: () =>
-    //   import("./components/AttachmentField/attachmentField.vue"),
+    AttachmentField: () =>
+      import("./components/AttachmentField/attachmentField.vue"),
     // Calendar: () => import("./components/Calendar/calendar.vue"),
     // CardPanel: () => import("./components/CardPanel/cardPanel.vue"),
     // DataTable: () => import("./components/DataTable/dataTable.vue"),
@@ -209,8 +210,8 @@ export default {
     // EmptyPlaceholder: () =>
     //   import("./components/EmptyPlaceholder/emptyPlaceholder.vue"),
     // ImageCropper: () => import("./components/ImageCropper/imageCropper.vue"),
-    // PaginationLayout: () =>
-    //   import("./components/PaginationLayout/paginationLayout.vue"),
+    PaginationLayout: () =>
+      import("./components/PaginationLayout/paginationLayout.vue"),
     DatePicker: () => import("./components/DatePicker/datePicker.vue"),
     NSvg: () => import("./components/Svgs/nSvg.vue"),
   },
@@ -329,6 +330,11 @@ export default {
     }, 3000);
   },
   methods: {
+    endpoint(serverSideLink) {
+      return fetch(
+        `https://api.instantwebtools.net/v1/passenger${serverSideLink}`
+      );
+    },
     testValidation() {
       this.$refs.defaultForm.validate();
     },
