@@ -12,9 +12,11 @@
         </div>
       </slot>
 
-      <p v-if="primaryText" class="mb-2 primary-text">
-        {{ primaryText }}
-      </p>
+      <slot name="primaryText">
+        <p v-if="primaryText" class="mb-2 primary-text">
+          {{ primaryText }}
+        </p>
+      </slot>
 
       <p v-if="secondaryText" class="secondary-text mb-0">
         {{ secondaryText }}

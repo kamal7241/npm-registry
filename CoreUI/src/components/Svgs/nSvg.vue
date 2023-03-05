@@ -15,6 +15,18 @@ import NiJudgeGavelPlus from "./icons/judgeGavelPlus.vue";
 import NiMarriageRings from "./icons/marriageRings.vue";
 import NiPropertyTrendUp from "./icons/propertyTrendUp.vue";
 import NiUsersGroup from "./icons/usersGroup.vue";
+import NiStarStach from "./icons/starStach.vue";
+import NiCalendarRemove from "./icons/calendarRemove.vue";
+import NiBell from "./icons/bell.vue";
+import NiArchiveBook from "./icons/archiveBook.vue";
+import NiHome from "./icons/home.vue";
+import NiFolderOpen from "./icons/folderOpen.vue";
+import NiMedalStar from "./icons/medalStar.vue";
+import NiStickyNote from "./icons/stickyNote.vue";
+import NiUsersGuard from "./icons/userGuard.vue";
+import NiDocumentPrevious from "./icons/documentPrevious.vue";
+import NiDanger from "./icons/danger.vue";
+import NiAppStash from "./icons/appStash.vue";
 
 export default {
   name: "NSvg",
@@ -31,6 +43,18 @@ export default {
     NiMarriageRings,
     NiPropertyTrendUp,
     NiUsersGroup,
+    NiStarStach,
+    NiCalendarRemove,
+    NiBell,
+    NiArchiveBook,
+    NiHome,
+    NiFolderOpen,
+    NiMedalStar,
+    NiStickyNote,
+    NiUsersGuard,
+    NiDocumentPrevious,
+    NiDanger,
+    NiAppStash,
   },
   props: {
     name: {
