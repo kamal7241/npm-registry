@@ -96,13 +96,13 @@ export default {
   props: {
     width: {
       required: false,
-      type: String,
-      default: "25",
+      type: Number,
+      default: 25,
     },
     height: {
       required: false,
-      type: String,
-      default: "25",
+      type: Number,
+      default: 25,
     },
   },
 };

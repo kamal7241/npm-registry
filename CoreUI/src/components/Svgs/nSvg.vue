@@ -1,5 +1,5 @@
 <template>
-  <component :is="`ni-${name}`" :height="height" :width="width" />
+  <component :is="`ni-${name}`" v-if="name" :height="height" :width="width" />
 </template>
 
 <script>
@@ -64,13 +64,13 @@ export default {
     },
     width: {
       required: false,
-      type: String,
-      default: "25",
+      type: Number,
+      default: 25,
     },
     height: {
       required: false,
-      type: String,
-      default: "25",
+      type: Number,
+      default: 25,
     },
   },
 };

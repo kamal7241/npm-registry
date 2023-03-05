@@ -4,7 +4,6 @@
     v-model="currentStep"
     v-bind="$attrs"
     :vertical="isMobile"
-    :class="styles.rootStepper"
   >
     <template v-if="!isMobile">
       <slot name="header" :currentStep="currentStep">
@@ -24,11 +23,14 @@
       <v-stepper-items>
         <v-stepper-content
           v-for="(step, index) in steps"
-          v-if="index + 1 === currentStep"
           :key="`content-${index + 1}`"
           :step="index + 1"
         >
-          <slot :name="step.slotName" :actions-props="actionsProps" />
+          <slot
+            v-if="index + 1 === currentStep"
+            :name="step.slotName"
+            :actions-props="actionsProps"
+          />
         </v-stepper-content>
       </v-stepper-items>
     </template>
@@ -48,10 +50,15 @@
     </template>
   </v-stepper>
 </template>
+
 <script>
 export default {
   name: "Stepper",
   props: {
+    scrollTopOnNavigation: {
+      type: Boolean,
+      default: true,
+    },
     steps: {
       type: Array,
       default: () => [],
@@ -81,7 +88,7 @@ export default {
       if (this.steps.length && this.currentStep < this.steps.length) {
         this.currentStep += 1;
 
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        this.onScrollTop();
       }
     },
 
@@ -89,14 +96,20 @@ export default {
       if (this.steps.length && this.currentStep > 1) {
         this.currentStep -= 1;
 
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        this.onScrollTop();
       }
     },
 
     goTo(step) {
       this.currentStep = step;
 
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      this.onScrollTop();
+    },
+
+    onScrollTop() {
+      if (this.scrollTopOnNavigation) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
     },
   },
 };

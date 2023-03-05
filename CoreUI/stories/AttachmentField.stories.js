@@ -1,22 +1,16 @@
 import AttachmentField from "../src/components/AttachmentField/attachmentField.vue";
 import { argTypesConfigs } from "./argTypes/attachment-field";
 import {
-  AcceptParams,
   ClientSideValueParams,
   CustomLabelParams,
   CustomListParams,
-  DisabledParams,
-  DownloadIconParams,
   EnableFullnameDisplayParams,
-  LabelParams,
   LocalizationsParams,
   MaxAttachmentsParams,
   MaxDisplayNameLengthParams,
   MaxFileSizeInMegaParams,
   MaxFilesSizeInMegaParams,
-  MultipleParams,
   PhancyPreviewParams,
-  RequiredParams,
   ServerSideParams,
   ServerSideValueParams,
   ValidateOnSingleFileSizeParams,
@@ -112,37 +106,6 @@ Default.args = {
   ...defaultArgs,
 };
 
-export const Label = Template.bind({});
-Label.parameters = LabelParams;
-Label.args = {
-  label: "الشهادة العلمية",
-};
-
-export const Required = Template.bind({});
-Required.parameters = RequiredParams;
-Required.args = {
-  isRequired: true,
-  label: "الشهادة العلمية",
-};
-
-export const DifferentFileTypes = Template.bind({});
-DifferentFileTypes.parameters = AcceptParams;
-DifferentFileTypes.args = {
-  accept: ".docx, .pdf",
-};
-
-export const Disabled = Template.bind({});
-Disabled.parameters = DisabledParams;
-Disabled.args = {
-  disabled: true,
-};
-
-export const Multiple = Template.bind({});
-Multiple.parameters = MultipleParams;
-Multiple.args = {
-  isMultiple: true,
-};
-
 export const MaxFileSizeInMega = Template.bind({});
 MaxFileSizeInMega.parameters = MaxFileSizeInMegaParams;
 MaxFileSizeInMega.args = {
@@ -187,12 +150,6 @@ export const PhancyPreview = Template.bind({});
 PhancyPreview.parameters = PhancyPreviewParams;
 PhancyPreview.args = {
   enableFancyPreview: true,
-};
-
-export const DownloadIcon = Template.bind({});
-DownloadIcon.parameters = DownloadIconParams;
-DownloadIcon.args = {
-  enableDownload: true,
 };
 
 export const Localizations = Template.bind({});

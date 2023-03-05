@@ -16,71 +16,6 @@ const DefaultParams = {
   },
 };
 
-const LabelParams = {
-  docs: {
-    source: {
-      ...defaultSourceConfigs,
-      code: `
-<template>
-  <AttachmentField label="الشهادة العلمية" />
-</template>
-      `,
-    },
-  },
-};
-
-const RequiredParams = {
-  docs: {
-    source: {
-      ...defaultSourceConfigs,
-      code: `
-<template>
-  <AttachmentField  isRequired />
-</template>
-      `,
-    },
-  },
-};
-
-const AcceptParams = {
-  docs: {
-    source: {
-      ...defaultSourceConfigs,
-      code: `
-<template>
-  <AttachmentField accept=".doc" />
-</template>
-      `,
-    },
-  },
-};
-
-const DisabledParams = {
-  docs: {
-    source: {
-      ...defaultSourceConfigs,
-      code: `
-<template>
-  <AttachmentField disabled />
-</template>
-      `,
-    },
-  },
-};
-
-const MultipleParams = {
-  docs: {
-    source: {
-      ...defaultSourceConfigs,
-      code: `
-<template>
-  <AttachmentField isMultiple />
-</template>
-      `,
-    },
-  },
-};
-
 const MaxFileSizeInMegaParams = {
   docs: {
     source: {
@@ -181,19 +116,6 @@ const PhancyPreviewParams = {
       code: `
 <template>
   <AttachmentField enableFancyPreview />
-</template>
-      `,
-    },
-  },
-};
-
-const DownloadIconParams = {
-  docs: {
-    source: {
-      ...defaultSourceConfigs,
-      code: `
-<template>
-  <AttachmentField enableDownload />
 </template>
       `,
     },
@@ -401,12 +323,7 @@ const CustomListParams = {
 };
 
 export {
-  LabelParams,
-  AcceptParams,
-  DisabledParams,
-  RequiredParams,
   ServerSideParams,
-  DownloadIconParams,
   PhancyPreviewParams,
   LocalizationsParams,
   ServerSideValueParams,
@@ -414,7 +331,6 @@ export {
   MaxDisplayNameLengthParams,
   MaxAttachmentsParams,
   DefaultParams,
-  MultipleParams,
   MaxFileSizeInMegaParams,
   ClientSideValueParams,
   CustomLabelParams,

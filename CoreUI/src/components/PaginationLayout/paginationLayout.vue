@@ -110,6 +110,7 @@
 </template>
 
 <script>
+import i18n from "../../plugins/i18n";
 import serializeNonQueryParams from "./utils";
 
 export default {
@@ -171,7 +172,7 @@ export default {
     },
     emptyPlaceholderText: {
       type: String,
-      default: "لا توجد بيانات لعرضها",
+      default: i18n.t("noDataText"),
     },
     dataTargetKey: {
       type: String,
