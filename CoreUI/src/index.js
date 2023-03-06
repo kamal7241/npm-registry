@@ -1,19 +1,17 @@
-import CoreUI from './components/index.vue';
+import Vue from "vue";
+import Vuetify from "./plugins/vuetify";
 
-const UploadComponents = {
-	CoreUI
-}
+import * as components from "./components";
 
-const UploadComponentsPlugin = {
-	install(Vue) {
-		Object.keys(UploadComponents).forEach((name) => {
-			Vue.component(name, UploadComponents[name])
-		})
-	}
-}
+Vue.use(Vuetify);
 
-export default UploadComponentsPlugin
+Object.entries(components).forEach(([componentName, component]) => {
+  if (componentName !== "default") {
+    Vue.component(componentName, component);
+  }
+});
 
-export {
-	CoreUI
-}
+export { components };
+
+// Export the library as a plugin
+export default components;

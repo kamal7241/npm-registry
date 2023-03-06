@@ -1,10 +1,12 @@
 {
-    "compilerOptions": {
-        "baseUrl": ".",
-        "paths": {
-            "components/*": [
-                "src/components/*"
-            ]
-        }
-    }
+  // TODO: To be configured
+  // "compilerOptions": {
+  //   "allowSyntheticDefaultImports": true, 
+  //   "experimentalDecorators": true,
+  //   "sourceMap": true,
+  //   "baseUrl": ".",
+  //   "paths": {
+  //     "@/*": ["src/*"]
+  //   },
+  // }
 }
