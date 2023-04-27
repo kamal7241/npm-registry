@@ -178,7 +178,7 @@ const generateUtils = (instance) => {
         const base64Meta = await this.convertFileToBase64(selectedFile);
 
         if ("base64" in base64Meta) {
-          const sharepointId = await newInstance.uploadCallback(base64Meta);
+          const sharepointId = await this.uploadFile(base64Meta);
 
           if (sharepointId) {
             const constructedAttachment = {
@@ -242,6 +242,50 @@ const generateUtils = (instance) => {
         };
         reader.onerror = (error) => reject(error);
       });
+    },
+    async downloadFile(fileData) {
+      const { enhancedServerSideConfigs } = newInstance;
+      const { encodedSharepointId, fileGenerator } = fileData;
+      const { downloadUrl, appName, systemCode } = enhancedServerSideConfigs;
+
+      if (!appName || !systemCode) {
+        throw new Error(
+          `Either appName or systemCode is not valid, you must provide them in serverSideConfigs prop`
+        );
+      }
+
+      const url = `${downloadUrl}/${encodedSharepointId}/${appName}/${systemCode}`;
+
+      const downloadRes = await fetch(url);
+      const fileBuffer = await downloadRes.arrayBuffer();
+
+      return fileGenerator(fileBuffer);
+    },
+    async uploadFile(base64Meta) {
+      const { base64: fileBase64 } = base64Meta;
+      const { enhancedServerSideConfigs } = newInstance;
+      const { uploadUrl, appName, systemCode } = enhancedServerSideConfigs;
+
+      if (!appName || !systemCode) {
+        throw new Error(
+          `Either appName or systemCode is not valid, you must provide them in serverSideConfigs prop`
+        );
+      }
+
+      const downloadRes = await fetch(uploadUrl, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          fileBase64,
+          appName,
+          systemCode,
+        }),
+      });
+
+      return downloadRes.json();
     },
   };
 };

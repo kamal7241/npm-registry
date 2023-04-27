@@ -12,6 +12,7 @@
           :localizations="localizations"
           enable-server-side
           activate-internal-error-preview
+          :server-side-configs="serverSideConfigs"
           :attachment-type-id="5"
           :max-files-size-in-mega="10"
           :upload-callback="onUploadData"
@@ -223,6 +224,13 @@ export default {
         calendar: [isRequiredAttachment],
         imageCropper: [isRequiredAttachment],
       },
+      serverSideConfigs: {
+        uploadUrl: "http://localhost:40000/file/upload",
+        downloadUrl: "/file",
+        systemCode: 37,
+        appName: "Officiant",
+        exportedSharepointIdKey: "exportedSharepointIdKey",
+      },
       // AttachmentField
       localizations: {
         placeholder: "استعراض الملفات",
@@ -324,10 +332,29 @@ export default {
       ];
     },
   },
-  mounted() {
+  async mounted() {
     setTimeout(() => {
       this.isLoading = false;
     }, 3000);
+    // const downloadRes = await fetch(
+    //   "http://localhost:40000/file/VDRFWG4wRFM2MjJVbGhDeFJLZU91WURGSUZERGpSeFBpR2M4bnE4NUNTVTRINEdlTHdFSkhscmZXYzJFQysyZk4rTE9DWG5ZL3hBa2ZaVnRObXBPRnc9PQ==/Officiant/37"
+    // );
+    // const rawResponse = await fetch("http://localhost:40000/file/upload", {
+    //   method: "POST",
+    //   headers: {
+    //     Accept: "application/json",
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     fileBase64:
+    //       "/9j/4AAQSkZJRgABAQAAAQABAAD/fpPvMWDIgpnDH3h0aO5Z7+0XFaULnkYVApOfeHCCBYsQJjVhtQCFcZe+DUXYCTYE9IBoieZjA2k8xnG4Qs7AmgFg3nsYx/LYCaQNe0zW6cvlVr6CYWO0j2EuXLl/LcJuAtc9RBsCJ+s4NsSqOcYsSml9u5h1Zu+kdvkieiL7Rwe9N9xhWGRyg20l70ViKYZ3ilypFzy91wQA4czdyFCQxoLFUZXgArRaKyywLdbo5kXJiD3V+NwU4Him7sxd0htZdlMa32nfQIywtu57pdVPfnBwQbq1LqV7GnLYdihTGkUxnl4cVOXyapj2VvgwLWWvoubpw/VJBDWAEFzVIo3FF8MND/wXG6hWULkFSpmaBbaKGkr+xLWCYbS5t4iUpuHJu4LCVg5S/hT+zcQZWV27zLogabUrbUriKC0LdZcdFQ2HUGVISmv5yFEtreMlmAt0JcEMvCZYCAsndOfVAbgrZi3+IniDxH4jwTe9849n5R/9MqgxM6asFTFjTFCAd/QDsIvtA8qqhsjug6GrXAqoVzhhZOxVTAqRO/y71iC0qo6WrJwlYpdkuqAq97liNmcwZnhxEpkl8kS1MBw30yJoTmux4mBCFH0KlMFtU4Bh7zLCKaz/wDjX//Z",
+    //     appName: "Officiant",
+    //     systemCode: 37,
+    //   }),
+    // });
+    // const content = await rawResponse.json();
+
+    // console.log({ downloadRes: await .downloadRes.arrayBuffer(), content });
   },
   methods: {
     endpoint(serverSideLink) {

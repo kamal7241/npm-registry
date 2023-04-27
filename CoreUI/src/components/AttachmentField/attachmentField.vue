@@ -208,7 +208,7 @@ export default {
     },
     activateInternalErrorPreview: {
       type: Boolean,
-      default: true,
+      default: false,
     },
     isRequired: {
       type: Boolean,
@@ -254,6 +254,10 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    serverSideConfigs: {
+      type: Object,
+      default: () => ({}),
+    },
     enableServerSide: {
       type: Boolean,
       default: false,
@@ -266,16 +270,6 @@ export default {
     attachmentTypeId: {
       type: Number,
       default: 0,
-    },
-    uploadCallback: {
-      type: Function,
-      required: false,
-      default: () => {},
-    },
-    downloadCallback: {
-      type: Function,
-      required: false,
-      default: () => {},
     },
   },
   data() {
@@ -360,15 +354,23 @@ export default {
     utils() {
       return generateUtils(this);
     },
+    enhancedServerSideConfigs() {
+      return {
+        appName: "",
+        systemCode: "",
+        downloadUrl: "/file",
+        uploadUrl: "/file/upload",
+        ...this.serverSideConfigs,
+      };
+    },
   },
   watch: {
     value(newVal, oldVal) {
-      if (
-        this.value.length &&
-        JSON.stringify(newVal) !== JSON.stringify(oldVal)
-      ) {
+      const isEqualValues = JSON.stringify(newVal) === JSON.stringify(oldVal);
+
+      if (this.value.length && !isEqualValues) {
         this.loadData();
-      } else if (!this.value.length) {
+      } else if (!this.value.length && !isEqualValues) {
         this.selectedFiles = [];
         this.currentTotalSize = 0;
         this.$emit("select", this.updatedValue);
@@ -406,7 +408,7 @@ export default {
           if (isValidIteration) {
             const convertedFile = await this.utils.base64ToFilesConverter(file);
 
-            // check if file matches ( size, totalFilesSize)
+            // check if file matches (size, totalFilesSize)
             if (this.utils.isValidFile(convertedFile)) {
               generatedFile = convertedFile;
               this.currentTotalSize += convertedFile.size;
@@ -435,13 +437,12 @@ export default {
           async (memo, file, index) => {
             const results = await memo;
 
-            // downloadCallback
             let generatedFile = {};
             // Don't load more than max attachments if fullfilled
             const isValidIteration = this.maxAttachments >= index + 1;
 
             if (isValidIteration) {
-              const fileFromSharepointId = await this.downloadCallback({
+              const fileFromSharepointId = await this.utils.downloadFile({
                 contentType: file.contentType,
                 sharepointId: file.sharepointId,
                 encodedSharepointId: btoa(file.sharepointId),
