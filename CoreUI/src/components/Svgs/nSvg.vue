@@ -15,7 +15,7 @@ import NiJudgeGavelPlus from "./icons/judgeGavelPlus.vue";
 import NiMarriageRings from "./icons/marriageRings.vue";
 import NiPropertyTrendUp from "./icons/propertyTrendUp.vue";
 import NiUsersGroup from "./icons/usersGroup.vue";
-import NiStarStach from "./icons/starStach.vue";
+import NiStarStash from "./icons/starStash.vue";
 import NiCalendarRemove from "./icons/calendarRemove.vue";
 import NiBell from "./icons/bell.vue";
 import NiArchiveBook from "./icons/archiveBook.vue";
@@ -27,6 +27,12 @@ import NiUsersGuard from "./icons/userGuard.vue";
 import NiDocumentPrevious from "./icons/documentPrevious.vue";
 import NiDanger from "./icons/danger.vue";
 import NiAppStash from "./icons/appStash.vue";
+import NiHomeSandGlass from "./icons/homeSandGlass.vue";
+import NiQualification from "./icons/qualification.vue";
+import NiSpinnerLoader from "./icons/spinnerLoader.vue";
+import NiFile from "./icons/file.vue";
+import NiCancel from "./icons/cancel.vue";
+import NiDownload from "./icons/download.vue";
 
 export default {
   name: "NSvg",
@@ -43,7 +49,7 @@ export default {
     NiMarriageRings,
     NiPropertyTrendUp,
     NiUsersGroup,
-    NiStarStach,
+    NiStarStash,
     NiCalendarRemove,
     NiBell,
     NiArchiveBook,
@@ -55,6 +61,12 @@ export default {
     NiDocumentPrevious,
     NiDanger,
     NiAppStash,
+    NiHomeSandGlass,
+    NiQualification,
+    NiSpinnerLoader,
+    NiFile,
+    NiCancel,
+    NiDownload,
   },
   props: {
     name: {
@@ -64,12 +76,12 @@ export default {
     },
     width: {
       required: false,
-      type: Number,
+      type: [String, Number],
       default: 25,
     },
     height: {
       required: false,
-      type: Number,
+      type: [String, Number],
       default: 25,
     },
   },
