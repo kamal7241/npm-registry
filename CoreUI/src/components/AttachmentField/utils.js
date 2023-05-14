@@ -178,7 +178,14 @@ const generateUtils = (instance) => {
         const base64Meta = await this.convertFileToBase64(selectedFile);
 
         if ("base64" in base64Meta) {
-          const sharepointId = await this.uploadFile(base64Meta);
+          const { uploadCallback } = newInstance.enhancedServerSideConfigs;
+          let sharepointId;
+
+          if (uploadCallback && typeof uploadCallback === "function") {
+            sharepointId = await uploadCallback(base64Meta);
+          } else {
+            sharepointId = await this.uploadFile(base64Meta);
+          }
 
           if (sharepointId) {
             const constructedAttachment = {
@@ -244,22 +251,38 @@ const generateUtils = (instance) => {
       });
     },
     async downloadFile(fileData) {
+      newInstance.isServerLoading = true;
+
       const { enhancedServerSideConfigs } = newInstance;
       const { encodedSharepointId, fileGenerator } = fileData;
       const { downloadUrl, appName, systemCode } = enhancedServerSideConfigs;
 
       if (!appName || !systemCode) {
+        newInstance.isServerLoading = false;
+
         throw new Error(
           `Either appName or systemCode is not valid, you must provide them in serverSideConfigs prop`
         );
       }
 
-      const url = `${downloadUrl}/${encodedSharepointId}/${appName}/${systemCode}`;
+      try {
+        const url = `${downloadUrl}/${encodedSharepointId}/${appName}/${systemCode}`;
 
-      const downloadRes = await fetch(url);
-      const fileBuffer = await downloadRes.arrayBuffer();
+        const downloadRes = await fetch(url);
+        const fileName = downloadRes.headers.get("filename") || "";
+        const fileType =
+          downloadRes.headers.get("Content-Type") || "image/jpeg";
 
-      return fileGenerator(fileBuffer);
+        const fileBuffer = await downloadRes.arrayBuffer();
+
+        return fileGenerator({
+          fileName,
+          fileType,
+          data: fileBuffer,
+        });
+      } finally {
+        newInstance.isServerLoading = false;
+      }
     },
     async uploadFile(base64Meta) {
       const { base64: fileBase64 } = base64Meta;
@@ -267,6 +290,8 @@ const generateUtils = (instance) => {
       const { uploadUrl, appName, systemCode } = enhancedServerSideConfigs;
 
       if (!appName || !systemCode) {
+        newInstance.isServerLoading = false;
+
         throw new Error(
           `Either appName or systemCode is not valid, you must provide them in serverSideConfigs prop`
         );

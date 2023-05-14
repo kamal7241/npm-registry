@@ -226,16 +226,25 @@ export default {
       },
       serverSideConfigs: {
         uploadUrl: "http://localhost:40000/file/upload",
-        downloadUrl: "/file",
+        downloadUrl: "http://localhost:40000/file",
         systemCode: 37,
         appName: "Officiant",
-        exportedSharepointIdKey: "exportedSharepointIdKey",
+        // uploadCallback: (args) => console.log(args),
       },
       // AttachmentField
       localizations: {
         placeholder: "استعراض الملفات",
       },
-      serverSideValue: [],
+      serverSideValue: [
+        {
+          id: 0,
+          attachmentTypeId: 3,
+          contentType: "image/png",
+          sharepointId:
+            "bPHSUiXuzJLHf2Q7V0vLtRYITqvi9wYk1LYMB7vCxJVhchPoNp4uqsjk2E+pqql4z29WngoIdrmJQyGXHQWQVA==",
+          fileName: "File name (1).png",
+        },
+      ],
       // Calendar
       isHijri: false,
       calendarDate: [],

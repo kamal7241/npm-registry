@@ -254,6 +254,36 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    /**
+     * Represents a uploadCallbackArgs object.
+     * @typedef {Object} uploadCallbackArgs
+     * @property {File} source - File src.
+     * @property {string} base64 - base64.
+     * @property {string} contentType - encodedSharepointId.
+     *
+     * Represents a downloadCallbackArgs object.
+     *
+     * @typedef {Object} downloadCallbackArgs
+     * @property {string} contentType - File content type.
+     * @property {string} sharepointId - SharepointId.
+     * @property {string} encodedSharepointId - encodedSharepointId.
+     * @property {Function} fileGenerator - Helper to download the file if needed.
+     *
+     * Represents a serverSideConfigs object.
+     *
+     * @typedef {Object} ServerSideConfigs
+     * @property {string} appName  - The appName.
+     * @property {string} systemCode - The systemCode.
+     * @property {string} [uploadUrl]  - default will be /file/upload.
+     * @property {(string|function(sharepointId, encodedSharepointId): downloadUrl)} [downloadUrl] - It can be either a string and the default is /file or a function that takes sharepointId and encodedSharepointId.
+     * @property {string} [downloadUrl]  - The year the car was made.
+     *
+     * @property {function(downloadCallbackArgs): File} downloadCallback - To override the sharepoint download functionality.
+     *
+     * @property {function(uploadCallbackArgs): string} uploadCallback - To override the sharepoint upload functionality.
+     * @returns {}
+     *
+     */
     serverSideConfigs: {
       type: Object,
       default: () => ({}),
@@ -356,8 +386,8 @@ export default {
     },
     enhancedServerSideConfigs() {
       return {
-        appName: "",
-        systemCode: "",
+        appName: window.$config?.sharepoint?.appName || "",
+        systemCode: window.$config?.sharepoint?.systemCode || "",
         downloadUrl: "/file",
         uploadUrl: "/file/upload",
         ...this.serverSideConfigs,
@@ -442,21 +472,31 @@ export default {
             const isValidIteration = this.maxAttachments >= index + 1;
 
             if (isValidIteration) {
-              const fileFromSharepointId = await this.utils.downloadFile({
+              const { downloadCallback } = this.enhancedServerSideConfigs;
+              let fileFromSharepointId;
+              const args = {
                 contentType: file.contentType,
                 sharepointId: file.sharepointId,
                 encodedSharepointId: btoa(file.sharepointId),
-                fileGenerator: (response) =>
-                  new File([response.data], response.headers.filename, {
-                    type: response.headers["content-type"],
-                  }),
-              });
+                fileGenerator: (response) => {
+                  console.log({ response });
+                  return new File([response.data], response.filename, {
+                    type: response.fileType,
+                  });
+                },
+              };
 
+              if (downloadCallback && typeof downloadCallback === "function") {
+                fileFromSharepointId = await downloadCallback(args);
+              } else {
+                fileFromSharepointId = await this.utils.downloadFile(args);
+              }
+              console.log({ fileFromSharepointId });
               fileFromSharepointId.displayName = this.utils.enhanceFileName(
                 fileFromSharepointId
               );
 
-              // check if file matches ( size, totalFilesSize)
+              // check if file matches (size, totalFilesSize)
               if (this.utils.isValidFile(fileFromSharepointId)) {
                 generatedFile = {
                   ...file,
