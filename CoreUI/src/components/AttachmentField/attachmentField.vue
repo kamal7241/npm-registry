@@ -480,7 +480,7 @@ export default {
                 encodedSharepointId: btoa(file.sharepointId),
                 fileGenerator: (response) => {
                   console.log({ response });
-                  return new File([response.data], response.filename, {
+                  return new File([response.data], response.fileName, {
                     type: response.fileType,
                   });
                 },
