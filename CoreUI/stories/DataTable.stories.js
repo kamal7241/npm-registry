@@ -1,5 +1,5 @@
 import { action } from "@storybook/addon-actions";
-import DataTable from "../src/components/DataTable/DataTable.vue";
+import DataTable from "../src/components/DataTable/dataTable.vue";
 import { argTypesConfigs } from "./argTypes/data-table";
 import {
   clickEventParams,

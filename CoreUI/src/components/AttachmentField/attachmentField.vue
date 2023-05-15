@@ -17,12 +17,7 @@
           v-if="enableFancyPreview"
           class="file-input-wrapper d-flex justify-center align-items-center flex-column"
         >
-          <img
-            src="../../assets/icons/folder.svg"
-            alt="icon"
-            width="25"
-            height="25"
-          />
+          <n-svg name="folder" width="25" height="25" />
 
           <span v-if="strings.placeholder" class="placeholder-wrapper mt-3">
             {{ strings.placeholder }}
@@ -52,12 +47,7 @@
                 v-if="isServerLoading"
                 class="loader-placeholder d-flex align-items-center justify-center"
               >
-                <img
-                  src="../../assets/icons/loader.svg"
-                  alt="icon"
-                  width="30"
-                  height="30"
-                />
+                <n-svg name="spinner-loader" width="30" height="30" />
               </div>
               {{ strings.clickHere }}
             </button>
@@ -110,8 +100,8 @@
             class="align-items-center d-flex justify-space-between list-item mb-4 px-3 py-2"
           >
             <div class="icon-name-wrapper d-flex align-items-center">
-              <img class="img" src="../../assets/icons/file.svg" />
-              <span class="file-name ms-6">{{
+              <n-svg class="img" name="file" width="25" height="25" />
+              <span class="file-name ms-3">{{
                 enableServerSide
                   ? selectedFile.file.displayName
                   : selectedFile.displayName
@@ -125,25 +115,37 @@
                 )
               }}</span>
 
-              <img
-                v-if="!disabled"
-                :id="`${deleteActionId}_${index + 1}`"
-                class="img"
-                src="../../assets/icons/delete.svg"
+              <button
+                class="align-center d-inline-flex justify-center"
                 @click="utils.onDeleteFile(index)"
-              />
+              >
+                <n-svg
+                  v-if="!disabled"
+                  :id="`${deleteActionId}_${index + 1}`"
+                  class="img"
+                  width="30"
+                  height="30"
+                  name="cancel"
+                />
+              </button>
 
-              <img
-                v-if="isDownloadAvailable"
-                :id="`${downloadActionId}_${index + 1}`"
-                class="img"
-                src="../../assets/icons/download.png"
+              <button
+                class="align-center d-inline-flex justify-center"
                 @click="
                   utils.onDownloadFile(
                     enableServerSide ? selectedFile.file : selectedFile
                   )
                 "
-              />
+              >
+                <n-svg
+                  v-if="isDownloadAvailable"
+                  :id="`${downloadActionId}_${index + 1}`"
+                  class="img"
+                  width="20"
+                  height="20"
+                  name="download"
+                />
+              </button>
             </div>
           </li>
         </ul>
@@ -153,10 +155,14 @@
 </template>
 
 <script>
+import NSvg from "../Svgs/nSvg.vue";
 import generateUtils from "./utils";
 
 export default {
   name: "AttachmentField",
+  components: {
+    NSvg,
+  },
   props: {
     rules: {
       type: Array,
@@ -403,7 +409,6 @@ export default {
       } else if (!this.value.length && !isEqualValues) {
         this.selectedFiles = [];
         this.currentTotalSize = 0;
-        this.$emit("select", this.updatedValue);
       }
     },
   },
@@ -522,10 +527,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.field-label {
-  position: absolute;
-  top: -27px;
-}
-</style>

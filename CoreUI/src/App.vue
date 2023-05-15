@@ -2,7 +2,7 @@
   <v-app>
     <v-container class="pt-10">
       <v-form ref="defaultForm" lazy-validation @submit.prevent>
-        <attachment-field
+        <!-- <attachment-field
           label="صورة شخصية "
           name="association"
           placeholder="قم بسحب وإرفاق ملفاتك في هذه المنطقة"
@@ -21,7 +21,7 @@
           :rules="formValidators.attachments"
           @select="onSelectFiles"
           @error="onErrorFound"
-        />
+        /> -->
         <!--
         <calendar
           color="primary"
@@ -37,7 +37,7 @@
           @changeHijri="changeHijriState"
         /> -->
 
-        <DatePicker
+        <!-- <DatePicker
           value="1415/3/15"
           format="MMM, YYYY/DD"
           :export-as-hijri="false"
@@ -46,9 +46,9 @@
           months-dropdown-id="months-dropdown-id"
           years-dropdown-id="years-dropdown-id"
           @change="onChangeDatePicker"
-        />
+        /> -->
 
-        <!-- <image-cropper
+        <image-cropper
           label="نص تجريبي"
           name="personalInfo"
           is-required
@@ -60,10 +60,11 @@
           enable-download
           enable-server-side
           update-parent-with-file-meta
+          :server-side-configs="serverSideConfigs"
           :rules="formValidators.imageCropper"
           @cropImage="onCropImage"
         />
-      </v-form>
+        <!-- </v-form>
 
       <card-panel title="تجربة">
         <template #headerAction>
@@ -202,18 +203,18 @@ import { isRequiredAttachment } from "./services/formValidators";
 export default {
   name: "App",
   components: {
-    AttachmentField: () =>
-      import("./components/AttachmentField/attachmentField.vue"),
+    // AttachmentField: () =>
+    //   import("./components/AttachmentField/attachmentField.vue"),
     // Calendar: () => import("./components/Calendar/calendar.vue"),
     // CardPanel: () => import("./components/CardPanel/cardPanel.vue"),
     // DataTable: () => import("./components/DataTable/dataTable.vue"),
     // LabelAndValue: () => import("./components/LabelAndValue/labelAndValue.vue"),
     // EmptyPlaceholder: () =>
     //   import("./components/EmptyPlaceholder/emptyPlaceholder.vue"),
-    // ImageCropper: () => import("./components/ImageCropper/imageCropper.vue"),
+    ImageCropper: () => import("./components/ImageCropper/imageCropper.vue"),
     PaginationLayout: () =>
       import("./components/PaginationLayout/paginationLayout.vue"),
-    DatePicker: () => import("./components/DatePicker/datePicker.vue"),
+    // DatePicker: () => import("./components/DatePicker/datePicker.vue"),
     NSvg: () => import("./components/Svgs/nSvg.vue"),
   },
   data() {
@@ -267,11 +268,12 @@ export default {
         aspectRatio: 4 / 6,
       },
       imageValue: {
-        attachmentTypeId: 5,
-        contentType: "image/png",
         id: 0,
+        attachmentTypeId: 3,
+        contentType: "image/png",
         sharepointId:
-          "bPHSUiXuzJLHf2Q7V0vLtRYITqvi9wYk1LYMB7vCxJVhchPoNp4uqsjk2E+pqql4B8hlPlIsuvkdtKbkr40lpA==",
+          "bPHSUiXuzJLHf2Q7V0vLtRYITqvi9wYk1LYMB7vCxJVhchPoNp4uqsjk2E+pqql4z29WngoIdrmJQyGXHQWQVA==",
+        fileName: "File name (1).png",
       },
       // PaginationLayout
       additionalPayload: {},

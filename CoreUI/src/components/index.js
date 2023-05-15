@@ -6,6 +6,8 @@ import EmptyPlaceholder from "./EmptyPlaceholder/emptyPlaceholder.vue";
 import ImageCropper from "./ImageCropper/imageCropper.vue";
 import LabelAndValue from "./LabelAndValue/labelAndValue.vue";
 import PaginationLayout from "./PaginationLayout/paginationLayout.vue";
+import DatePicker from "./DatePicker/datePicker.vue";
+import Stepper from "./Stepper/stepper.vue";
 import NSvg from "./Svgs/nSvg.vue";
 
 export {
@@ -17,5 +19,7 @@ export {
   ImageCropper,
   LabelAndValue,
   PaginationLayout,
+  DatePicker,
+  Stepper,
   NSvg,
 };
