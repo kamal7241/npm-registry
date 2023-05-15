@@ -32,12 +32,12 @@ export default {
   props: {
     width: {
       required: false,
-      type: String,
+      type: [String, Number],
       default: "25",
     },
     height: {
       required: false,
-      type: String,
+      type: [String, Number],
       default: "25",
     },
   },

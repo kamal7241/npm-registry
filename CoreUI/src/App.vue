@@ -47,7 +47,7 @@
           @change="onChangeDatePicker"
         />
 
-        <!-- <image-cropper
+        <image-cropper
           label="نص تجريبي"
           name="personalInfo"
           is-required
@@ -62,7 +62,7 @@
           :rules="formValidators.imageCropper"
           @cropImage="onCropImage"
         />
-      </v-form>
+        <!-- </v-form>
 
       <card-panel title="تجربة">
         <template #headerAction>
@@ -209,7 +209,7 @@ export default {
     // LabelAndValue: () => import("./components/LabelAndValue/labelAndValue.vue"),
     // EmptyPlaceholder: () =>
     //   import("./components/EmptyPlaceholder/emptyPlaceholder.vue"),
-    // ImageCropper: () => import("./components/ImageCropper/imageCropper.vue"),
+    ImageCropper: () => import("./components/ImageCropper/imageCropper.vue"),
     PaginationLayout: () =>
       import("./components/PaginationLayout/paginationLayout.vue"),
     DatePicker: () => import("./components/DatePicker/datePicker.vue"),

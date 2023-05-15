@@ -93,8 +93,8 @@
 </template>
 
 <script>
-import moment from "moment-hijri";
-import { generateRange } from "../../utils/calendar";
+import { generateRange, padNumber } from "../../utils/calendar";
+import { getHijriMonthInfo, gregorianToHijri, hijriToGregorian } from "./utils";
 
 export default {
   name: "DatePicker",
@@ -167,8 +167,6 @@ export default {
   data() {
     return {
       isHijri: true,
-      defaultDateFormat: "YYYY/MM/DD",
-      defaultHijriDateFormat: "iYYYY/iMM/iDD",
       initialDateModel: {
         day: null,
         month: null,
@@ -180,9 +178,10 @@ export default {
   computed: {
     currentMonthInYear() {
       const { isHijri } = this;
-      const now = moment();
+      const today = new Date().toString();
+      const { hijriMonth, gregorianMonth } = getHijriMonthInfo(today);
 
-      const month = isHijri ? now.iMonth() : now.month();
+      const month = isHijri ? hijriMonth : gregorianMonth;
       // ! (+1) because months are zero based
       return month + 1;
     },
@@ -190,23 +189,34 @@ export default {
     selectedMonthInstance() {
       const { isHijri, dateModel } = this;
       const { month, year } = dateModel;
-      const format = isHijri ? "iYYYY-iM" : "YYYY-M";
-      const currentYear = isHijri ? moment().iYear() : moment().year();
+      const today = new Date().toString();
+      const { hijriYear, gregorianYear } = getHijriMonthInfo(today);
+      const currentYear = isHijri ? hijriYear : gregorianYear;
       const validYear = year && this.isValidSelectedDate ? year : currentYear;
 
-      return month ? moment(`${validYear}-${month}`, format) : moment();
+      return month
+        ? getHijriMonthInfo(`${validYear}-${month}`)
+        : getHijriMonthInfo(today);
     },
 
     isLastDayInCurrentMonth() {
       const { isHijri } = this;
-      const now = moment();
-      const todayDate = isHijri ? now.iDate() : now.date();
+      const today = new Date().toString();
+      const {
+        totalDaysInHijriMonth,
+        totalDaysInGregorianMonth,
+        hijriDay,
+        gregorianDay,
+      } = getHijriMonthInfo(today);
+
+      const todayDate = isHijri ? hijriDay : gregorianDay;
       const daysInCurrentMonth = isHijri
-        ? now.iDaysInMonth()
-        : now.daysInMonth();
+        ? totalDaysInHijriMonth
+        : totalDaysInGregorianMonth;
 
       return todayDate === daysInCurrentMonth;
     },
+
     daysRangeStartNumber() {
       const {
         isHijri,
@@ -216,10 +226,12 @@ export default {
         skipTodayInFutureMode,
         isLastDayInCurrentMonth,
       } = this;
-      const todayDate = isHijri ? moment().iDate() : moment().date();
+      const today = new Date().toString();
+      const { hijriDay, gregorianDay } = getHijriMonthInfo(today);
+      const todayDate = isHijri ? hijriDay : gregorianDay;
       const selectedMonth = isHijri
-        ? selectedMonthInstance.iMonth()
-        : selectedMonthInstance.month();
+        ? selectedMonthInstance.hijriMonth
+        : selectedMonthInstance.gregorianMonth;
       const isCurrentMonthSelected = currentMonthInYear === selectedMonth + 1;
 
       if (futureOnly && isCurrentMonthSelected) {
@@ -246,10 +258,13 @@ export default {
         skipTodayInFutureMode,
         isLastDayInCurrentMonth,
       } = this;
-      const now = moment();
+      const today = new Date().toString();
+      const now = getHijriMonthInfo(today);
 
-      const currentYear = isHijri ? now.iYear() : now.year();
-      const currentMonth = isHijri ? now.iMonth() : now.month();
+      const { hijriYear, gregorianYear } = getHijriMonthInfo(today);
+      const currentYear = isHijri ? hijriYear : gregorianYear;
+
+      const currentMonth = isHijri ? now.hijriMonth : now.gregorianMonth;
       const isCurrentYearSelected = currentYear === dateModel.year;
 
       if (futureOnly && isCurrentYearSelected) {
@@ -262,18 +277,19 @@ export default {
     },
     initialMaxPreviewedYears() {
       const { minimumGregorianYear, maxPreviewedYears } = this;
-      const currentYear = moment().year();
 
-      return Math.abs(maxPreviewedYears) || currentYear - minimumGregorianYear;
+      const today = new Date().toString();
+      const currentYear = getHijriMonthInfo(today).gregorianYear;
+
+      return maxPreviewedYears || currentYear - minimumGregorianYear;
     },
     days() {
       const { isHijri, dateModel, selectedMonthInstance } = this;
       const { day: selectedDay } = dateModel;
 
       const daysInCurrentSelectedMonth = isHijri
-        ? selectedMonthInstance.iDaysInMonth()
-        : selectedMonthInstance.daysInMonth();
-
+        ? selectedMonthInstance.totalDaysInHijriMonth
+        : selectedMonthInstance.totalDaysInGregorianMonth;
       const shouldResetDate =
         Number(selectedDay) > daysInCurrentSelectedMonth ||
         Number(selectedDay) < this.daysRangeStartNumber;
@@ -294,8 +310,8 @@ export default {
       const { month } = dateModel;
 
       const selectedMonth = isHijri
-        ? selectedMonthInstance.iMonth()
-        : selectedMonthInstance.month();
+        ? selectedMonthInstance.hijriMonth
+        : selectedMonthInstance.gregorianMonth;
       const shouldResetMonth = this.monthsRangeStartNumber > selectedMonth + 1;
 
       if (month && shouldResetMonth) {
@@ -313,7 +329,9 @@ export default {
     },
     years() {
       const { isHijri, futureOnly, initialMaxPreviewedYears } = this;
-      const currentYear = isHijri ? moment().iYear() : moment().year();
+      const today = new Date().toString();
+      const { hijriYear, gregorianYear } = getHijriMonthInfo(today);
+      const currentYear = isHijri ? hijriYear : gregorianYear;
       const yearToStartFrom = futureOnly
         ? currentYear
         : currentYear - initialMaxPreviewedYears;
@@ -333,21 +351,16 @@ export default {
     serializedDateModel() {
       const { day, month, year } = this.dateModel;
 
-      return `${year}/${month}/${day}`;
+      return `${year}/${padNumber(Number(month), 2)}/${padNumber(
+        Number(day),
+        2
+      )}`;
     },
     isValidSelectedDate() {
       const { day, month, year } = this.dateModel;
 
       return Boolean(day && month && year);
     },
-  },
-  watch: {
-    value() {
-      this.updateFieldWithValue();
-    },
-  },
-  created() {
-    moment.locale("en");
   },
   mounted() {
     this.isHijri = this.initialIsHijri;
@@ -366,18 +379,15 @@ export default {
       const { isHijri, exportAsHijri, isValidSelectedDate } = this;
 
       if (isValidSelectedDate) {
-        const currentFormat = isHijri
-          ? this.defaultHijriDateFormat
-          : this.defaultDateFormat;
-        const exportedFormat = exportAsHijri
-          ? this.defaultHijriDateFormat
-          : this.defaultDateFormat;
-        // ! month - 1 ---> because in moment months are 0 based
-        const exportedDate = moment(
-          this.serializedDateModel,
-          currentFormat
-        ).format(this.format || exportedFormat);
+        let exportedDate;
 
+        if (exportAsHijri && !isHijri) {
+          exportedDate = gregorianToHijri(this.dateModel).date;
+        } else if (!exportAsHijri && isHijri) {
+          exportedDate = hijriToGregorian(this.dateModel).date;
+        } else {
+          exportedDate = this.serializedDateModel;
+        }
         this.$emit("change", exportedDate);
       } else {
         this.$emit("change", "");
@@ -398,20 +408,14 @@ export default {
     },
 
     convertToHijri(date) {
-      const constructedDate = moment(
-        date || this.serializedDateModel,
-        this.defaultDateFormat
-      ).format(this.defaultHijriDateFormat);
-
+      const dateModel = this.getDateModel(date || this.serializedDateModel);
+      const { date: constructedDate } = gregorianToHijri(dateModel);
       return this.getDateModel(constructedDate);
     },
 
     convertToGregorian(date) {
-      const constructedDate = moment(
-        date || this.serializedDateModel,
-        this.defaultHijriDateFormat
-      ).format(this.defaultDateFormat);
-
+      const dateModel = this.getDateModel(date || this.serializedDateModel);
+      const { date: constructedDate } = hijriToGregorian(dateModel);
       return this.getDateModel(constructedDate);
     },
 
@@ -427,9 +431,10 @@ export default {
 
     onChangeCalendarType() {
       if (this.isValidSelectedDate) {
-        this.dateModel = this.isHijri
-          ? this.convertToHijri()
-          : this.convertToGregorian();
+        const { date } = this.isHijri
+          ? gregorianToHijri(this.dateModel)
+          : hijriToGregorian(this.dateModel);
+        this.dateModel = this.getDateModel(date);
       }
 
       this.onChange();

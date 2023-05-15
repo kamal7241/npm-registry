@@ -41,21 +41,16 @@
               v-if="isServerLoading"
               class="loader-placeholder d-flex align-items-center justify-center"
             >
-              <img
-                src="../../assets/icons/loader.svg"
-                alt="icon"
-                width="30"
-                height="30"
-              />
+              <n-svg name="spinner-loader" width="30" height="30" />
             </div>
 
             {{ strings.chooseFile }}
           </button>
-          <img
+
+          <n-svg
             v-else
             class="image-button-placeholder ms-3 d-inline-block"
-            src="../../assets/icons/file.svg"
-            alt="icon"
+            name="file"
             width="25"
             height="25"
           />
@@ -65,27 +60,33 @@
           </div>
 
           <div v-if="previewedSelectedFile" class="actions pa-2 mx-1">
-            <img
-              v-if="!disabled"
-              :id="deleteActionId"
-              src="../../assets/icons/cancel.svg"
-              class="action"
-              width="30"
-              height="30"
-              alt="delete"
+            <button
+              class="align-center d-inline-flex justify-center"
               @click="utils.onDeleteSelectedImage()"
-            />
+            >
+              <n-svg
+                v-if="!disabled"
+                :id="deleteActionId"
+                name="cancel"
+                class="action"
+                width="30"
+                height="30"
+              />
+            </button>
 
-            <img
-              v-if="isDownloadAvailable"
-              :id="downloadActionId"
-              src="../../assets/icons/download.png"
-              class="action"
-              width="20"
-              height="20"
-              alt="download"
+            <button
+              class="align-center d-inline-flex justify-center"
               @click="utils.onDownloadSelectedImage"
-            />
+            >
+              <n-svg
+                v-if="isDownloadAvailable"
+                :id="downloadActionId"
+                name="download"
+                class="action"
+                width="20"
+                height="20"
+              />
+            </button>
           </div>
         </div>
       </slot>
@@ -123,12 +124,14 @@
 
 <script>
 import CropperDialog from "./cropperDialog.vue";
+import NSvg from "../Svgs/nSvg.vue";
 import generateUtils from "./utils";
 
 export default {
   name: "ImageCropper",
   components: {
     CropperDialog,
+    NSvg,
   },
   props: {
     chooseFileActionId: {
