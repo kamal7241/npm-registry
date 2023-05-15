@@ -5,7 +5,7 @@
         <slot name="labelContent" :data="{ err: error }">
           <label
             v-if="label"
-            class="d-block label mb-2"
+            class="field-label d-block label mb-2"
             :class="{ err: error }"
           >
             {{ label }}
@@ -478,12 +478,10 @@ export default {
                 contentType: file.contentType,
                 sharepointId: file.sharepointId,
                 encodedSharepointId: btoa(file.sharepointId),
-                fileGenerator: (response) => {
-                  console.log({ response });
-                  return new File([response.data], response.fileName, {
+                fileGenerator: (response) =>
+                  new File([response.data], response.fileName, {
                     type: response.fileType,
-                  });
-                },
+                  }),
               };
 
               if (downloadCallback && typeof downloadCallback === "function") {
@@ -491,7 +489,7 @@ export default {
               } else {
                 fileFromSharepointId = await this.utils.downloadFile(args);
               }
-              console.log({ fileFromSharepointId });
+
               fileFromSharepointId.displayName = this.utils.enhanceFileName(
                 fileFromSharepointId
               );
@@ -524,3 +522,10 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.field-label {
+  position: absolute;
+  top: -27px;
+}
+</style>
