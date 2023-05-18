@@ -97,12 +97,12 @@ const generateUtils = (instance) => {
       const enhancedAcceptedExtentions = newInstance.accept.toLowerCase();
       // .ZIP ==> ZIP
       const extentionFromName = file.name.split(".").pop();
-      const fallbackExtention = `application/${extentionFromName}`;
-      const extention = this.getFileExtention(
-        file.type || fallbackExtention,
-        true
-      ).slice(1);
-      const isValidExtention = enhancedAcceptedExtentions.includes(extention);
+      const extentionFromType = this.getFileExtention(file.type, true);
+      const combinedExtensions = [extentionFromType, extentionFromName];
+      const isValidExtention = combinedExtensions.some((extention) =>
+        enhancedAcceptedExtentions.includes(extention)
+      );
+
       const isValidSize = this.isValidFileSize(file.size, file.name);
 
       if (!isValidExtention) {
