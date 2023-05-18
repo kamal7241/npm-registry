@@ -1,8 +1,8 @@
 <template>
   <v-app>
     <v-container class="pt-10">
-      <v-form ref="defaultForm" lazy-validation @submit.prevent>
-        <attachment-field
+      <v-form ref="defaultForm" @submit.prevent>
+        <!-- <attachment-field
           label="صورة شخصية "
           name="association"
           placeholder="قم بسحب وإرفاق ملفاتك في هذه المنطقة"
@@ -23,20 +23,17 @@
           @select="onSelectFiles"
           @error="onErrorFound"
         />
-        <!--
+-->
         <calendar
           color="primary"
           label="تصفية بالتاريخ"
-          :row="true"
-          :range="true"
-          :hijri="isHijri"
           :value="calendarDate"
           hint="يرجى ادخال فترة زمنية"
           dense
           :rules="formValidators.calendar"
           @change="changeDate"
           @changeHijri="changeHijriState"
-        /> -->
+        />
 
         <!-- <DatePicker
           value="1415/3/15"
@@ -115,7 +112,7 @@
         </template>
       </empty-placeholder> -->
 
-        <pagination-layout
+        <!-- <pagination-layout
           :value="paginationValue"
           server-page-number-key="page"
           server-page-size-key="size"
@@ -130,20 +127,20 @@
           :endpoint="endpoint"
           @search="onSearch"
         >
-          <!-- Customize Loading slot -->
-          <!-- <template #loader>
+          Customize Loading slot -->
+        <!-- <template #loader>
           <span>Loading ...</span>
         </template> -->
 
-          <!-- Customize list slot -->
-          <!-- <template #list="{ data }">
+        <!-- Customize list slot -->
+        <!-- <template #list="{ data }">
           <p v-for="(item, i) in data" :key="i">
             {{ item.title }}
           </p>
         </template> -->
 
-          <!-- Customize pagination slot -->
-          <!-- <template
+        <!-- Customize pagination slot -->
+        <!-- <template
         #pagination="{
           data,
           onChangePageSize,
@@ -184,8 +181,8 @@
         >
           الصفحة الأخيرة
         </button>
-      </template> -->
-        </pagination-layout>
+      </template>
+        </pagination-layout>  -->
         <!-- </v-form> -->
         <!-- </v-container> -->
         <NSvg name="map" />
@@ -199,22 +196,22 @@
 
 <script>
 // Services
-import { isRequiredAttachment } from "./services/formValidators";
+import { isRequired, isRequiredAttachment } from "./services/formValidators";
 
 export default {
   name: "App",
   components: {
-    AttachmentField: () =>
-      import("./components/AttachmentField/attachmentField.vue"),
-    // Calendar: () => import("./components/Calendar/calendar.vue"),
+    // AttachmentField: () =>
+    //   import("./components/AttachmentField/attachmentField.vue"),
+    Calendar: () => import("./components/Calendar/calendar.vue"),
     // CardPanel: () => import("./components/CardPanel/cardPanel.vue"),
     // DataTable: () => import("./components/DataTable/dataTable.vue"),
     // LabelAndValue: () => import("./components/LabelAndValue/labelAndValue.vue"),
     // EmptyPlaceholder: () =>
     //   import("./components/EmptyPlaceholder/emptyPlaceholder.vue"),
     // ImageCropper: () => import("./components/ImageCropper/imageCropper.vue"),
-    PaginationLayout: () =>
-      import("./components/PaginationLayout/paginationLayout.vue"),
+    // PaginationLayout: () =>
+    //   import("./components/PaginationLayout/paginationLayout.vue"),
     // DatePicker: () => import("./components/DatePicker/datePicker.vue"),
     NSvg: () => import("./components/Svgs/nSvg.vue"),
   },
@@ -224,7 +221,7 @@ export default {
       // Form
       formValidators: {
         attachments: [isRequiredAttachment],
-        calendar: [isRequiredAttachment],
+        calendar: [isRequired],
         imageCropper: [isRequiredAttachment],
       },
       serverSideConfigs: {
@@ -239,18 +236,18 @@ export default {
         placeholder: "استعراض الملفات",
       },
       serverSideValue: [
-        {
-          sharepointId:
-            "bPHSUiXuzJLHf2Q7V0vLtRYITqvi9wYk1LYMB7vCxJVhchPoNp4uqsjk2E+pqql4z29WngoIdrmJQyGXHQWQVA==",
-        },
-        {
-          sharepointId:
-            "bPHSUiXuzJLHf2Q7V0vLtRYITqvi9wYk1LYMB7vCxJVhchPoNp4uqsjk2E+pqql4G9E/h6vGCxFhMKz1auGMrg==",
-        },
+        // {
+        //   sharepointId:
+        //     "bPHSUiXuzJLHf2Q7V0vLtRYITqvi9wYk1LYMB7vCxJVhchPoNp4uqsjk2E+pqql4z29WngoIdrmJQyGXHQWQVA==",
+        // },
+        // {
+        //   sharepointId:
+        //     "bPHSUiXuzJLHf2Q7V0vLtRYITqvi9wYk1LYMB7vCxJVhchPoNp4uqsjk2E+pqql4G9E/h6vGCxFhMKz1auGMrg==",
+        // },
       ],
       // Calendar
       isHijri: false,
-      calendarDate: [],
+      calendarDate: "",
       // DataTable
       rows: [
         {

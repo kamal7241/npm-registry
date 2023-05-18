@@ -1,6 +1,6 @@
 {
   "name": "@moj/core-ui",
-  "version": "1.16.1",
+  "version": "1.16.2",
   "description": "Modular, reusable components and styles for use in MOJ micro web applications.",
   "private": false,
   "sideEffects": false,
