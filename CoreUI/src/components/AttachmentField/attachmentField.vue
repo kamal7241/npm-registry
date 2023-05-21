@@ -93,11 +93,11 @@
       />
 
       <slot name="list" :data="{ listData }" :onDeleteFile="utils.onDeleteFile">
-        <ul v-if="selectedFiles.length" class="mt-3 pa-0">
+        <ul v-if="selectedFiles.length" class="pa-0">
           <li
             v-for="(selectedFile, index) in selectedFiles"
             :key="index"
-            class="align-items-center d-flex justify-space-between list-item mb-4 px-3 py-2"
+            class="align-items-center d-flex justify-space-between list-item px-3 py-2"
           >
             <div class="icon-name-wrapper d-flex align-items-center">
               <n-svg class="img" name="file" width="25" height="25" />
@@ -527,3 +527,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.list-item:not(:last-of-type) {
+  margin-bottom: 16px;
+}
+</style>

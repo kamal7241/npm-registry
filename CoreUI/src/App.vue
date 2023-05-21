@@ -2,7 +2,8 @@
   <v-app>
     <v-container class="pt-10">
       <v-form ref="defaultForm" @submit.prevent>
-        <!-- <attachment-field
+        <attachment-field
+          disabled
           label="صورة شخصية "
           name="association"
           placeholder="قم بسحب وإرفاق ملفاتك في هذه المنطقة"
@@ -23,7 +24,7 @@
           @select="onSelectFiles"
           @error="onErrorFound"
         />
--->
+
         <calendar
           color="primary"
           label="تصفية بالتاريخ"
@@ -201,8 +202,8 @@ import { isRequired, isRequiredAttachment } from "./services/formValidators";
 export default {
   name: "App",
   components: {
-    // AttachmentField: () =>
-    //   import("./components/AttachmentField/attachmentField.vue"),
+    AttachmentField: () =>
+      import("./components/AttachmentField/attachmentField.vue"),
     Calendar: () => import("./components/Calendar/calendar.vue"),
     // CardPanel: () => import("./components/CardPanel/cardPanel.vue"),
     // DataTable: () => import("./components/DataTable/dataTable.vue"),
