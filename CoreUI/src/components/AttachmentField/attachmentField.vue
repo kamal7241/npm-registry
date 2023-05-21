@@ -14,7 +14,7 @@
         </slot>
 
         <div
-          v-if="enableFancyPreview"
+          v-if="enableFancyPreview && !disabled"
           class="file-input-wrapper d-flex justify-center align-items-center flex-column"
         >
           <n-svg name="folder" width="25" height="25" />
@@ -32,7 +32,7 @@
           </button>
         </div>
 
-        <div v-if="!enableFancyPreview">
+        <div v-if="!enableFancyPreview && !disabled">
           <div class="input-wrapper d-flex align-items-center">
             <button
               :id="chooseFileActionId"
