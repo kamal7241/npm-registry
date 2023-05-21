@@ -216,20 +216,24 @@ const generateUtils = (instance) => {
         );
       }
 
-      const downloadRes = await fetch(uploadUrl, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          fileBase64,
-          appName,
-          systemCode,
-        }),
-      });
+      try {
+        const downloadRes = await fetch(uploadUrl, {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            fileBase64,
+            appName,
+            systemCode,
+          }),
+        });
 
-      return downloadRes.json();
+        return downloadRes.json();
+      } finally {
+        newInstance.isServerLoading = false;
+      }
     },
   };
 };
