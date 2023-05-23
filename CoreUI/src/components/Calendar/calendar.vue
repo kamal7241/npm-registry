@@ -276,14 +276,14 @@ export default {
   },
   watch: {
     value: {
-      handler(newValu, oldVal) {
+      handler() {
         const { value, date, isHijri, isSingleMode } = this;
         const { gregorian, hijri } = this.getValueDates(value);
         const dateClone = JSON.parse(JSON.stringify(date));
         const shouldUpdate =
           JSON.stringify(isHijri ? hijri : gregorian) !==
           JSON.stringify(isSingleMode ? dateClone : dateClone.sort());
-        console.log({ newValu, oldVal });
+
         if (shouldUpdate) {
           this.date = isHijri ? hijri : gregorian;
         }
@@ -303,6 +303,7 @@ export default {
   methods: {
     getHijriGregorianDates(date) {
       const {
+        range,
         isHijri,
         isValidDate,
         isSingleMode,
@@ -310,8 +311,8 @@ export default {
         convertToGregorian,
       } = this;
 
-      let hijri = "";
-      let gregorian = "";
+      let hijri = range ? [] : "";
+      let gregorian = range ? [] : "";
 
       if (isValidDate) {
         if (isSingleMode) {
@@ -336,9 +337,9 @@ export default {
     },
 
     getValueDates(gregorian) {
-      const { isSingleMode, convertToHijri } = this;
+      const { range, isSingleMode, convertToHijri } = this;
 
-      let hijri = "";
+      let hijri = range ? [] : "";
 
       if (this.isValidDate) {
         if (isSingleMode) {
