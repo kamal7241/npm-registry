@@ -299,24 +299,30 @@ export default {
           JSON.stringify(isHijri ? hijri : gregorian) !==
           JSON.stringify(isSingleMode ? dateClone : dateClone.sort());
 
-        if (shouldUpdate) {
-          this.date = isHijri ? hijri : gregorian;
-        }
+        // if (shouldUpdate) {
+        this.date = isHijri ? hijri : gregorian;
+        // }
       },
       deep: true,
     },
     date() {
-      const { date } = this;
-
-      return this.$emit("change", this.getHijriGregorianDates(date));
+      // const { date, isHijri, isSingleMode, enhancedValue } = this;
+      // const { gregorian, hijri } = this.getValueDates(enhancedValue);
+      // const dateClone = JSON.parse(JSON.stringify(date));
+      // const shouldUpdate =
+      //   JSON.stringify(isHijri ? hijri : gregorian) !==
+      //   JSON.stringify(isSingleMode ? dateClone : dateClone.sort());
+      // if (shouldUpdate) {
+      //   this.$emit("change", this.getHijriGregorianDates(date));
+      // }
     },
   },
   mounted() {
     this.isHijri = this.hijri;
 
-    if (this.isValidInitialValue) {
-      this.date = this.enhancedValue;
-    }
+    this.date = this.isValidInitialValue
+      ? this.enhancedValue
+      : this.initialDateValue;
   },
   methods: {
     getHijriGregorianDates(date) {
