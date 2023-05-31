@@ -2,7 +2,7 @@
   <v-app>
     <v-container class="pt-10">
       <v-form ref="defaultForm" @submit.prevent>
-        <attachment-field
+        <!-- <attachment-field
           disabled
           label="صورة شخصية "
           name="association"
@@ -23,7 +23,7 @@
           :rules="formValidators.attachments"
           @select="onSelectFiles"
           @error="onErrorFound"
-        />
+        /> -->
 
         <calendar
           color="primary"
@@ -202,8 +202,8 @@ import { isRequired, isRequiredAttachment } from "./services/formValidators";
 export default {
   name: "App",
   components: {
-    AttachmentField: () =>
-      import("./components/AttachmentField/attachmentField.vue"),
+    // AttachmentField: () =>
+    //   import("./components/AttachmentField/attachmentField.vue"),
     Calendar: () => import("./components/Calendar/calendar.vue"),
     // CardPanel: () => import("./components/CardPanel/cardPanel.vue"),
     // DataTable: () => import("./components/DataTable/dataTable.vue"),
@@ -248,7 +248,7 @@ export default {
       ],
       // Calendar
       isHijri: false,
-      calendarDate: "",
+      calendarDate: "1444/03/15",
       // DataTable
       rows: [
         {
@@ -346,6 +346,7 @@ export default {
   async mounted() {
     setTimeout(() => {
       this.isLoading = false;
+      this.calendarDate = "1995/01/01";
     }, 3000);
     // const downloadRes = await fetch(
     //   "http://localhost:40000/file/VDRFWG4wRFM2MjJVbGhDeFJLZU91WURGSUZERGpSeFBpR2M4bnE4NUNTVTRINEdlTHdFSkhscmZXYzJFQysyZk4rTE9DWG5ZL3hBa2ZaVnRObXBPRnc9PQ==/Officiant/37"
@@ -418,7 +419,7 @@ export default {
     },
     // Calendar
     changeDate(newDate) {
-      this.calendarDate = newDate.gregorian;
+      // this.calendarDate = newDate.gregorian;
     },
 
     changeHijriState() {

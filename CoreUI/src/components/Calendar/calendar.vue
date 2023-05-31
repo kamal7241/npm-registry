@@ -273,12 +273,22 @@ export default {
 
       return isValidSingleDate || isValidRangeDate;
     },
+    enhancedValue() {
+      const { value } = this;
+
+      if (Array.isArray(value)) {
+        return value.map(this.unifyDateSeparators);
+      }
+
+      return this.unifyDateSeparators(value);
+    },
   },
   watch: {
     value: {
       handler() {
-        const { value, date, isHijri, isSingleMode } = this;
-        const { gregorian, hijri } = this.getValueDates(value);
+        const { date, isHijri, isSingleMode, enhancedValue } = this;
+
+        const { gregorian, hijri } = this.getValueDates(enhancedValue);
         const dateClone = JSON.parse(JSON.stringify(date));
         const shouldUpdate =
           JSON.stringify(isHijri ? hijri : gregorian) !==
@@ -297,8 +307,8 @@ export default {
     },
   },
   mounted() {
-    this.date = this.value || this.initialDateValue;
     this.isHijri = this.hijri;
+    this.date = this.enhancedValue || this.initialDateValue;
   },
   methods: {
     getHijriGregorianDates(date) {
@@ -425,6 +435,10 @@ export default {
 
     onClosePicker() {
       this.isCalendarOpened = false;
+    },
+
+    unifyDateSeparators(date) {
+      return date.replaceAll(/[-/.]/g, "-");
     },
   },
 };
