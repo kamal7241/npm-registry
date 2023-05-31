@@ -248,7 +248,7 @@ export default {
       ],
       // Calendar
       isHijri: false,
-      calendarDate: "1444/03/15",
+      calendarDate: "1414/11/20",
       // DataTable
       rows: [
         {
@@ -419,7 +419,8 @@ export default {
     },
     // Calendar
     changeDate(newDate) {
-      // this.calendarDate = newDate.gregorian;
+      console.log({ newDate });
+      this.calendarDate = newDate.gregorian;
     },
 
     changeHijriState() {

@@ -282,6 +282,11 @@ export default {
 
       return this.unifyDateSeparators(value);
     },
+    isValidInitialValue() {
+      const { value, isSingleMode } = this;
+
+      return Boolean(isSingleMode ? value : value.length);
+    },
   },
   watch: {
     value: {
@@ -308,7 +313,10 @@ export default {
   },
   mounted() {
     this.isHijri = this.hijri;
-    this.date = this.enhancedValue || this.initialDateValue;
+
+    if (this.isValidInitialValue) {
+      this.date = this.enhancedValue;
+    }
   },
   methods: {
     getHijriGregorianDates(date) {
