@@ -187,7 +187,7 @@ const generateUtils = (instance) => {
             sharepointId = await this.uploadFile(base64Meta);
           }
 
-          if (sharepointId) {
+          if (sharepointId && typeof sharepointId === "string") {
             const constructedAttachment = {
               id: 0,
               attachmentTypeId: newInstance.attachmentTypeId,
@@ -296,7 +296,7 @@ const generateUtils = (instance) => {
           `Either appName or systemCode is not valid, you must provide them in serverSideConfigs prop`
         );
       }
-
+      // must be reviewed (error res is retrieved)
       try {
         const downloadRes = await fetch(uploadUrl, {
           method: "POST",

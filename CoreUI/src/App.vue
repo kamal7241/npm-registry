@@ -63,47 +63,50 @@
           :server-side-configs="serverSideConfigs"
           :rules="formValidators.imageCropper"
           @cropImage="onCropImage"
-        /> -->
-        <!-- </v-form>
+        /> 
 
-      <card-panel title="تجربة">
-        <template #headerAction>
-          <v-btn color="red" class="white--text"> الغاء </v-btn>
-        </template>
-      </card-panel>
 
-      <data-table
-        :rows="rows"
-        :columns="columns"
-        :on-click="onRowClicked"
-        :primary-field="primaryField"
-      >
-        <template #dateTime="{ data: { row }, currentClass }">
-          <label-and-value
-            :class="currentClass"
-            :label="$t('appointmentDateAndTime')"
-            :value="row.dateTime"
-            value-class="label-and-value-value"
-          />
-        </template>
+        </v-form>
+              -->
 
-        <template #actions="{ data: { row }, currentClass }">
-          <label-and-value :class="currentClass">
-            <template #value>
-              <v-btn
-                v-if="row.pendingApproval && !row.isCancelled"
-                outlined
-                color="error"
-                @click="openCancelDialog(row)"
-              >
-                {{ $t("cancel") }}
-              </v-btn>
-            </template>
-          </label-and-value>
-        </template>
-      </data-table>
+        <!-- <card-panel title="تجربة">
+          <template #headerAction>
+            <v-btn color="red" class="white--text"> الغاء </v-btn>
+          </template>
+        </card-panel> -->
 
-      <empty-placeholder
+        <data-table
+          :rows="rows"
+          :columns="columns"
+          :on-click="onRowClicked"
+          :primary-field="primaryField"
+        >
+          <template #dateTime="{ data: { row }, currentClass }">
+            <label-and-value
+              :class="currentClass"
+              :label="$t('appointmentDateAndTime')"
+              :value="row.dateTime"
+              value-class="label-and-value-value"
+            />
+          </template>
+
+          <template #actions="{ data: { row }, currentClass }">
+            <label-and-value :class="currentClass">
+              <template #value>
+                <v-btn
+                  v-if="row.pendingApproval && !row.isCancelled"
+                  outlined
+                  color="error"
+                  @click="openCancelDialog(row)"
+                >
+                  {{ $t("cancel") }}
+                </v-btn>
+              </template>
+            </label-and-value>
+          </template>
+        </data-table>
+
+        <!--  <empty-placeholder
         :primary-text="primaryText"
         :secondary-text="secondaryText"
         :is-loading="isLoading"
@@ -207,8 +210,8 @@ export default {
     //   import("./components/AttachmentField/attachmentField.vue"),
     Calendar: () => import("./components/Calendar/calendar.vue"),
     // CardPanel: () => import("./components/CardPanel/cardPanel.vue"),
-    // DataTable: () => import("./components/DataTable/dataTable.vue"),
-    // LabelAndValue: () => import("./components/LabelAndValue/labelAndValue.vue"),
+    DataTable: () => import("./components/DataTable/DataTable.vue"),
+    LabelAndValue: () => import("./components/LabelAndValue/labelAndValue.vue"),
     // EmptyPlaceholder: () =>
     //   import("./components/EmptyPlaceholder/emptyPlaceholder.vue"),
     // ImageCropper: () => import("./components/ImageCropper/imageCropper.vue"),
