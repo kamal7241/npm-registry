@@ -157,6 +157,7 @@ import VHijriDatePicker from "@moj/vuetify-umalqura";
 import moment from "moment-hijri";
 import uq from "@umalqura/core";
 import { GregorianMonths } from "../../services/monthsLookups";
+import { isHijriYear } from "./utils";
 
 export default {
   name: "Calendar",
@@ -235,8 +236,9 @@ export default {
       isCalendarOpened: false,
       hijriFormat: "iYYYY-iMM-iDD",
       gregorianFormat: "YYYY-MM-DD",
-      date: this.initialDateValue,
+      date: null,
       isHijri: true,
+      isInitialized: false,
     };
   },
   computed: {
@@ -258,22 +260,15 @@ export default {
 
     texts() {
       const { localizations } = this;
-
+      // Hardcoded for now because i18n is loaded @ runtime not build time
       return {
-        gregorian: this.$t("gregorian"),
-        hijri: this.$t("hijri"),
-        cancel: this.$t("cancel"),
-        reset: this.$t("reset"),
-        ok: this.$t("ok"),
+        gregorian: "ميلادي" || this.$t("gregorian"),
+        hijri: "هجري" || this.$t("hijri"),
+        cancel: "إلغاء" || this.$t("cancel"),
+        reset: "اعادة ضبط" || this.$t("reset"),
+        ok: "تأكيد" || this.$t("ok"),
         ...localizations,
       };
-    },
-    isValidDate() {
-      const { date, isSingleMode } = this;
-      const isValidSingleDate = Boolean(isSingleMode && date);
-      const isValidRangeDate = Boolean(!isSingleMode && date.length);
-
-      return isValidSingleDate || isValidRangeDate;
     },
     enhancedValue() {
       const { value } = this;
@@ -284,53 +279,55 @@ export default {
 
       return this.unifyDateSeparators(value);
     },
-    isValidInitialValue() {
-      const { value, isSingleMode } = this;
-
-      return Boolean(isSingleMode ? value : value.length);
-    },
   },
   watch: {
     value: {
-      handler() {
-        const { date, isHijri, isSingleMode, enhancedValue } = this;
+      handler(newValue, oldValue) {
+        if (newValue !== oldValue) {
+          const { date, isHijri, isSingleMode, enhancedValue } = this;
 
-        const { gregorian, hijri } = this.getValueDates(enhancedValue);
-        const dateClone = JSON.parse(JSON.stringify(date));
-        const shouldUpdate =
-          JSON.stringify(isHijri ? hijri : gregorian) !==
-          JSON.stringify(isSingleMode ? dateClone : dateClone.sort());
+          const { gregorian, hijri } = this.getHijriGregorianDates(
+            enhancedValue
+          );
 
-        // if (shouldUpdate) {
-        this.date = isHijri ? hijri : gregorian;
-        // }
+          const dateClone = JSON.parse(JSON.stringify(date));
+
+          const shouldUpdate =
+            JSON.stringify(isHijri ? hijri : gregorian) !==
+            JSON.stringify(isSingleMode ? dateClone : dateClone.sort());
+
+          if (shouldUpdate) {
+            this.date = isHijri ? hijri : gregorian;
+          }
+        }
       },
       deep: true,
     },
-    date() {
-      // const { date, isHijri, isSingleMode, enhancedValue } = this;
-      // const { gregorian, hijri } = this.getValueDates(enhancedValue);
-      // const dateClone = JSON.parse(JSON.stringify(date));
-      // const shouldUpdate =
-      //   JSON.stringify(isHijri ? hijri : gregorian) !==
-      //   JSON.stringify(isSingleMode ? dateClone : dateClone.sort());
-      // if (shouldUpdate) {
-      //   this.$emit("change", this.getHijriGregorianDates(date));
-      // }
+    date: {
+      handler(newValue, oldValue) {
+        const { isInitialized } = this;
+        const currentDate = JSON.stringify(newValue);
+        const prevDate = JSON.stringify(oldValue);
+        const shouldUpdate = Boolean(currentDate !== prevDate && isInitialized);
+
+        if (shouldUpdate) {
+          this.$emit("change", this.getHijriGregorianDates(newValue));
+        } else {
+          this.isInitialized = true;
+        }
+      },
+      deep: true,
     },
   },
   mounted() {
     this.isHijri = this.hijri;
 
-    this.date = this.isValidInitialValue
-      ? this.enhancedValue
-      : this.initialDateValue;
+    this.date = this.enhancedValue || this.initialDateValue;
   },
   methods: {
     getHijriGregorianDates(date) {
       const {
         range,
-        isHijri,
         isValidDate,
         isSingleMode,
         convertToHijri,
@@ -340,41 +337,25 @@ export default {
       let hijri = range ? [] : "";
       let gregorian = range ? [] : "";
 
-      if (isValidDate) {
+      if (isValidDate(date)) {
         if (isSingleMode) {
+          const isHijri = isHijriYear(date);
+
           hijri = isHijri ? date : convertToHijri(date);
           gregorian = isHijri ? convertToGregorian(date) : date;
         } else {
           const sortedDate = [...date].sort();
 
-          hijri = isHijri
-            ? sortedDate
-            : sortedDate.map((selectedDate) => convertToHijri(selectedDate));
-          gregorian = isHijri
-            ? sortedDate.map((selectedDate) => convertToGregorian(selectedDate))
-            : sortedDate;
-        }
-      }
-
-      return {
-        hijri,
-        gregorian,
-      };
-    },
-
-    getValueDates(gregorian) {
-      const { range, isSingleMode, convertToHijri } = this;
-
-      let hijri = range ? [] : "";
-
-      if (this.isValidDate) {
-        if (isSingleMode) {
-          hijri = convertToHijri(gregorian);
-        } else {
-          const sortedDate = [...gregorian].sort();
-
           hijri = sortedDate.map((selectedDate) =>
-            convertToHijri(selectedDate)
+            isHijriYear(selectedDate)
+              ? selectedDate
+              : convertToHijri(selectedDate)
+          );
+
+          gregorian = sortedDate.map((selectedDate) =>
+            isHijriYear(selectedDate)
+              ? convertToGregorian(selectedDate)
+              : sortedDate
           );
         }
       }
@@ -455,6 +436,12 @@ export default {
 
     unifyDateSeparators(date) {
       return date.replaceAll(/[-/.]/g, "-");
+    },
+
+    isValidDate(date) {
+      const { isSingleMode } = this;
+
+      return Boolean(isSingleMode ? date : date.length);
     },
   },
 };

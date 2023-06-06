@@ -29,6 +29,7 @@
           color="primary"
           label="تصفية بالتاريخ"
           :value="calendarDate"
+          range
           hint="يرجى ادخال فترة زمنية"
           dense
           :rules="formValidators.calendar"
@@ -248,7 +249,7 @@ export default {
       ],
       // Calendar
       isHijri: false,
-      calendarDate: "",
+      calendarDate: ["1435-05-06", "1435-05-20"],
       // DataTable
       rows: [
         {
@@ -346,7 +347,7 @@ export default {
   async mounted() {
     setTimeout(() => {
       this.isLoading = false;
-      this.calendarDate = "1414/01/11";
+      this.calendarDate = ["1995/01/01", "1996/02/03"];
     }, 3000);
     // const downloadRes = await fetch(
     //   "http://localhost:40000/file/VDRFWG4wRFM2MjJVbGhDeFJLZU91WURGSUZERGpSeFBpR2M4bnE4NUNTVTRINEdlTHdFSkhscmZXYzJFQysyZk4rTE9DWG5ZL3hBa2ZaVnRObXBPRnc9PQ==/Officiant/37"
