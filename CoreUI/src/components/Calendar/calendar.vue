@@ -1,8 +1,10 @@
 <template>
   <v-input :rules="rules" :value="value" :hide-details="!rules.length">
-    <div :class="['base-calendar-wrapper', { 'd-flex justify-end': row }]">
+    <div
+      :class="['base-calendar-wrapper', { 'd-flex justify-end row-mode': row }]"
+    >
       <div
-        :class="`d-flex align-center ${
+        :class="`label-wrapper d-flex align-center ${
           row ? 'justify-center mx-5' : 'justify-end mb-2'
         }`"
       >
