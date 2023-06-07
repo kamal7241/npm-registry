@@ -1,36 +1,36 @@
-.base-data-table-list-item {
+.base-data-table-list-item-v1_2 {
   transition: box-shadow 0.32s ease-in-out;
   border: 1px solid rgb(var(--layout-primary-rgb-color), 0.1) !important;
   /* Todo: to be removed */
   box-shadow: unset !important;
 }
 
-.base-data-table-list-item .field {
+.base-data-table-list-item-v1_2 .field {
   padding: 10px;
   min-width: 157px;
 }
 
-.base-data-table-list-item .field.primary {
+.base-data-table-list-item-v1_2 .field.primary {
   background-color: rgb(var(--layout-primary-rgb-color), 0.1) !important;
 }
 
-.base-data-table-list-item .field.primary .label-icon-wrapper {
+.base-data-table-list-item-v1_2 .field.primary .label-icon-wrapper {
   justify-content: space-between;
   transition: all 0.33s ease-out;
 }
 
-.base-data-table-list-item .field.primary .label-icon-wrapper.clickabel {
+.base-data-table-list-item-v1_2 .field.primary .label-icon-wrapper.clickabel {
   cursor: pointer;
 }
 
-.base-data-table-list-item
+.base-data-table-list-item-v1_2
   .field.primary
   .label-icon-wrapper
   .base-label-and-value {
   width: 150px;
 }
 
-.base-data-table-list-item .field.primary .label-icon-wrapper .arrow {
+.base-data-table-list-item-v1_2 .field.primary .label-icon-wrapper .arrow {
   cursor: pointer;
   width: 45px;
   height: 45px;
@@ -42,7 +42,7 @@
   /* transition: unset; */
 }
 
-.base-data-table-list-item
+.base-data-table-list-item-v1_2
   .field.primary
   .label-icon-wrapper
   .arrow
@@ -52,26 +52,26 @@
   transition: color 0.3s ease-in-out;
 }
 
-.base-data-table-list-item .enhanced-columns-wrapper {
+.base-data-table-list-item-v1_2 .enhanced-columns-wrapper {
   flex: 1;
   justify-content: space-around;
 }
 
-.base-data-table-list-item:hover {
+.base-data-table-list-item-v1_2:hover {
   box-shadow: 0px 5px 14px rgba(0, 0, 0, 0.05) !important;
 }
 
-.base-data-table-list-item:hover .field.primary .label-icon-wrapper {
+.base-data-table-list-item-v1_2:hover .field.primary .label-icon-wrapper {
   transform: translateX(-25px);
 }
 
-.base-data-table-list-item:hover .field.primary .label-icon-wrapper .arrow {
+.base-data-table-list-item-v1_2:hover .field.primary .label-icon-wrapper .arrow {
   background-color: var(--layout-primary-color);
   /* Todo:  To be removed */
   transform: unset;
 }
 
-.base-data-table-list-item:hover
+.base-data-table-list-item-v1_2:hover
   .field.primary
   .label-icon-wrapper
   span.v-btn__content
@@ -80,12 +80,12 @@
 }
 
 @media (max-width: 600px) {
-  /* Todo:  To be removed */
-  .base-data-table-list-item .field.primary:hover .arrow {
-    transform: unset;
+  .base-data-table-list-item-v1_2:hover .field.primary .label-icon-wrapper {
+    transform: translateX(-15px);
   }
 
-  .base-data-table-list-item:hover .field.primary .label-icon-wrapper {
-    transform: translateX(-15px);
+  /* Todo:  To be removed */
+  .base-data-table-list-item-v1_2 .field.primary:hover .arrow {
+    transform: unset;
   }
 }

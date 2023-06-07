@@ -3,7 +3,7 @@
     <div
       v-for="(row, i) in rows"
       :key="i"
-      class="base-data-table-list-item mb-4 d-flex flex-column flex-sm-row align-strech"
+      class="base-data-table-list-item base-data-table-list-item-v1_2 mb-4 d-flex flex-column flex-sm-row align-strech"
     >
       <slot
         v-if="enhancedColumns.primaryColumn"
