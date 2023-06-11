@@ -38,7 +38,7 @@
         />
 
         <!-- <DatePicker
-          value="1415/3/15"
+          value=""
           format="MMM, YYYY/DD"
           :export-as-hijri="false"
           switch-action-id="switch-action-Id"
@@ -75,7 +75,7 @@
           </template>
         </card-panel> -->
 
-        <data-table
+        <!-- <data-table
           :rows="rows"
           :columns="columns"
           :on-click="onRowClicked"
@@ -104,7 +104,7 @@
               </template>
             </label-and-value>
           </template>
-        </data-table>
+        </data-table> -->
 
         <!--  <empty-placeholder
         :primary-text="primaryText"
@@ -210,8 +210,8 @@ export default {
     //   import("./components/AttachmentField/attachmentField.vue"),
     Calendar: () => import("./components/Calendar/calendar.vue"),
     // CardPanel: () => import("./components/CardPanel/cardPanel.vue"),
-    DataTable: () => import("./components/DataTable/DataTable.vue"),
-    LabelAndValue: () => import("./components/LabelAndValue/labelAndValue.vue"),
+    // DataTable: () => import("./components/DataTable/DataTable.vue"),
+    // LabelAndValue: () => import("./components/LabelAndValue/labelAndValue.vue"),
     // EmptyPlaceholder: () =>
     //   import("./components/EmptyPlaceholder/emptyPlaceholder.vue"),
     // ImageCropper: () => import("./components/ImageCropper/imageCropper.vue"),
