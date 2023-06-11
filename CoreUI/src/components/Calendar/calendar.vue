@@ -355,7 +355,7 @@ export default {
           gregorian = sortedDate.map((selectedDate) =>
             isHijriYear(selectedDate)
               ? convertToGregorian(selectedDate)
-              : sortedDate
+              : selectedDate
           );
         }
       }
