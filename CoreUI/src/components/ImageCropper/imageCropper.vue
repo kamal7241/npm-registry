@@ -490,3 +490,7 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+@import url("./image-cropper.css");
+</style>

@@ -529,6 +529,7 @@ export default {
 </script>
 
 <style scoped>
+@import url("./attachment-field.css");
 .list-item:not(:last-of-type) {
   margin-bottom: 16px;
 }

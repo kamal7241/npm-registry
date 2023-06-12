@@ -2,7 +2,7 @@ import Vue from "vue";
 import Vuetify from "vuetify/lib";
 import "@mdi/font/css/materialdesignicons.css";
 // utils
-import getThemeColor from "../utils/theming";
+import { getThemeColor } from "../utils/theming";
 
 Vue.use(Vuetify);
 

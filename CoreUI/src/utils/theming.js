@@ -6,4 +6,29 @@ const getThemeColor = (target, prefix = "layout") => {
   return color.trim();
 };
 
-export default getThemeColor;
+const updateAppVariable = (packageTarget, layoutTarget) => {
+  const root = document.documentElement.style;
+  const fallbackSrc = "package";
+
+  const color =
+    getThemeColor(layoutTarget) || getThemeColor(packageTarget, fallbackSrc);
+
+  root.setProperty(`--${fallbackSrc}-${packageTarget}-color`, color);
+};
+
+const updatePackageThemingVariables = () => {
+  const variables = [
+    "primary",
+    "dark-primary",
+    "light-primary",
+    "lighter-primary",
+    "info",
+    "error",
+    "secondary",
+    "light-secondary",
+  ];
+
+  variables.forEach((variable) => updateAppVariable(variable, variable));
+};
+
+export { getThemeColor, updatePackageThemingVariables };

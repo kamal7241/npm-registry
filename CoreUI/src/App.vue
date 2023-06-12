@@ -2,8 +2,7 @@
   <v-app>
     <v-container class="pt-10">
       <v-form ref="defaultForm" @submit.prevent>
-        <!-- <attachment-field
-          disabled
+        <attachment-field
           label="صورة شخصية "
           name="association"
           placeholder="قم بسحب وإرفاق ملفاتك في هذه المنطقة"
@@ -23,9 +22,9 @@
           :rules="formValidators.attachments"
           @select="onSelectFiles"
           @error="onErrorFound"
-        /> -->
+        />
 
-        <calendar
+        <!-- <calendar
           color="primary"
           label="تصفية بالتاريخ"
           :value="calendarDate"
@@ -35,7 +34,7 @@
           :rules="formValidators.calendar"
           @change="changeDate"
           @changeHijri="changeHijriState"
-        />
+        /> -->
 
         <!-- <DatePicker
           value=""
@@ -48,7 +47,7 @@
           @change="onChangeDatePicker"
         /> -->
 
-        <!-- <image-cropper
+        <image-cropper
           label="نص تجريبي"
           name="personalInfo"
           is-required
@@ -63,8 +62,8 @@
           :server-side-configs="serverSideConfigs"
           :rules="formValidators.imageCropper"
           @cropImage="onCropImage"
-        /> 
-
+        />
+        <!--
 
         </v-form>
               -->
@@ -202,19 +201,20 @@
 <script>
 // Services
 import { isRequired, isRequiredAttachment } from "./services/formValidators";
+import { updatePackageThemingVariables } from "./utils/theming";
 
 export default {
   name: "App",
   components: {
-    // AttachmentField: () =>
-    //   import("./components/AttachmentField/attachmentField.vue"),
-    Calendar: () => import("./components/Calendar/calendar.vue"),
+    AttachmentField: () =>
+      import("./components/AttachmentField/attachmentField.vue"),
+    // Calendar: () => import("./components/Calendar/calendar.vue"),
     // CardPanel: () => import("./components/CardPanel/cardPanel.vue"),
     // DataTable: () => import("./components/DataTable/DataTable.vue"),
     // LabelAndValue: () => import("./components/LabelAndValue/labelAndValue.vue"),
     // EmptyPlaceholder: () =>
     //   import("./components/EmptyPlaceholder/emptyPlaceholder.vue"),
-    // ImageCropper: () => import("./components/ImageCropper/imageCropper.vue"),
+    ImageCropper: () => import("./components/ImageCropper/imageCropper.vue"),
     // PaginationLayout: () =>
     //   import("./components/PaginationLayout/paginationLayout.vue"),
     // DatePicker: () => import("./components/DatePicker/datePicker.vue"),
@@ -348,6 +348,9 @@ export default {
     },
   },
   async mounted() {
+    // Update theme
+    updatePackageThemingVariables();
+
     setTimeout(() => {
       this.isLoading = false;
       this.calendarDate = ["1995/01/01", "1996/02/03"];
