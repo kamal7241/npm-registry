@@ -14,14 +14,14 @@
     />
     <path
       d="M34.375 23.958L25.625 32.708L22.2917 27.708L15.625 34.3747"
-      stroke="var(--layout-primary-color)"
+      stroke="var(--package-primary-color)"
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
     />
     <path
       d="M30.209 23.958H34.3757V28.1247"
-      stroke="var(--layout-primary-color)"
+      stroke="var(--package-primary-color)"
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"

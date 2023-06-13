@@ -1,0 +1,16 @@
+.pkg-base-label-and-value .label-text,
+.pkg-base-label-and-value .value-text {
+  font-weight: bold;
+  word-break: break-all;
+}
+
+.pkg-base-label-and-value .label-text {
+  font-size: 0.875rem;
+  font-weight: normal;
+  color: #949494;
+}
+
+.pkg-base-label-and-value .value-text {
+  font-size: 1rem;
+  color: var(--package-dark-primary-color);
+}

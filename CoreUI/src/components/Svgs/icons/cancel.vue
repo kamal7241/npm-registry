@@ -22,7 +22,7 @@
           x2="8.098"
           y2="8.098"
           fill="none"
-          stroke="var(--layout-error-color)"
+          stroke="var(--package-error-color)"
           stroke-linecap="round"
           stroke-linejoin="round"
           stroke-width="1"

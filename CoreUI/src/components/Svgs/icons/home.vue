@@ -8,7 +8,7 @@
   >
     <path
       d="M11.667 20.8462C11.667 19.7416 12.5624 18.8462 13.667 18.8462H20.4362C21.5408 18.8462 22.4362 19.7416 22.4362 20.8462V31.4103H11.667V20.8462Z"
-      stroke="var(--layout-primary-color)"
+      stroke="var(--package-primary-color)"
       stroke-width="1.5"
     />
     <path

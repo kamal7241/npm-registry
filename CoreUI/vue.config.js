@@ -16,5 +16,6 @@ module.exports = {
       ...config.optimization.get("splitChunks"),
       automaticNameDelimiter: "-",
     });
+    config.devtool("source-map");
   },
 };

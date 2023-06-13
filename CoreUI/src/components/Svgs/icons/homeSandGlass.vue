@@ -14,7 +14,7 @@
     />
     <path
       d="M22.2378 12H16.7622C13.585 12 13.3399 14.8561 15.0553 16.4109L23.9447 24.4892C25.6601 26.044 25.415 28.9001 22.2378 28.9001H16.7622C13.585 28.9001 13.3399 26.044 15.0553 24.4892L23.9447 16.4109C25.6601 14.8561 25.415 12 22.2378 12Z"
-      stroke="var(--layout-primary-color)"
+      stroke="var(--package-primary-color)"
       stroke-width="1.5"
       stroke-linecap="round"
       stroke-linejoin="round"

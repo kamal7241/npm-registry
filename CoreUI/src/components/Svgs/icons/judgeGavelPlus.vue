@@ -12,7 +12,7 @@
     />
     <path
       d="M29.4876 38.4612L24.3594 33.333"
-      stroke="var(--layout-primary-color)"
+      stroke="var(--package-primary-color)"
       stroke-width="1.5"
       stroke-miterlimit="10"
       stroke-linecap="round"
@@ -20,7 +20,7 @@
     />
     <path
       d="M23.7261 32.6888L19.8724 36.5425C19.0233 37.3916 17.6407 37.3916 16.7916 36.5425L12.1759 31.9268C11.3268 31.0777 11.3268 29.6951 12.1759 28.846L19.8724 21.1495C20.7215 20.3004 22.1041 20.3004 22.9532 21.1495L27.5689 25.7653C28.418 26.6144 28.418 27.9969 27.5689 28.846L23.7261 32.6888Z"
-      stroke="var(--layout-primary-color)"
+      stroke="var(--package-primary-color)"
       stroke-width="1.5"
       stroke-miterlimit="10"
       stroke-linecap="round"
@@ -28,7 +28,7 @@
     />
     <path
       d="M14.1035 26.9229L21.7958 34.6152"
-      stroke="var(--layout-primary-color)"
+      stroke="var(--package-primary-color)"
       stroke-width="1.5"
       stroke-miterlimit="10"
       stroke-linecap="round"

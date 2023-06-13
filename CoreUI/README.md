@@ -1,7 +1,5 @@
-- Controls Docs
-- [x] Label and value
-- [-] DataTable *slots doesn't take an effect immediatly*
-
+## Enhancements
+   - ### Calendar's value: should be any value with any format without any restriction to the user.
 <p float="left">
     <img src="https://cdn.auth0.com/blog/vuejs/vue-logo.png" alt="Vue.js" width="100"/>
     <img src="https://www.saashub.com/images/app/service_logos/8/20ef90d04b35/large.png?1527741609" alt="Vuetify.js" width="100"/>

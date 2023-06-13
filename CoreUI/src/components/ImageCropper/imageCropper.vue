@@ -1,6 +1,6 @@
 <template>
   <v-input :rules="rules" :value="value">
-    <div class="base-cropper-wrapper">
+    <div class="pkg-base-cropper-wrapper">
       <CropperDialog
         v-if="showModal"
         :show="showModal"
@@ -211,6 +211,40 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    /**
+     * Represents a uploadCallbackArgs object.
+     * @typedef {Object} uploadCallbackArgs
+     * @property {File} source - File src.
+     * @property {string} base64 - base64.
+     * @property {string} contentType - encodedSharepointId.
+     *
+     * Represents a downloadCallbackArgs object.
+     *
+     * @typedef {Object} downloadCallbackArgs
+     * @property {string} contentType - File content type.
+     * @property {string} sharepointId - SharepointId.
+     * @property {string} encodedSharepointId - encodedSharepointId.
+     * @property {Function} fileGenerator - Helper to download the file if needed.
+     *
+     * Represents a serverSideConfigs object.
+     *
+     * @typedef {Object} ServerSideConfigs
+     * @property {string} appName  - The appName.
+     * @property {string} systemCode - The systemCode.
+     * @property {string} [uploadUrl]  - default will be /file/upload.
+     * @property {(string|function(sharepointId, encodedSharepointId): downloadUrl)} [downloadUrl] - It can be either a string and the default is /file or a function that takes sharepointId and encodedSharepointId.
+     * @property {string} [downloadUrl]  - The year the car was made.
+     *
+     * @property {function(downloadCallbackArgs): File} downloadCallback - To override the sharepoint download functionality.
+     *
+     * @property {function(uploadCallbackArgs): string} uploadCallback - To override the sharepoint upload functionality.
+     * @returns {}
+     *
+     */
+    serverSideConfigs: {
+      type: Object,
+      default: () => ({}),
+    },
     enableServerSide: {
       type: Boolean,
       default: false,
@@ -223,16 +257,6 @@ export default {
     attachmentTypeId: {
       type: Number,
       default: 0,
-    },
-    uploadCallback: {
-      type: Function,
-      required: false,
-      default: () => {},
-    },
-    downloadCallback: {
-      type: Function,
-      required: false,
-      default: () => {},
     },
   },
   data() {
@@ -364,6 +388,15 @@ export default {
     utils() {
       return generateUtils(this);
     },
+    enhancedServerSideConfigs() {
+      return {
+        appName: window.$config?.sharepoint?.appName || "",
+        systemCode: window.$config?.sharepoint?.systemCode || "",
+        downloadUrl: "/file",
+        uploadUrl: "/file/upload",
+        ...this.serverSideConfigs,
+      };
+    },
   },
   watch: {
     value() {
@@ -414,15 +447,24 @@ export default {
       // because we are using single attachment only
       const fileToUpload = filesNotLoadedYet[0];
       if (fileToUpload) {
-        const fileFromSharepointId = await this.downloadCallback({
+        const { downloadCallback } = this.enhancedServerSideConfigs;
+
+        let fileFromSharepointId;
+        const args = {
           contentType: fileToUpload.contentType,
           sharepointId: fileToUpload.sharepointId,
           encodedSharepointId: btoa(fileToUpload.sharepointId),
           fileGenerator: (response) =>
-            new File([response.data], response.headers.filename, {
-              type: response.headers["content-type"],
+            new File([response.data], response.fileName, {
+              type: response.fileType,
             }),
-        });
+        };
+
+        if (downloadCallback && typeof downloadCallback === "function") {
+          fileFromSharepointId = await downloadCallback(args);
+        } else {
+          fileFromSharepointId = await this.utils.downloadFile(args);
+        }
 
         fileFromSharepointId.displayName = this.utils.enhanceFileName(
           fileFromSharepointId
@@ -448,3 +490,7 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+@import url("./image-cropper.css");
+</style>

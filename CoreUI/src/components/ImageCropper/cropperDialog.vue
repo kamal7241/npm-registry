@@ -6,7 +6,7 @@
   >
     <span v-if="strings.modalTitle" class="modal__title">
       <slot name="title">
-        <p>{{ strings.modalTitle }}</p>
+        <p class="m-title">{{ strings.modalTitle }}</p>
       </slot>
     </span>
 

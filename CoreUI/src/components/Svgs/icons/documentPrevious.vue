@@ -8,14 +8,14 @@
   >
     <path
       d="M21.125 24.375H11.375L14.625 27.625"
-      stroke="var(--layout-primary-color)"
+      stroke="var(--package-primary-color)"
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
     />
     <path
       d="M11.375 24.375L14.625 21.125"
-      stroke="var(--layout-primary-color)"
+      stroke="var(--package-primary-color)"
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"

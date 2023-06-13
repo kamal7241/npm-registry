@@ -14,14 +14,14 @@
     />
     <path
       d="M17.3252 15.6934C17.2549 15.6934 17.1671 15.6934 17.0968 15.6934C15.4455 15.6407 14.1279 14.2705 14.1279 12.6016C14.1279 10.8976 15.5158 9.50977 17.2198 9.50977C18.9238 9.50977 20.3116 10.8976 20.3116 12.6016C20.294 14.2881 18.9765 15.6407 17.3252 15.6934Z"
-      stroke="var(--layout-primary-color)"
+      stroke="var(--package-primary-color)"
       stroke-width="1.5"
       stroke-linecap="round"
       stroke-linejoin="round"
     />
     <path
       d="M13.8293 18.8173C12.1428 19.9416 12.1428 21.7861 13.8293 22.9104C15.7441 24.1928 18.8886 24.1928 20.8035 22.9104C22.4899 21.7861 22.4899 19.9416 20.8035 18.8173C18.9062 17.5349 15.7617 17.5349 13.8293 18.8173Z"
-      stroke="var(--layout-primary-color)"
+      stroke="var(--package-primary-color)"
       stroke-width="1.5"
       stroke-linecap="round"
       stroke-linejoin="round"

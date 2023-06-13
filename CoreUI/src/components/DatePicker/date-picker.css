@@ -1,0 +1,39 @@
+.pkg-base-datepicker .label-and-field-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.pkg-base-datepicker .label-and-field-wrapper .label-wrapper {
+  width: 100%;
+  position: absolute;
+  top: -30px;
+}
+
+.pkg-base-datepicker .label-and-field-wrapper .list-wrapper {
+  width: 100%;
+}
+
+.pkg-base-datepicker .label-and-field-wrapper .list-wrapper .ddl:not(:first-of-type, :last-of-type) {
+  margin: 0 10px;
+}
+
+@media (max-width: 500px) {
+  .pkg-base-datepicker .label-and-field-wrapper .list-wrapper {
+    flex-direction: column;
+  }
+
+  .pkg-base-datepicker .label-and-field-wrapper .list-wrapper .ddl {
+    width: 100%;
+  }
+
+  .pkg-base-datepicker .label-and-field-wrapper .list-wrapper .ddl:not(:first-of-type, :last-of-type) {
+    margin: 10px 0;
+  }
+}
+
+@media (max-width: 300px) {
+  .pkg-base-datepicker .label-and-field-wrapper .label-wrapper .field-label, 
+  .pkg-base-datepicker .label-and-field-wrapper .label-wrapper .date-type-toggler {
+    font-size: 0.875rem;
+  }
+}

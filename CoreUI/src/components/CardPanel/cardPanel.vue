@@ -1,5 +1,5 @@
 <template>
-  <section class="card-panel-wrapper">
+  <section class="pkg-card-panel-wrapper">
     <div class="card-panel-header">
       <div v-if="!isLoading" class="title-wrapper">
         <span class="title">{{ title }}</span>
@@ -35,3 +35,7 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+@import url("./card-panel.css");
+</style>

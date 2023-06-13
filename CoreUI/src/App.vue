@@ -1,17 +1,19 @@
 <template>
   <v-app>
     <v-container class="pt-10">
-      <v-form ref="defaultForm" lazy-validation @submit.prevent>
+      <v-form ref="defaultForm" @submit.prevent>
         <attachment-field
           label="صورة شخصية "
           name="association"
           placeholder="قم بسحب وإرفاق ملفاتك في هذه المنطقة"
           is-required
           is-multiple
+          :accept="attachmentExt"
           :value="serverSideValue"
           :localizations="localizations"
           enable-server-side
           activate-internal-error-preview
+          :server-side-configs="serverSideConfigs"
           :attachment-type-id="5"
           :max-files-size-in-mega="10"
           :upload-callback="onUploadData"
@@ -21,23 +23,23 @@
           @select="onSelectFiles"
           @error="onErrorFound"
         />
-        <!--
+
         <calendar
           color="primary"
           label="تصفية بالتاريخ"
-          :row="true"
-          :range="true"
-          :hijri="isHijri"
           :value="calendarDate"
+          range
+          row
           hint="يرجى ادخال فترة زمنية"
           dense
           :rules="formValidators.calendar"
           @change="changeDate"
           @changeHijri="changeHijriState"
-        /> -->
+        />
 
         <DatePicker
-          value="1415/3/15"
+          value=""
+          dense
           format="MMM, YYYY/DD"
           :export-as-hijri="false"
           switch-action-id="switch-action-Id"
@@ -59,60 +61,67 @@
           enable-download
           enable-server-side
           update-parent-with-file-meta
+          :server-side-configs="serverSideConfigs"
           :rules="formValidators.imageCropper"
           @cropImage="onCropImage"
         />
-        <!-- </v-form>
 
-      <card-panel title="تجربة">
-        <template #headerAction>
-          <v-btn color="red" class="white--text"> الغاء </v-btn>
-        </template>
-      </card-panel>
+        <card-panel title="تجربة">
+          <template #headerAction>
+            <v-btn color="red" class="white--text"> الغاء </v-btn>
+          </template>
+        </card-panel>
 
-      <data-table
-        :rows="rows"
-        :columns="columns"
-        :on-click="onRowClicked"
-        :primary-field="primaryField"
-      >
-        <template #dateTime="{ data: { row }, currentClass }">
-          <label-and-value
-            :class="currentClass"
-            :label="$t('appointmentDateAndTime')"
-            :value="row.dateTime"
-            value-class="label-and-value-value"
-          />
-        </template>
+        <label-and-value
+          preview
+          :label="$t('appointmentDateAndTime')"
+          value="77777"
+          value-class="label-and-value-value"
+        />
 
-        <template #actions="{ data: { row }, currentClass }">
-          <label-and-value :class="currentClass">
-            <template #value>
-              <v-btn
-                v-if="row.pendingApproval && !row.isCancelled"
-                outlined
-                color="error"
-                @click="openCancelDialog(row)"
-              >
-                {{ $t("cancel") }}
-              </v-btn>
-            </template>
-          </label-and-value>
-        </template>
-      </data-table>
+        <data-table
+          :rows="rows"
+          :columns="columns"
+          :on-click="onRowClicked"
+          :primary-field="primaryField"
+        >
+          <template #dateTime="{ data: { row }, currentClass }">
+            <label-and-value
+              :class="currentClass"
+              :label="$t('appointmentDateAndTime')"
+              :value="row.dateTime"
+              value-class="label-and-value-value"
+            />
+          </template>
 
-      <empty-placeholder
-        :primary-text="primaryText"
-        :secondary-text="secondaryText"
-        :is-loading="isLoading"
-        icon="mdi-check"
-      >
-        <template #icon>
-          <n-svg name="map" />
-        </template>
-      </empty-placeholder> -->
+          <template #actions="{ data: { row }, currentClass }">
+            <label-and-value :class="currentClass">
+              <template #value>
+                <v-btn
+                  v-if="row.pendingApproval && !row.isCancelled"
+                  outlined
+                  color="error"
+                  @click="openCancelDialog(row)"
+                >
+                  {{ $t("cancel") }}
+                </v-btn>
+              </template>
+            </label-and-value>
+          </template>
+        </data-table>
 
-        <pagination-layout
+        <empty-placeholder
+          :primary-text="primaryText"
+          :secondary-text="secondaryText"
+          :is-loading="isLoading"
+          icon="mdi-check"
+        >
+          <template #icon>
+            <n-svg name="map" />
+          </template>
+        </empty-placeholder>
+
+        <!-- <pagination-layout
           :value="paginationValue"
           server-page-number-key="page"
           server-page-size-key="size"
@@ -127,20 +136,20 @@
           :endpoint="endpoint"
           @search="onSearch"
         >
-          <!-- Customize Loading slot -->
-          <!-- <template #loader>
+          Customize Loading slot -->
+        <!-- <template #loader>
           <span>Loading ...</span>
         </template> -->
 
-          <!-- Customize list slot -->
-          <!-- <template #list="{ data }">
+        <!-- Customize list slot -->
+        <!-- <template #list="{ data }">
           <p v-for="(item, i) in data" :key="i">
             {{ item.title }}
           </p>
         </template> -->
 
-          <!-- Customize pagination slot -->
-          <!-- <template
+        <!-- Customize pagination slot -->
+        <!-- <template
         #pagination="{
           data,
           onChangePageSize,
@@ -181,8 +190,8 @@
         >
           الصفحة الأخيرة
         </button>
-      </template> -->
-        </pagination-layout>
+      </template>
+        </pagination-layout>  -->
         <!-- </v-form> -->
         <!-- </v-container> -->
         <NSvg name="map" />
@@ -196,41 +205,59 @@
 
 <script>
 // Services
-import { isRequiredAttachment } from "./services/formValidators";
+import { isRequired, isRequiredAttachment } from "./services/formValidators";
+import { updatePackageThemingVariables } from "./utils/theming";
 
 export default {
   name: "App",
   components: {
     AttachmentField: () =>
       import("./components/AttachmentField/attachmentField.vue"),
-    // Calendar: () => import("./components/Calendar/calendar.vue"),
-    // CardPanel: () => import("./components/CardPanel/cardPanel.vue"),
-    // DataTable: () => import("./components/DataTable/dataTable.vue"),
-    // LabelAndValue: () => import("./components/LabelAndValue/labelAndValue.vue"),
-    // EmptyPlaceholder: () =>
-    //   import("./components/EmptyPlaceholder/emptyPlaceholder.vue"),
+    Calendar: () => import("./components/Calendar/calendar.vue"),
+    CardPanel: () => import("./components/CardPanel/cardPanel.vue"),
+    DataTable: () => import("./components/DataTable/DataTable.vue"),
+    LabelAndValue: () => import("./components/LabelAndValue/labelAndValue.vue"),
+    EmptyPlaceholder: () =>
+      import("./components/EmptyPlaceholder/emptyPlaceholder.vue"),
     ImageCropper: () => import("./components/ImageCropper/imageCropper.vue"),
-    PaginationLayout: () =>
-      import("./components/PaginationLayout/paginationLayout.vue"),
+    // PaginationLayout: () =>
+    //   import("./components/PaginationLayout/paginationLayout.vue"),
     DatePicker: () => import("./components/DatePicker/datePicker.vue"),
     NSvg: () => import("./components/Svgs/nSvg.vue"),
   },
   data() {
     return {
+      attachmentExt: ".pdf,.jpg,.bmp,.png",
       // Form
       formValidators: {
         attachments: [isRequiredAttachment],
-        calendar: [isRequiredAttachment],
+        calendar: [isRequired],
         imageCropper: [isRequiredAttachment],
+      },
+      serverSideConfigs: {
+        uploadUrl: "http://localhost:40000/file/upload",
+        downloadUrl: "http://localhost:40000/file",
+        systemCode: 37,
+        appName: "Officiant",
+        // uploadCallback: (args) => console.log(args),
       },
       // AttachmentField
       localizations: {
         placeholder: "استعراض الملفات",
       },
-      serverSideValue: [],
+      serverSideValue: [
+        // {
+        //   sharepointId:
+        //     "bPHSUiXuzJLHf2Q7V0vLtRYITqvi9wYk1LYMB7vCxJVhchPoNp4uqsjk2E+pqql4z29WngoIdrmJQyGXHQWQVA==",
+        // },
+        // {
+        //   sharepointId:
+        //     "bPHSUiXuzJLHf2Q7V0vLtRYITqvi9wYk1LYMB7vCxJVhchPoNp4uqsjk2E+pqql4G9E/h6vGCxFhMKz1auGMrg==",
+        // },
+      ],
       // Calendar
       isHijri: false,
-      calendarDate: [],
+      calendarDate: ["1435-05-06", "1435-05-20"],
       // DataTable
       rows: [
         {
@@ -250,11 +277,12 @@ export default {
         aspectRatio: 4 / 6,
       },
       imageValue: {
-        attachmentTypeId: 5,
-        contentType: "image/png",
         id: 0,
+        attachmentTypeId: 3,
+        contentType: "image/png",
         sharepointId:
-          "bPHSUiXuzJLHf2Q7V0vLtRYITqvi9wYk1LYMB7vCxJVhchPoNp4uqsjk2E+pqql4B8hlPlIsuvkdtKbkr40lpA==",
+          "bPHSUiXuzJLHf2Q7V0vLtRYITqvi9wYk1LYMB7vCxJVhchPoNp4uqsjk2E+pqql4z29WngoIdrmJQyGXHQWQVA==",
+        fileName: "File name (1).png",
       },
       // PaginationLayout
       additionalPayload: {},
@@ -324,10 +352,33 @@ export default {
       ];
     },
   },
-  mounted() {
+  async mounted() {
+    // Update theme
+    updatePackageThemingVariables();
+
     setTimeout(() => {
       this.isLoading = false;
+      this.calendarDate = ["1995/01/01", "1996/02/03"];
     }, 3000);
+    // const downloadRes = await fetch(
+    //   "http://localhost:40000/file/VDRFWG4wRFM2MjJVbGhDeFJLZU91WURGSUZERGpSeFBpR2M4bnE4NUNTVTRINEdlTHdFSkhscmZXYzJFQysyZk4rTE9DWG5ZL3hBa2ZaVnRObXBPRnc9PQ==/Officiant/37"
+    // );
+    // const rawResponse = await fetch("http://localhost:40000/file/upload", {
+    //   method: "POST",
+    //   headers: {
+    //     Accept: "application/json",
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     fileBase64:
+    //       "/9j/4AAQSkZJRgABAQAAAQABAAD/fpPvMWDIgpnDH3h0aO5Z7+0XFaULnkYVApOfeHCCBYsQJjVhtQCFcZe+DUXYCTYE9IBoieZjA2k8xnG4Qs7AmgFg3nsYx/LYCaQNe0zW6cvlVr6CYWO0j2EuXLl/LcJuAtc9RBsCJ+s4NsSqOcYsSml9u5h1Zu+kdvkieiL7Rwe9N9xhWGRyg20l70ViKYZ3ilypFzy91wQA4czdyFCQxoLFUZXgArRaKyywLdbo5kXJiD3V+NwU4Him7sxd0htZdlMa32nfQIywtu57pdVPfnBwQbq1LqV7GnLYdihTGkUxnl4cVOXyapj2VvgwLWWvoubpw/VJBDWAEFzVIo3FF8MND/wXG6hWULkFSpmaBbaKGkr+xLWCYbS5t4iUpuHJu4LCVg5S/hT+zcQZWV27zLogabUrbUriKC0LdZcdFQ2HUGVISmv5yFEtreMlmAt0JcEMvCZYCAsndOfVAbgrZi3+IniDxH4jwTe9849n5R/9MqgxM6asFTFjTFCAd/QDsIvtA8qqhsjug6GrXAqoVzhhZOxVTAqRO/y71iC0qo6WrJwlYpdkuqAq97liNmcwZnhxEpkl8kS1MBw30yJoTmux4mBCFH0KlMFtU4Bh7zLCKaz/wDjX//Z",
+    //     appName: "Officiant",
+    //     systemCode: 37,
+    //   }),
+    // });
+    // const content = await rawResponse.json();
+
+    // console.log({ downloadRes: await .downloadRes.arrayBuffer(), content });
   },
   methods: {
     endpoint(serverSideLink) {
@@ -380,6 +431,7 @@ export default {
     },
     // Calendar
     changeDate(newDate) {
+      console.log({ newDate });
       this.calendarDate = newDate.gregorian;
     },
 

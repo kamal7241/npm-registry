@@ -1,5 +1,5 @@
 <template>
-  <div :class="['base-label-and-value', { 'd-flex align-center': row }]">
+  <div :class="['pkg-base-label-and-value', { 'd-flex align-center': row }]">
     <v-skeleton-loader
       v-if="isLoading"
       loading
@@ -9,7 +9,7 @@
       class="mb-1"
     />
     <template v-else>
-      <div :class="[labelClass, 'preview label-text mb-0']">
+      <div :class="[labelClass, 'label-text mb-0']">
         <slot name="labelContent">
           {{ label }}
         </slot>
@@ -24,7 +24,7 @@
       height="12"
     />
     <template v-else>
-      <div :class="[valueClass, { 'mx-1': row }, 'value-text mb-0 preview']">
+      <div :class="[valueClass, { 'mx-1': row }, 'value-text mb-0']">
         <slot name="valueContent">
           {{ value }}
         </slot>
@@ -32,6 +32,7 @@
     </template>
   </div>
 </template>
+
 <script>
 export default {
   name: "LabelAndValue",
@@ -63,3 +64,7 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+@import url("./label-and-value.css");
+</style>

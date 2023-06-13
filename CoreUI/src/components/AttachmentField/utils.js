@@ -97,12 +97,12 @@ const generateUtils = (instance) => {
       const enhancedAcceptedExtentions = newInstance.accept.toLowerCase();
       // .ZIP ==> ZIP
       const extentionFromName = file.name.split(".").pop();
-      const fallbackExtention = `application/${extentionFromName}`;
-      const extention = this.getFileExtention(
-        file.type || fallbackExtention,
-        true
-      ).slice(1);
-      const isValidExtention = enhancedAcceptedExtentions.includes(extention);
+      const extentionFromType = this.getFileExtention(file.type, true);
+      const combinedExtensions = [extentionFromType, extentionFromName];
+      const isValidExtention = combinedExtensions.some((extention) =>
+        enhancedAcceptedExtentions.includes(extention)
+      );
+
       const isValidSize = this.isValidFileSize(file.size, file.name);
 
       if (!isValidExtention) {
@@ -178,9 +178,16 @@ const generateUtils = (instance) => {
         const base64Meta = await this.convertFileToBase64(selectedFile);
 
         if ("base64" in base64Meta) {
-          const sharepointId = await newInstance.uploadCallback(base64Meta);
+          const { uploadCallback } = newInstance.enhancedServerSideConfigs;
+          let sharepointId;
 
-          if (sharepointId) {
+          if (uploadCallback && typeof uploadCallback === "function") {
+            sharepointId = await uploadCallback(base64Meta);
+          } else {
+            sharepointId = await this.uploadFile(base64Meta);
+          }
+
+          if (sharepointId && typeof sharepointId === "string") {
             const constructedAttachment = {
               id: 0,
               attachmentTypeId: newInstance.attachmentTypeId,
@@ -242,6 +249,72 @@ const generateUtils = (instance) => {
         };
         reader.onerror = (error) => reject(error);
       });
+    },
+    async downloadFile(fileData) {
+      newInstance.isServerLoading = true;
+
+      const { enhancedServerSideConfigs } = newInstance;
+      const { encodedSharepointId, fileGenerator } = fileData;
+      const { downloadUrl, appName, systemCode } = enhancedServerSideConfigs;
+
+      if (!appName || !systemCode) {
+        newInstance.isServerLoading = false;
+
+        throw new Error(
+          `Either appName or systemCode is not valid, you must provide them in serverSideConfigs prop`
+        );
+      }
+
+      try {
+        const url = `${downloadUrl}/${encodedSharepointId}/${appName}/${systemCode}`;
+
+        const downloadRes = await fetch(url);
+        const fileName = downloadRes.headers.get("filename") || "";
+        const fileType =
+          downloadRes.headers.get("Content-Type") || "image/jpeg";
+
+        const fileBuffer = await downloadRes.arrayBuffer();
+
+        return fileGenerator({
+          fileName,
+          fileType,
+          data: fileBuffer,
+        });
+      } finally {
+        newInstance.isServerLoading = false;
+      }
+    },
+    async uploadFile(base64Meta) {
+      const { base64: fileBase64 } = base64Meta;
+      const { enhancedServerSideConfigs } = newInstance;
+      const { uploadUrl, appName, systemCode } = enhancedServerSideConfigs;
+
+      if (!appName || !systemCode) {
+        newInstance.isServerLoading = false;
+
+        throw new Error(
+          `Either appName or systemCode is not valid, you must provide them in serverSideConfigs prop`
+        );
+      }
+      // must be reviewed (error res is retrieved)
+      try {
+        const downloadRes = await fetch(uploadUrl, {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            fileBase64,
+            appName,
+            systemCode,
+          }),
+        });
+
+        return downloadRes.json();
+      } finally {
+        newInstance.isServerLoading = false;
+      }
     },
   };
 };

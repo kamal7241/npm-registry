@@ -15,7 +15,7 @@
         ry="6"
         width="6"
         height="12"
-        fill="var(--layout-primary-color)"
+        fill="var(--package-primary-color)"
       >
         <animate
           attributeName="opacity"
@@ -35,7 +35,7 @@
         ry="6"
         width="6"
         height="12"
-        fill="var(--layout-primary-color)"
+        fill="var(--package-primary-color)"
       >
         <animate
           attributeName="opacity"
@@ -55,7 +55,7 @@
         ry="6"
         width="6"
         height="12"
-        fill="var(--layout-primary-color)"
+        fill="var(--package-primary-color)"
       >
         <animate
           attributeName="opacity"
@@ -75,7 +75,7 @@
         ry="6"
         width="6"
         height="12"
-        fill="var(--layout-primary-color)"
+        fill="var(--package-primary-color)"
       >
         <animate
           attributeName="opacity"
@@ -95,7 +95,7 @@
         ry="6"
         width="6"
         height="12"
-        fill="var(--layout-primary-color)"
+        fill="var(--package-primary-color)"
       >
         <animate
           attributeName="opacity"
@@ -115,7 +115,7 @@
         ry="6"
         width="6"
         height="12"
-        fill="var(--layout-primary-color)"
+        fill="var(--package-primary-color)"
       >
         <animate
           attributeName="opacity"
@@ -135,7 +135,7 @@
         ry="6"
         width="6"
         height="12"
-        fill="var(--layout-primary-color)"
+        fill="var(--package-primary-color)"
       >
         <animate
           attributeName="opacity"
@@ -155,7 +155,7 @@
         ry="6"
         width="6"
         height="12"
-        fill="var(--layout-primary-color)"
+        fill="var(--package-primary-color)"
       >
         <animate
           attributeName="opacity"
@@ -175,7 +175,7 @@
         ry="6"
         width="6"
         height="12"
-        fill="var(--layout-primary-color)"
+        fill="var(--package-primary-color)"
       >
         <animate
           attributeName="opacity"
@@ -195,7 +195,7 @@
         ry="6"
         width="6"
         height="12"
-        fill="var(--layout-primary-color)"
+        fill="var(--package-primary-color)"
       >
         <animate
           attributeName="opacity"
@@ -215,7 +215,7 @@
         ry="6"
         width="6"
         height="12"
-        fill="var(--layout-primary-color)"
+        fill="var(--package-primary-color)"
       >
         <animate
           attributeName="opacity"
@@ -235,7 +235,7 @@
         ry="6"
         width="6"
         height="12"
-        fill="var(--layout-primary-color)"
+        fill="var(--package-primary-color)"
       >
         <animate
           attributeName="opacity"

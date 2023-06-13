@@ -1,11 +1,11 @@
 <template>
   <v-input :rules="rules" :value="value">
-    <div class="base-attachment-wrapper">
+    <div class="pkg-base-attachment-wrapper">
       <div class="label-and-input-wrapper">
         <slot name="labelContent" :data="{ err: error }">
           <label
             v-if="label"
-            class="d-block label mb-2"
+            class="field-label d-block label mb-2"
             :class="{ err: error }"
           >
             {{ label }}
@@ -14,7 +14,7 @@
         </slot>
 
         <div
-          v-if="enableFancyPreview"
+          v-if="enableFancyPreview && !disabled"
           class="file-input-wrapper d-flex justify-center align-items-center flex-column"
         >
           <n-svg name="folder" width="25" height="25" />
@@ -32,7 +32,7 @@
           </button>
         </div>
 
-        <div v-if="!enableFancyPreview">
+        <div v-if="!enableFancyPreview && !disabled">
           <div class="input-wrapper d-flex align-items-center">
             <button
               :id="chooseFileActionId"
@@ -60,6 +60,7 @@
           </div>
         </div>
       </div>
+
       <slot v-if="isErrorSlotAvailable" name="errors" :errors="error">
         <div class="error-placeholder mt-2">
           <p class="text">
@@ -77,7 +78,9 @@
           <p class="mb-0">
             {{ utils.getAllowedFileTypesText(accept) }}
           </p>
-          <p>{{ utils.getAllowedMaxFileSizeText(maxFilesSizeInMega) }}</p>
+          <p class="mb-0">
+            {{ utils.getAllowedMaxFileSizeText(maxFilesSizeInMega) }}
+          </p>
         </div>
       </slot>
 
@@ -93,27 +96,33 @@
       />
 
       <slot name="list" :data="{ listData }" :onDeleteFile="utils.onDeleteFile">
-        <ul v-if="selectedFiles.length" class="mt-3 pa-0">
+        <ul v-if="selectedFiles.length" class="pa-0 mt-2">
           <li
             v-for="(selectedFile, index) in selectedFiles"
             :key="index"
-            class="align-items-center d-flex justify-space-between list-item mb-4 px-3 py-2"
+            class="align-items-center d-flex justify-space-between list-item px-3 py-2"
           >
             <div class="icon-name-wrapper d-flex align-items-center">
               <n-svg class="img" name="file" width="25" height="25" />
-              <span class="file-name ms-3">{{
-                enableServerSide
-                  ? selectedFile.file.displayName
-                  : selectedFile.displayName
-              }}</span>
+              <span class="file-name ms-3">
+                {{
+                  enableServerSide
+                    ? selectedFile.file.displayName
+                    : selectedFile.displayName
+                }}
+              </span>
             </div>
 
             <div class="size-delete-wrapper d-flex align-items-center">
-              <span class="size me-3">{{
-                utils.getFileSizeInKiloByte(
-                  enableServerSide ? selectedFile.file.size : selectedFile.size
-                )
-              }}</span>
+              <span class="size me-3">
+                {{
+                  utils.getFileSizeInKiloByte(
+                    enableServerSide
+                      ? selectedFile.file.size
+                      : selectedFile.size
+                  )
+                }}
+              </span>
 
               <button
                 class="align-center d-inline-flex justify-center"
@@ -214,7 +223,7 @@ export default {
     },
     activateInternalErrorPreview: {
       type: Boolean,
-      default: true,
+      default: false,
     },
     isRequired: {
       type: Boolean,
@@ -260,6 +269,40 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    /**
+     * Represents a uploadCallbackArgs object.
+     * @typedef {Object} uploadCallbackArgs
+     * @property {File} source - File src.
+     * @property {string} base64 - base64.
+     * @property {string} contentType - encodedSharepointId.
+     *
+     * Represents a downloadCallbackArgs object.
+     *
+     * @typedef {Object} downloadCallbackArgs
+     * @property {string} contentType - File content type.
+     * @property {string} sharepointId - SharepointId.
+     * @property {string} encodedSharepointId - encodedSharepointId.
+     * @property {Function} fileGenerator - Helper to download the file if needed.
+     *
+     * Represents a serverSideConfigs object.
+     *
+     * @typedef {Object} ServerSideConfigs
+     * @property {string} appName  - The appName.
+     * @property {string} systemCode - The systemCode.
+     * @property {string} [uploadUrl]  - default will be /file/upload.
+     * @property {(string|function(sharepointId, encodedSharepointId): downloadUrl)} [downloadUrl] - It can be either a string and the default is /file or a function that takes sharepointId and encodedSharepointId.
+     * @property {string} [downloadUrl]  - The year the car was made.
+     *
+     * @property {function(downloadCallbackArgs): File} downloadCallback - To override the sharepoint download functionality.
+     *
+     * @property {function(uploadCallbackArgs): string} uploadCallback - To override the sharepoint upload functionality.
+     * @returns {}
+     *
+     */
+    serverSideConfigs: {
+      type: Object,
+      default: () => ({}),
+    },
     enableServerSide: {
       type: Boolean,
       default: false,
@@ -272,16 +315,6 @@ export default {
     attachmentTypeId: {
       type: Number,
       default: 0,
-    },
-    uploadCallback: {
-      type: Function,
-      required: false,
-      default: () => {},
-    },
-    downloadCallback: {
-      type: Function,
-      required: false,
-      default: () => {},
     },
   },
   data() {
@@ -366,15 +399,23 @@ export default {
     utils() {
       return generateUtils(this);
     },
+    enhancedServerSideConfigs() {
+      return {
+        appName: window.$config?.sharepoint?.appName || "",
+        systemCode: window.$config?.sharepoint?.systemCode || "",
+        downloadUrl: "/file",
+        uploadUrl: "/file/upload",
+        ...this.serverSideConfigs,
+      };
+    },
   },
   watch: {
     value(newVal, oldVal) {
-      if (
-        this.value.length &&
-        JSON.stringify(newVal) !== JSON.stringify(oldVal)
-      ) {
+      const isEqualValues = JSON.stringify(newVal) === JSON.stringify(oldVal);
+
+      if (this.value.length && !isEqualValues) {
         this.loadData();
-      } else if (!this.value.length) {
+      } else if (!this.value.length && !isEqualValues) {
         this.selectedFiles = [];
         this.currentTotalSize = 0;
       }
@@ -411,7 +452,7 @@ export default {
           if (isValidIteration) {
             const convertedFile = await this.utils.base64ToFilesConverter(file);
 
-            // check if file matches ( size, totalFilesSize)
+            // check if file matches (size, totalFilesSize)
             if (this.utils.isValidFile(convertedFile)) {
               generatedFile = convertedFile;
               this.currentTotalSize += convertedFile.size;
@@ -440,27 +481,34 @@ export default {
           async (memo, file, index) => {
             const results = await memo;
 
-            // downloadCallback
             let generatedFile = {};
             // Don't load more than max attachments if fullfilled
             const isValidIteration = this.maxAttachments >= index + 1;
 
             if (isValidIteration) {
-              const fileFromSharepointId = await this.downloadCallback({
+              const { downloadCallback } = this.enhancedServerSideConfigs;
+              let fileFromSharepointId;
+              const args = {
                 contentType: file.contentType,
                 sharepointId: file.sharepointId,
                 encodedSharepointId: btoa(file.sharepointId),
                 fileGenerator: (response) =>
-                  new File([response.data], response.headers.filename, {
-                    type: response.headers["content-type"],
+                  new File([response.data], response.fileName, {
+                    type: response.fileType,
                   }),
-              });
+              };
+
+              if (downloadCallback && typeof downloadCallback === "function") {
+                fileFromSharepointId = await downloadCallback(args);
+              } else {
+                fileFromSharepointId = await this.utils.downloadFile(args);
+              }
 
               fileFromSharepointId.displayName = this.utils.enhanceFileName(
                 fileFromSharepointId
               );
 
-              // check if file matches ( size, totalFilesSize)
+              // check if file matches (size, totalFilesSize)
               if (this.utils.isValidFile(fileFromSharepointId)) {
                 generatedFile = {
                   ...file,
@@ -488,3 +536,7 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+@import url("./attachment-field.css");
+</style>
