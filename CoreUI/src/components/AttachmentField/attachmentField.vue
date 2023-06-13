@@ -1,6 +1,6 @@
 <template>
   <v-input :rules="rules" :value="value">
-    <div class="base-attachment-wrapper">
+    <div class="pkg-base-attachment-wrapper">
       <div class="label-and-input-wrapper">
         <slot name="labelContent" :data="{ err: error }">
           <label
@@ -60,6 +60,7 @@
           </div>
         </div>
       </div>
+
       <slot v-if="isErrorSlotAvailable" name="errors" :errors="error">
         <div class="error-placeholder mt-2">
           <p class="text">
@@ -77,7 +78,9 @@
           <p class="mb-0">
             {{ utils.getAllowedFileTypesText(accept) }}
           </p>
-          <p>{{ utils.getAllowedMaxFileSizeText(maxFilesSizeInMega) }}</p>
+          <p class="mb-0">
+            {{ utils.getAllowedMaxFileSizeText(maxFilesSizeInMega) }}
+          </p>
         </div>
       </slot>
 
@@ -93,7 +96,7 @@
       />
 
       <slot name="list" :data="{ listData }" :onDeleteFile="utils.onDeleteFile">
-        <ul v-if="selectedFiles.length" class="pa-0">
+        <ul v-if="selectedFiles.length" class="pa-0 mt-2">
           <li
             v-for="(selectedFile, index) in selectedFiles"
             :key="index"
@@ -101,19 +104,25 @@
           >
             <div class="icon-name-wrapper d-flex align-items-center">
               <n-svg class="img" name="file" width="25" height="25" />
-              <span class="file-name ms-3">{{
-                enableServerSide
-                  ? selectedFile.file.displayName
-                  : selectedFile.displayName
-              }}</span>
+              <span class="file-name ms-3">
+                {{
+                  enableServerSide
+                    ? selectedFile.file.displayName
+                    : selectedFile.displayName
+                }}
+              </span>
             </div>
 
             <div class="size-delete-wrapper d-flex align-items-center">
-              <span class="size me-3">{{
-                utils.getFileSizeInKiloByte(
-                  enableServerSide ? selectedFile.file.size : selectedFile.size
-                )
-              }}</span>
+              <span class="size me-3">
+                {{
+                  utils.getFileSizeInKiloByte(
+                    enableServerSide
+                      ? selectedFile.file.size
+                      : selectedFile.size
+                  )
+                }}
+              </span>
 
               <button
                 class="align-center d-inline-flex justify-center"
@@ -530,7 +539,4 @@ export default {
 
 <style scoped>
 @import url("./attachment-field.css");
-.list-item:not(:last-of-type) {
-  margin-bottom: 16px;
-}
 </style>

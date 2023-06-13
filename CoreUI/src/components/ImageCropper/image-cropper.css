@@ -1,30 +1,30 @@
-.base-cropper-wrapper {
+.pkg-base-cropper-wrapper {
   width: 100%;
 }
 
-.base-cropper-wrapper .input-wrapper {
+.pkg-base-cropper-wrapper .input-wrapper {
   border: 2px solid #DBDBDB;
   height: 50px;
 }
 
-.base-cropper-wrapper .input-wrapper * {
+.pkg-base-cropper-wrapper .input-wrapper * {
   display: flex;
   align-items: center;
 }
 
-.base-cropper-wrapper .input-wrapper .indicator {
+.pkg-base-cropper-wrapper .input-wrapper .indicator {
   position: relative;
   height: 100%;
   outline: none;
   background-color: var(--package-primary-color);
 }
 
-.base-cropper-wrapper .input-wrapper .indicator:disabled {
+.pkg-base-cropper-wrapper .input-wrapper .indicator:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
 
-.base-cropper-wrapper .input-wrapper .indicator .loader-placeholder {
+.pkg-base-cropper-wrapper .input-wrapper .indicator .loader-placeholder {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -32,61 +32,61 @@
   left: 0;
 }
 
-.base-cropper-wrapper .input-wrapper .indicator.selecting {
+.pkg-base-cropper-wrapper .input-wrapper .indicator.selecting {
   opacity: 0.8;
   background-color: #eee;
 }
 
-.base-cropper-wrapper .input-wrapper .name-placeholder {
+.pkg-base-cropper-wrapper .input-wrapper .name-placeholder {
   color: var(--package-dark-primary-color);
   font-size: 0.875rem;
   flex: 1;
 }
 
-.base-cropper-wrapper .pointer,
-.base-cropper-wrapper .input-wrapper .actions .action {
+.pkg-base-cropper-wrapper .pointer,
+.pkg-base-cropper-wrapper .input-wrapper .actions .action {
   cursor: pointer;
 }
 
-.base-cropper-wrapper .label {
+.pkg-base-cropper-wrapper .label {
   color: var(--package-dark-primary-color);
   font-size: 0.875rem;
   position: absolute;
   top: -24px;
 }
 
-.base-cropper-wrapper .label .star,
-.base-cropper-wrapper .error-placeholder .text {
+.pkg-base-cropper-wrapper .label .star,
+.pkg-base-cropper-wrapper .error-placeholder .text {
   color: var(--package-error-color);
 }
 
-.base-cropper-wrapper .hints-placeholder,
-.base-cropper-wrapper .error-placeholder {
+.pkg-base-cropper-wrapper .hints-placeholder,
+.pkg-base-cropper-wrapper .error-placeholder {
   color: #A8A8A8;
   font-size: 0.75rem;
 }
 
-.base-cropper-wrapper .image-wrapper {
+.pkg-base-cropper-wrapper .image-wrapper {
   height: 300px;
 }
 
-.base-cropper-wrapper .image-wrapper .cropper-container {
+.pkg-base-cropper-wrapper .image-wrapper .cropper-container {
   width: 100% !important;
 }
 
-.base-cropper-wrapper .image-canvas {
+.pkg-base-cropper-wrapper .image-canvas {
   display: block;
   max-width: 100%;
 }
 
-.base-cropper-wrapper .modal-container {
+.pkg-base-cropper-wrapper .modal-container {
   position: relative;
   width: auto;
   margin: 0.5rem;
   pointer-events: none;
 }
 
-.base-cropper-wrapper .modal-content {
+.pkg-base-cropper-wrapper .modal-content {
   position: relative;
   display: -ms-flexbox;
   display: flex;
@@ -101,21 +101,25 @@
   outline: 0;
 }
 
-.base-cropper-wrapper .modal__content {
+.pkg-base-cropper-wrapper .modal__content {
   position: relative;
   -ms-flex: 1 1 auto;
   flex: 1 1 auto;
   padding: 10px;
 }
 
-.base-cropper-wrapper .modal__title {
+.pkg-base-cropper-wrapper .modal__title {
   padding: 10px;
   font-size: 1.2rem;
   font-weight: 600;
   border-bottom: 1px solid #eee;
 }
 
-.base-cropper-wrapper .modal__action {
+.pkg-base-cropper-wrapper .modal__title .m-title {
+  margin: 0;
+}
+
+.pkg-base-cropper-wrapper .modal__action {
   border-top: 1px solid #eee;
   padding: 10px;
   display: flex;
@@ -123,14 +127,14 @@
   align-items: center;
 }
 
-.base-cropper-wrapper .modal__action .save {
+.pkg-base-cropper-wrapper .modal__action .save {
   padding: 5px;
   flex-basis: 70%;
   color: #fff;
   background-color: var(--package-primary-color);
 }
 
-.base-cropper-wrapper .modal__action .cancel-action {
+.pkg-base-cropper-wrapper .modal__action .cancel-action {
   flex-basis: 25%;
   color: #fff;
   background-color: var(--package-error-color);
@@ -138,7 +142,7 @@
 }
 
 @media (min-width: 576px) {
-  .base-cropper-wrapper .modal-container {
+  .pkg-base-cropper-wrapper .modal-container {
     max-width: 500px;
     margin: 1.75rem auto;
   }

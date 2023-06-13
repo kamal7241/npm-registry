@@ -1,6 +1,6 @@
 <template>
   <v-input :rules="rules" :value="value">
-    <div class="base-cropper-wrapper">
+    <div class="pkg-base-cropper-wrapper">
       <CropperDialog
         v-if="showModal"
         :show="showModal"

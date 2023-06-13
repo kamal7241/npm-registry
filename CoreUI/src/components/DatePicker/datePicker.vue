@@ -1,5 +1,5 @@
 <template>
-  <v-input :rules="rules" :value="value" class="base-calendar">
+  <v-input :rules="rules" :value="value" class="pkg-base-datepicker">
     <div class="label-and-field-wrapper">
       <div
         :class="[
@@ -49,7 +49,7 @@
           item-value="value"
           :label="$t('theYear')"
           :items="years"
-          class="list"
+          class="ddl"
           hide-details
           :disabled="disabled"
           :menu-props="{ bottom: true, offsetY: true }"
@@ -65,7 +65,7 @@
           item-value="value"
           :label="$t('theMonth')"
           :items="months"
-          class="list"
+          class="ddl"
           hide-details
           :disabled="disabled"
           :menu-props="{ bottom: true, offsetY: true }"
@@ -81,7 +81,7 @@
           item-value="value"
           :label="$t('theDay')"
           :items="days"
-          class="list"
+          class="ddl"
           hide-details
           :disabled="disabled"
           :menu-props="{ bottom: true, offsetY: true }"
@@ -443,47 +443,6 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
-.label-and-field-wrapper {
-  position: relative;
-  width: 100%;
-
-  .label-wrapper {
-    width: 100%;
-    position: absolute;
-    top: -38px;
-  }
-
-  .list-wrapper {
-    width: 100%;
-    .list {
-      &:not(:first-of-type, :last-of-type) {
-        margin: 0 10px;
-      }
-    }
-  }
-
-  @media (max-width: 500px) {
-    .list-wrapper {
-      flex-direction: column;
-
-      .list {
-        width: 100%;
-
-        &:not(:first-of-type, :last-of-type) {
-          margin: 10px 0;
-        }
-      }
-    }
-  }
-
-  @media (max-width: 300px) {
-    .label-wrapper {
-      .fieldLabel,
-      .dateTypeToggler {
-        font-size: 14px;
-      }
-    }
-  }
-}
+<style scoped>
+@import url("./date-picker.css");
 </style>

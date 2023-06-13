@@ -24,20 +24,22 @@
           @error="onErrorFound"
         />
 
-        <!-- <calendar
+        <calendar
           color="primary"
           label="تصفية بالتاريخ"
           :value="calendarDate"
           range
+          row
           hint="يرجى ادخال فترة زمنية"
           dense
           :rules="formValidators.calendar"
           @change="changeDate"
           @changeHijri="changeHijriState"
-        /> -->
+        />
 
-        <!-- <DatePicker
+        <DatePicker
           value=""
+          dense
           format="MMM, YYYY/DD"
           :export-as-hijri="false"
           switch-action-id="switch-action-Id"
@@ -45,7 +47,7 @@
           months-dropdown-id="months-dropdown-id"
           years-dropdown-id="years-dropdown-id"
           @change="onChangeDatePicker"
-        /> -->
+        />
 
         <image-cropper
           label="نص تجريبي"
@@ -63,18 +65,21 @@
           :rules="formValidators.imageCropper"
           @cropImage="onCropImage"
         />
-        <!--
 
-        </v-form>
-              -->
-
-        <!-- <card-panel title="تجربة">
+        <card-panel title="تجربة">
           <template #headerAction>
             <v-btn color="red" class="white--text"> الغاء </v-btn>
           </template>
-        </card-panel> -->
+        </card-panel>
 
-        <!-- <data-table
+        <label-and-value
+          preview
+          :label="$t('appointmentDateAndTime')"
+          value="77777"
+          value-class="label-and-value-value"
+        />
+
+        <data-table
           :rows="rows"
           :columns="columns"
           :on-click="onRowClicked"
@@ -103,18 +108,18 @@
               </template>
             </label-and-value>
           </template>
-        </data-table> -->
+        </data-table>
 
-        <!--  <empty-placeholder
-        :primary-text="primaryText"
-        :secondary-text="secondaryText"
-        :is-loading="isLoading"
-        icon="mdi-check"
-      >
-        <template #icon>
-          <n-svg name="map" />
-        </template>
-      </empty-placeholder> -->
+        <empty-placeholder
+          :primary-text="primaryText"
+          :secondary-text="secondaryText"
+          :is-loading="isLoading"
+          icon="mdi-check"
+        >
+          <template #icon>
+            <n-svg name="map" />
+          </template>
+        </empty-placeholder>
 
         <!-- <pagination-layout
           :value="paginationValue"
@@ -208,16 +213,16 @@ export default {
   components: {
     AttachmentField: () =>
       import("./components/AttachmentField/attachmentField.vue"),
-    // Calendar: () => import("./components/Calendar/calendar.vue"),
-    // CardPanel: () => import("./components/CardPanel/cardPanel.vue"),
-    // DataTable: () => import("./components/DataTable/DataTable.vue"),
-    // LabelAndValue: () => import("./components/LabelAndValue/labelAndValue.vue"),
-    // EmptyPlaceholder: () =>
-    //   import("./components/EmptyPlaceholder/emptyPlaceholder.vue"),
+    Calendar: () => import("./components/Calendar/calendar.vue"),
+    CardPanel: () => import("./components/CardPanel/cardPanel.vue"),
+    DataTable: () => import("./components/DataTable/DataTable.vue"),
+    LabelAndValue: () => import("./components/LabelAndValue/labelAndValue.vue"),
+    EmptyPlaceholder: () =>
+      import("./components/EmptyPlaceholder/emptyPlaceholder.vue"),
     ImageCropper: () => import("./components/ImageCropper/imageCropper.vue"),
     // PaginationLayout: () =>
     //   import("./components/PaginationLayout/paginationLayout.vue"),
-    // DatePicker: () => import("./components/DatePicker/datePicker.vue"),
+    DatePicker: () => import("./components/DatePicker/datePicker.vue"),
     NSvg: () => import("./components/Svgs/nSvg.vue"),
   },
   data() {

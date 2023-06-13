@@ -4,6 +4,7 @@
     v-model="currentStep"
     v-bind="$attrs"
     :vertical="isMobile"
+    class="pkg-base-stepper"
   >
     <template v-if="!isMobile">
       <slot name="header" :currentStep="currentStep">
@@ -114,3 +115,7 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+@import url("./stepper.css");
+</style>

@@ -1,7 +1,10 @@
 <template>
   <v-input :rules="rules" :value="value" :hide-details="!rules.length">
     <div
-      :class="['base-calendar-wrapper', { 'd-flex justify-end row-mode': row }]"
+      :class="[
+        'pkg-base-calendar-wrapper',
+        { 'd-flex justify-end row-mode': row },
+      ]"
     >
       <div
         :class="`label-wrapper d-flex align-center ${
@@ -446,3 +449,7 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+@import url("./calendar.css");
+</style>

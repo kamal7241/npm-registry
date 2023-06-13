@@ -22,6 +22,7 @@ const updatePackageThemingVariables = () => {
     "dark-primary",
     "light-primary",
     "lighter-primary",
+    "primary-rgb",
     "info",
     "error",
     "secondary",

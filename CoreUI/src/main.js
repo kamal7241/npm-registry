@@ -5,7 +5,6 @@ import App from "./App.vue";
 import vuetify from "./plugins/vuetify";
 // SVGs
 import NSvg from "./components/Svgs/nSvg.vue";
-import "./styles/index.scss";
 
 Vue.config.productionTip = false;
 

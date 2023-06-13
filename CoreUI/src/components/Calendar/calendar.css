@@ -1,0 +1,10 @@
+.pkg-base-calendar-wrapper,
+.pkg-base-calendar-wrapper .base-calendar-action-wrapper {
+  width: 100%;
+}
+
+.pkg-base-calendar-wrapper:not(.row-mode) .label-wrapper {
+  position: absolute;
+  top: -30px;
+  left: 0;
+}

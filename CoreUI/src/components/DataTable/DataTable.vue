@@ -3,21 +3,18 @@
     <div
       v-for="(row, i) in rows"
       :key="i"
-      class="base-data-table-list-item base-data-table-list-item-v1_2 mb-4 d-flex flex-column flex-sm-row align-strech"
+      class="pkg-base-data-table-list-item mb-4 d-flex flex-column flex-sm-row align-strech"
     >
       <slot
         v-if="enhancedColumns.primaryColumn"
         :name="enhancedColumns.primaryColumn.field"
         :data="{ row, columns, currentIteration: i }"
       >
-        <div class="field primary">
-          <div
-            :class="[
-              `label-icon-wrapper d-flex align-center`,
-              { clickabel: onClick },
-            ]"
-            @click="onClick(row)"
-          >
+        <div
+          :class="['field primary-field', { clickabel: onClick }]"
+          @click="onClick(row)"
+        >
+          <div class="label-icon-wrapper d-flex align-center">
             <label-and-value
               :is-loading="isLoading"
               :label="enhancedColumns.primaryColumn.title"

@@ -1,5 +1,5 @@
 <template>
-  <div :class="['base-empty-placeholder', wrapperClass]">
+  <div :class="['pkg-base-empty-placeholder', wrapperClass]">
     <p v-if="isLoading" class="primary-text mb-2">
       {{ $t("fetchingData") }}
     </p>
@@ -26,6 +26,7 @@
     </template>
   </div>
 </template>
+
 <script>
 export default {
   name: "EmptyPlaceholder",
@@ -53,3 +54,7 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+@import url("./empty-placeholder.css");
+</style>
