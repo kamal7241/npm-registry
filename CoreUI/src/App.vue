@@ -2,7 +2,7 @@
   <v-app>
     <v-container class="pt-10">
       <v-form ref="defaultForm" @submit.prevent>
-        <attachment-field
+        <!-- <attachment-field
           label="صورة شخصية "
           name="association"
           placeholder="قم بسحب وإرفاق ملفاتك في هذه المنطقة"
@@ -77,7 +77,7 @@
           :label="$t('appointmentDateAndTime')"
           value="77777"
           value-class="label-and-value-value"
-        />
+        /> -->
 
         <data-table
           :rows="rows"
@@ -94,23 +94,12 @@
             />
           </template>
 
-          <template #actions="{ data: { row }, currentClass }">
-            <label-and-value :class="currentClass">
-              <template #value>
-                <v-btn
-                  v-if="row.pendingApproval && !row.isCancelled"
-                  outlined
-                  color="error"
-                  @click="openCancelDialog(row)"
-                >
-                  {{ $t("cancel") }}
-                </v-btn>
-              </template>
-            </label-and-value>
+          <template #actions="{}">
+            <v-btn color="primary">sffsd</v-btn>
           </template>
         </data-table>
 
-        <empty-placeholder
+        <!-- <empty-placeholder
           :primary-text="primaryText"
           :secondary-text="secondaryText"
           :is-loading="isLoading"
@@ -119,7 +108,7 @@
           <template #icon>
             <n-svg name="map" />
           </template>
-        </empty-placeholder>
+        </empty-placeholder> -->
 
         <!-- <pagination-layout
           :value="paginationValue"
@@ -211,18 +200,18 @@ import { updatePackageThemingVariables } from "./utils/theming";
 export default {
   name: "App",
   components: {
-    AttachmentField: () =>
-      import("./components/AttachmentField/attachmentField.vue"),
-    Calendar: () => import("./components/Calendar/calendar.vue"),
-    CardPanel: () => import("./components/CardPanel/cardPanel.vue"),
+    // AttachmentField: () =>
+    //   import("./components/AttachmentField/attachmentField.vue"),
+    // Calendar: () => import("./components/Calendar/calendar.vue"),
+    // CardPanel: () => import("./components/CardPanel/cardPanel.vue"),
     DataTable: () => import("./components/DataTable/DataTable.vue"),
     LabelAndValue: () => import("./components/LabelAndValue/labelAndValue.vue"),
-    EmptyPlaceholder: () =>
-      import("./components/EmptyPlaceholder/emptyPlaceholder.vue"),
-    ImageCropper: () => import("./components/ImageCropper/imageCropper.vue"),
+    // EmptyPlaceholder: () =>
+    //   import("./components/EmptyPlaceholder/emptyPlaceholder.vue"),
+    // ImageCropper: () => import("./components/ImageCropper/imageCropper.vue"),
     // PaginationLayout: () =>
     //   import("./components/PaginationLayout/paginationLayout.vue"),
-    DatePicker: () => import("./components/DatePicker/datePicker.vue"),
+    // DatePicker: () => import("./components/DatePicker/datePicker.vue"),
     NSvg: () => import("./components/Svgs/nSvg.vue"),
   },
   data() {
@@ -265,6 +254,12 @@ export default {
           dateTime: "Hello",
           serviceTitle: "Hello",
           status: "Hello",
+        },
+        {
+          appointmentID: "Hello2",
+          dateTime: "Hello3",
+          serviceTitle: "Hello3",
+          status: "Hello6",
         },
       ],
       primaryField: "appointmentID",
@@ -346,7 +341,6 @@ export default {
           formatter: ({ status }) => (status ? "فعال" : "غير فعال"),
         },
         {
-          title: "",
           field: "actions",
         },
       ];

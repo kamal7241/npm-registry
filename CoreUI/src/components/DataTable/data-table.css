@@ -6,6 +6,9 @@
 .pkg-base-data-table-list-item .field {
   padding: 10px;
   min-width: 157px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .pkg-base-data-table-list-item .field.primary-field {
@@ -51,8 +54,14 @@
 }
 
 .pkg-base-data-table-list-item .enhanced-columns-wrapper {
+  display: flex;
   flex: 1;
-  justify-content: space-around;
+}
+
+.pkg-base-data-table-list-item .enhanced-columns-wrapper .coulmns-without-actions{
+  display: flex;
+  flex-wrap: wrap;
+  padding-right: 15px;
 }
 
 .pkg-base-data-table-list-item:hover {
