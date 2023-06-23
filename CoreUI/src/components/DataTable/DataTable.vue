@@ -169,7 +169,6 @@ export default {
       return row[column.field] || "---";
     },
     isActionField(name) {
-      console.log("name", name, name === "actions");
       return name === "actions";
     },
   },
