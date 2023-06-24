@@ -35,9 +35,8 @@
         </v-stepper-content>
       </v-stepper-items>
     </template>
-    <template v-else>
+    <template v-for="(step, index) in steps" v-else>
       <v-stepper-step
-        v-for="(step, index) in steps"
         :key="`step-${index + 1}`"
         :color="$vuetify.theme.primary"
         :complete="currentStep > index + 1"
@@ -45,7 +44,7 @@
       >
         {{ step.title }}
       </v-stepper-step>
-      <v-stepper-content :step="index + 1">
+      <v-stepper-content :key="`content-${index + 1}`" :step="index + 1">
         <slot :name="step.slotName" :actionsProps="actionsProps" />
       </v-stepper-content>
     </template>
