@@ -32,23 +32,40 @@
         </div>
       </slot>
 
-      <div class="enhanced-columns-wrapper d-flex flex-wrap align-center">
+      <div class="enhanced-columns-wrapper">
+        <div class="coulmns-without-actions">
+          <template
+            v-for="(column, currentIteration) in enhancedColumns.sortedColumns"
+          >
+            <slot
+              v-if="!isActionField(column.field)"
+              :name="column.field"
+              :data="{ row, columns, currentIteration }"
+              currentClass="field"
+            >
+              <label-and-value
+                class="field"
+                :label="column.title"
+                :is-loading="isLoading"
+                :value="getColumnValue(row, column)"
+              />
+            </slot>
+          </template>
+        </div>
+
         <template
           v-for="(column, currentIteration) in enhancedColumns.sortedColumns"
-          :class="column.class"
         >
-          <slot
-            :name="column.field"
-            :data="{ row, columns, currentIteration }"
-            currentClass="field"
+          <div
+            v-if="isActionField(column.field)"
+            :key="currentIteration"
+            class="field"
           >
-            <label-and-value
-              class="field"
-              :label="column.title"
-              :is-loading="isLoading"
-              :value="getColumnValue(row, column)"
+            <slot
+              :name="column.field"
+              :data="{ row, columns, currentIteration }"
             />
-          </slot>
+          </div>
         </template>
       </div>
     </div>
@@ -150,6 +167,9 @@ export default {
         return column.formatter(row) || "---";
       }
       return row[column.field] || "---";
+    },
+    isActionField(name) {
+      return name === "actions";
     },
   },
 };
