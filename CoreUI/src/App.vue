@@ -94,8 +94,8 @@
             />
           </template>
 
-          <template #actions="{}">
-            <v-btn color="primary">sffsd</v-btn>
+          <template #actions="{ data: { row } }">
+            <v-btn v-if="row.id === 1" color="primary">sffsd</v-btn>
           </template>
         </data-table>
 
@@ -250,16 +250,23 @@ export default {
       // DataTable
       rows: [
         {
+          id: 1,
           appointmentID: "Hello",
           dateTime: "Hello",
           serviceTitle: "Hello",
           status: "Hello",
         },
         {
+          id: 2,
           appointmentID: "Hello2",
           dateTime: "Hello3",
           serviceTitle: "Hello3",
           status: "Hello6",
+          status1: "Hello6",
+          status2: "Hello6",
+          status3: "Hello6",
+          status4: "Hello6",
+          status5: "Hello6",
         },
       ],
       primaryField: "appointmentID",
@@ -338,6 +345,31 @@ export default {
         {
           title: this.$t("appointmentStatus"),
           field: "status",
+          formatter: ({ status }) => (status ? "فعال" : "غير فعال"),
+        },
+        {
+          title: this.$t("appointmentStatus"),
+          field: "status1",
+          formatter: ({ status }) => (status ? "فعال" : "غير فعال"),
+        },
+        {
+          title: this.$t("appointmentStatus"),
+          field: "status2",
+          formatter: ({ status }) => (status ? "فعال" : "غير فعال"),
+        },
+        {
+          title: this.$t("appointmentStatus"),
+          field: "status3",
+          formatter: ({ status }) => (status ? "فعال" : "غير فعال"),
+        },
+        {
+          title: this.$t("appointmentStatus"),
+          field: "status4",
+          formatter: ({ status }) => (status ? "فعال" : "غير فعال"),
+        },
+        {
+          title: this.$t("appointmentStatus"),
+          field: "status5",
           formatter: ({ status }) => (status ? "فعال" : "غير فعال"),
         },
         {
