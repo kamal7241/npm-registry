@@ -287,7 +287,9 @@ export default {
     value: {
       handler(newValue, oldValue) {
         if (newValue !== oldValue) {
-          const { date, isHijri, isSingleMode, enhancedValue } = this;
+          const { date, isSingleMode, enhancedValue } = this;
+
+          this.updateIsHijriSwitcher(newValue);
 
           const { gregorian, hijri } = this.getHijriGregorianDates(
             enhancedValue
@@ -296,11 +298,11 @@ export default {
           const dateClone = JSON.parse(JSON.stringify(date));
 
           const shouldUpdate =
-            JSON.stringify(isHijri ? hijri : gregorian) !==
+            JSON.stringify(this.isHijri ? hijri : gregorian) !==
             JSON.stringify(isSingleMode ? dateClone : dateClone.sort());
 
           if (shouldUpdate) {
-            this.date = isHijri ? hijri : gregorian;
+            this.date = this.isHijri ? hijri : gregorian;
           }
         }
       },
@@ -325,6 +327,7 @@ export default {
   mounted() {
     this.isHijri = this.hijri;
 
+    this.updateIsHijriSwitcher();
     this.date = this.enhancedValue || this.initialDateValue;
   },
   methods: {
@@ -367,6 +370,9 @@ export default {
         hijri,
         gregorian,
       };
+    },
+    updateIsHijriSwitcher(value = this.value) {
+      this.isHijri = isHijriYear(Array.isArray(value) ? value[0] : value);
     },
 
     formatDate() {
