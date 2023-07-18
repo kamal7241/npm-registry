@@ -1,9 +1,8 @@
 {
   "name": "@moj/core-ui",
-  "version": "1.22.4",
+  "version": "1.22.5",
   "description": "Modular, reusable components and styles for use in MOJ micro web applications.",
   "private": false,
-  "sideEffects": false,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --target lib --name core-ui src/index.js",
