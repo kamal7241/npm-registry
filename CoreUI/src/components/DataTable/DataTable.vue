@@ -56,16 +56,12 @@
         <template
           v-for="(column, currentIteration) in enhancedColumns.sortedColumns"
         >
-          <div
+          <slot
             v-if="isActionField(column.field)"
-            :key="currentIteration"
-            class="field"
-          >
-            <slot
-              :name="column.field"
-              :data="{ row, columns, currentIteration }"
-            />
-          </div>
+            :name="column.field"
+            currentClass="field"
+            :data="{ row, columns, currentIteration }"
+          />
         </template>
       </div>
     </div>

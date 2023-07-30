@@ -403,8 +403,8 @@ export default {
       return {
         appName: window.$config?.sharepoint?.appName || "",
         systemCode: window.$config?.sharepoint?.systemCode || "",
-        downloadUrl: "/file",
-        uploadUrl: "/file/upload",
+        downloadUrl: window.$config?.sharepoint?.downloadUrl || "/file",
+        uploadUrl: window.$config?.sharepoint?.uploadUrl || "/file/upload",
         ...this.serverSideConfigs,
       };
     },
@@ -532,6 +532,10 @@ export default {
       } else {
         this.utils.onClientSideSelect(e);
       }
+    },
+    reset() {
+      this.selectedFiles = [];
+      this.$emit("select", this.updatedValue);
     },
   },
 };

@@ -2,16 +2,18 @@
   <v-app>
     <v-container class="pt-10">
       <v-form ref="defaultForm" @submit.prevent>
-        <!-- <attachment-field
+        <attachment-field
+          ref="attachmentRef"
           label="صورة شخصية "
           name="association"
           placeholder="قم بسحب وإرفاق ملفاتك في هذه المنطقة"
           is-required
-          is-multiple
+          :is-multiple="false"
+          :max-attachments="1"
           :accept="attachmentExt"
           :value="serverSideValue"
           :localizations="localizations"
-          enable-server-side
+          :enable-server-side="false"
           activate-internal-error-preview
           :server-side-configs="serverSideConfigs"
           :attachment-type-id="5"
@@ -28,7 +30,6 @@
           color="primary"
           label="تصفية بالتاريخ"
           :value="calendarDate"
-          range
           row
           hint="يرجى ادخال فترة زمنية"
           dense
@@ -36,7 +37,7 @@
           @change="changeDate"
           @changeHijri="changeHijriState"
         />
-
+        <!--
         <DatePicker
           value=""
           dense
@@ -77,8 +78,9 @@
           :label="$t('appointmentDateAndTime')"
           value="77777"
           value-class="label-and-value-value"
-        /> -->
-
+        />
+        -->
+        <!--
         <data-table
           :rows="rows"
           :columns="columns"
@@ -94,11 +96,11 @@
             />
           </template>
 
-          <template #actions="{}">
-            <v-btn color="primary">sffsd</v-btn>
+          <template #actions="{ data: { row } }">
+            <v-btn v-if="row.id === 1" color="primary">sffsd</v-btn>
           </template>
         </data-table>
-
+-->
         <!-- <empty-placeholder
           :primary-text="primaryText"
           :secondary-text="secondaryText"
@@ -200,12 +202,12 @@ import { updatePackageThemingVariables } from "./utils/theming";
 export default {
   name: "App",
   components: {
-    // AttachmentField: () =>
-    //   import("./components/AttachmentField/attachmentField.vue"),
-    // Calendar: () => import("./components/Calendar/calendar.vue"),
+    AttachmentField: () =>
+      import("./components/AttachmentField/attachmentField.vue"),
+    Calendar: () => import("./components/Calendar/calendar.vue"),
     // CardPanel: () => import("./components/CardPanel/cardPanel.vue"),
-    DataTable: () => import("./components/DataTable/DataTable.vue"),
-    LabelAndValue: () => import("./components/LabelAndValue/labelAndValue.vue"),
+    // DataTable: () => import("./components/DataTable/DataTable.vue"),
+    // LabelAndValue: () => import("./components/LabelAndValue/labelAndValue.vue"),
     // EmptyPlaceholder: () =>
     //   import("./components/EmptyPlaceholder/emptyPlaceholder.vue"),
     // ImageCropper: () => import("./components/ImageCropper/imageCropper.vue"),
@@ -246,20 +248,27 @@ export default {
       ],
       // Calendar
       isHijri: false,
-      calendarDate: ["1435-05-06", "1435-05-20"],
+      calendarDate: "1444-09-03",
       // DataTable
       rows: [
         {
+          id: 1,
           appointmentID: "Hello",
           dateTime: "Hello",
           serviceTitle: "Hello",
           status: "Hello",
         },
         {
+          id: 2,
           appointmentID: "Hello2",
           dateTime: "Hello3",
           serviceTitle: "Hello3",
           status: "Hello6",
+          status1: "Hello6",
+          status2: "Hello6",
+          status3: "Hello6",
+          status4: "Hello6",
+          status5: "Hello6",
         },
       ],
       primaryField: "appointmentID",
@@ -341,6 +350,31 @@ export default {
           formatter: ({ status }) => (status ? "فعال" : "غير فعال"),
         },
         {
+          title: this.$t("appointmentStatus"),
+          field: "status1",
+          formatter: ({ status }) => (status ? "فعال" : "غير فعال"),
+        },
+        {
+          title: this.$t("appointmentStatus"),
+          field: "status2",
+          formatter: ({ status }) => (status ? "فعال" : "غير فعال"),
+        },
+        {
+          title: this.$t("appointmentStatus"),
+          field: "status3",
+          formatter: ({ status }) => (status ? "فعال" : "غير فعال"),
+        },
+        {
+          title: this.$t("appointmentStatus"),
+          field: "status4",
+          formatter: ({ status }) => (status ? "فعال" : "غير فعال"),
+        },
+        {
+          title: this.$t("appointmentStatus"),
+          field: "status5",
+          formatter: ({ status }) => (status ? "فعال" : "غير فعال"),
+        },
+        {
           field: "actions",
         },
       ];
@@ -352,7 +386,8 @@ export default {
 
     setTimeout(() => {
       this.isLoading = false;
-      this.calendarDate = ["1995/01/01", "1996/02/03"];
+      // this.calendarDate = ["1995/01/01", "1996/02/03"];
+      this.calendarDate = "2023-09-03";
     }, 3000);
     // const downloadRes = await fetch(
     //   "http://localhost:40000/file/VDRFWG4wRFM2MjJVbGhDeFJLZU91WURGSUZERGpSeFBpR2M4bnE4NUNTVTRINEdlTHdFSkhscmZXYzJFQysyZk4rTE9DWG5ZL3hBa2ZaVnRObXBPRnc9PQ==/Officiant/37"
@@ -382,6 +417,7 @@ export default {
     },
     testValidation() {
       this.$refs.defaultForm.validate();
+      this.$refs.attachmentRef.reset();
     },
     // AttachmentField
     async onSelectFiles(file) {
