@@ -533,6 +533,10 @@ export default {
         this.utils.onClientSideSelect(e);
       }
     },
+    reset() {
+      this.selectedFiles = [];
+      this.$emit("select", this.updatedValue);
+    },
   },
 };
 </script>

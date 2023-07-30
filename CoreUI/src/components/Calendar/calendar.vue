@@ -326,7 +326,7 @@ export default {
   },
   mounted() {
     this.isHijri = this.hijri;
-
+    window.uq = uq;
     this.updateIsHijriSwitcher();
     this.date = this.enhancedValue || this.initialDateValue;
   },

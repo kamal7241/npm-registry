@@ -2,16 +2,18 @@
   <v-app>
     <v-container class="pt-10">
       <v-form ref="defaultForm" @submit.prevent>
-        <!-- <attachment-field
+        <attachment-field
+          ref="attachmentRef"
           label="صورة شخصية "
           name="association"
           placeholder="قم بسحب وإرفاق ملفاتك في هذه المنطقة"
           is-required
-          is-multiple
+          :is-multiple="false"
+          :max-attachments="1"
           :accept="attachmentExt"
           :value="serverSideValue"
           :localizations="localizations"
-          enable-server-side
+          :enable-server-side="false"
           activate-internal-error-preview
           :server-side-configs="serverSideConfigs"
           :attachment-type-id="5"
@@ -23,7 +25,7 @@
           @select="onSelectFiles"
           @error="onErrorFound"
         />
--->
+
         <calendar
           color="primary"
           label="تصفية بالتاريخ"
@@ -200,8 +202,8 @@ import { updatePackageThemingVariables } from "./utils/theming";
 export default {
   name: "App",
   components: {
-    // AttachmentField: () =>
-    //   import("./components/AttachmentField/attachmentField.vue"),
+    AttachmentField: () =>
+      import("./components/AttachmentField/attachmentField.vue"),
     Calendar: () => import("./components/Calendar/calendar.vue"),
     // CardPanel: () => import("./components/CardPanel/cardPanel.vue"),
     // DataTable: () => import("./components/DataTable/DataTable.vue"),
@@ -415,6 +417,7 @@ export default {
     },
     testValidation() {
       this.$refs.defaultForm.validate();
+      this.$refs.attachmentRef.reset();
     },
     // AttachmentField
     async onSelectFiles(file) {
